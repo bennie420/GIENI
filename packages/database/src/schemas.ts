@@ -15,3 +15,29 @@ export const BaseEntitySchema = z.object({
   updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });
+
+export const OrganizationEntitySchema = BaseEntitySchema.extend({
+  clerkOrgId: z.string().min(1),
+  name: z.string().min(1),
+  orgType: z.enum(['OPERATOR', 'CLIENT']),
+  status: z.enum(['ACTIVE', 'SUSPENDED']),
+});
+
+export const ClientTenantSchema = BaseEntitySchema.extend({
+  name: z.string().min(1),
+  contactEmail: z.string().email(),
+  webhookUrl: z.string().url().nullable().optional(),
+  licensedCounties: z.array(z.string()),
+  status: z.enum(['ACTIVE', 'INACTIVE']),
+});
+
+export const CountyJurisdictionSchema = BaseEntitySchema.extend({
+  countyName: z.string().min(1),
+  stateCode: z.string().length(2),
+  fipsCode: z.string().min(1),
+  courtSystem: z.string().min(1),
+  assessorSystem: z.string().min(1),
+  recorderSystem: z.string().min(1),
+  active: z.boolean(),
+});
+
