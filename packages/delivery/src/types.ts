@@ -1,3 +1,4 @@
+import { BaseEntity } from '@gieni/database';
 import { AuthorityStatus, AuthorityTier, FiduciaryRole } from '@gieni/authority';
 import { OwnershipStatus } from '@gieni/ownership';
 import { PriorityBand } from '@gieni/scoring';
@@ -87,12 +88,10 @@ export type ClientDisposition =
   | 'APPOINTMENT_SET'
   | 'DEAL_CLOSED';
 
-export interface ClientFeedback {
-  id: string;
-  organizationId: string;
-  clientId: string;
+export interface ClientFeedback extends BaseEntity {
   opportunityId: string;
   disposition: ClientDisposition;
   notes?: string | null;
   submittedAt: string;
 }
+
