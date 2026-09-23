@@ -1,0 +1,34 @@
+{
+  "name": "@gieni/web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gieni/authz": "*",
+    "@gieni/authority": "*",
+    "@gieni/database": "*",
+    "@gieni/delivery": "*",
+    "@gieni/evidence": "*",
+    "@gieni/ownership": "*",
+    "@gieni/property": "*",
+    "@gieni/qc": "*",
+    "@gieni/scoring": "*",
+    "@gieni/workflow": "*",
+    "next": "^15.1.7",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "typescript": "^5.7.3"
+  }
+}

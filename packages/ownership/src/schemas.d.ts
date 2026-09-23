@@ -1,0 +1,52 @@
+import { z } from 'zod';
+export declare const OwnershipStatusSchema: z.ZodEnum<["DECEDENT_SOLE_OWNER", "JOINT_TENANCY_WITH_SURVIVOR", "TENANTS_IN_COMMON", "TRUST_HELD", "TRANSFERRED_PRIOR_TO_DEATH", "UNRESOLVED"]>;
+export declare const OwnershipAssessmentSchema: z.ZodObject<{
+    id: z.ZodString;
+    organizationId: z.ZodString;
+    parcelId: z.ZodString;
+    caseId: z.ZodString;
+    countyId: z.ZodString;
+    status: z.ZodEnum<["DECEDENT_SOLE_OWNER", "JOINT_TENANCY_WITH_SURVIVOR", "TENANTS_IN_COMMON", "TRUST_HELD", "TRANSFERRED_PRIOR_TO_DEATH", "UNRESOLVED"]>;
+    ownerNames: z.ZodArray<z.ZodString, "many">;
+    deedRecordIds: z.ZodArray<z.ZodString, "many">;
+    verifiedClaimIds: z.ZodArray<z.ZodString, "many">;
+    notes: z.ZodOptional<z.ZodString>;
+    confidence: z.ZodNumber;
+    ruleVersion: z.ZodString;
+    evaluatedAt: z.ZodString;
+    evaluatorId: z.ZodString;
+    schemaVersion: z.ZodNumber;
+}, "strip", z.ZodTypeAny, {
+    status: "UNRESOLVED" | "DECEDENT_SOLE_OWNER" | "JOINT_TENANCY_WITH_SURVIVOR" | "TENANTS_IN_COMMON" | "TRUST_HELD" | "TRANSFERRED_PRIOR_TO_DEATH";
+    id: string;
+    organizationId: string;
+    countyId: string;
+    schemaVersion: number;
+    caseId: string;
+    verifiedClaimIds: string[];
+    evaluatedAt: string;
+    evaluatorId: string;
+    ruleVersion: string;
+    parcelId: string;
+    ownerNames: string[];
+    deedRecordIds: string[];
+    confidence: number;
+    notes?: string | undefined;
+}, {
+    status: "UNRESOLVED" | "DECEDENT_SOLE_OWNER" | "JOINT_TENANCY_WITH_SURVIVOR" | "TENANTS_IN_COMMON" | "TRUST_HELD" | "TRANSFERRED_PRIOR_TO_DEATH";
+    id: string;
+    organizationId: string;
+    countyId: string;
+    schemaVersion: number;
+    caseId: string;
+    verifiedClaimIds: string[];
+    evaluatedAt: string;
+    evaluatorId: string;
+    ruleVersion: string;
+    parcelId: string;
+    ownerNames: string[];
+    deedRecordIds: string[];
+    confidence: number;
+    notes?: string | undefined;
+}>;
+//# sourceMappingURL=schemas.d.ts.map

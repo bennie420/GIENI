@@ -1,0 +1,16 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/evidence" },
+    { "path": "packages/authority" },
+    { "path": "packages/property" },
+    { "path": "packages/ownership" },
+    { "path": "packages/scoring" },
+    { "path": "packages/qc" },
+    { "path": "packages/workflow" },
+    { "path": "packages/delivery" },
+    { "path": "packages/database" },
+    { "path": "packages/authz" },
+    { "path": "apps/workers" }
+  ]
+}
