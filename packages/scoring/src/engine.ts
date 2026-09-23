@@ -148,6 +148,8 @@ export function calculateOpportunityScore(
     breakdown,
     ruleVersion: SCORING_RULE_VERSION,
     evaluatedAt,
+    createdAt: evaluatedAt,
+    updatedAt: evaluatedAt,
     schemaVersion: 1,
   };
 }

@@ -15,7 +15,18 @@ export type Permission =
   | 'delivery:certify'
   | 'delivery:read'
   | 'feedback:submit'
-  | 'admin:all';
+  | 'admin:all'
+  | 'org:cases:read'
+  | 'org:cases:write'
+  | 'org:evidence:read'
+  | 'org:evidence:propose'
+  | 'org:evidence:verify'
+  | 'org:exceptions:resolve'
+  | 'org:qc:review'
+  | 'org:delivery:certify'
+  | 'org:delivery:read'
+  | 'org:feedback:submit'
+  | 'org:admin:all';
 
 export interface AuthContext {
   userId: string;

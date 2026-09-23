@@ -2,22 +2,66 @@ import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { InMemoryTenantScopedRepository, TenantScope } from '@gieni/database';
+import {
+  TenantScope,
+  getTenantScopedRepository,
+  getMongoDb,
+  closeMongoClient,
+  pingMongoDeployment,
+} from '@gieni/database';
 import { SourceDocument, Claim, ClaimEvidence } from '@gieni/evidence';
 import { ProbateCase, AuthorityAssessment, FiduciaryAppointment } from '@gieni/authority';
 import { PropertyParcel } from '@gieni/property';
 import { OwnershipAssessment } from '@gieni/ownership';
-import { calculateOpportunityScore } from '@gieni/scoring';
+import {
+  calculateOpportunityScore,
+  OpportunityScore,
+  Opportunity,
+  buildOpportunitySnapshot,
+} from '@gieni/scoring';
 import { InvestigationException, QCReview } from '@gieni/qc';
 import { ProbateOpportunityFile, LEGAL_DISCLAIMER } from '@gieni/delivery';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Load .env if present
+const possibleEnvPaths = [
+  path.resolve(process.cwd(), '.env'),
+  path.resolve(process.cwd(), 'apps/workers/.env'),
+  path.resolve(__dirname, '../.env'),
+];
+for (const envPath of possibleEnvPaths) {
+  if (fs.existsSync(envPath) && typeof process.loadEnvFile === 'function') {
+    try {
+      process.loadEnvFile(envPath);
+      break;
+    } catch {
+      // ignore
+    }
+  }
+}
+
 export async function runOneCountyVerticalSlice() {
   console.log('===============================================================');
   console.log('  GIENI OS: ONE-COUNTY VERTICAL SLICE SEEDER (TRAVIS COUNTY, TX)');
   console.log('===============================================================');
+
+  let db = undefined;
+  if (process.env.MONGODB_URI) {
+    try {
+      console.log('Connecting to MongoDB Atlas cluster...');
+      const pingOk = await pingMongoDeployment();
+      if (pingOk) {
+        db = await getMongoDb();
+        console.log(`Connected successfully to MongoDB Atlas database: "${db.databaseName}"`);
+      }
+    } catch (connErr) {
+      console.warn('MongoDB Atlas connection failed, falling back to in-memory repositories:', connErr);
+    }
+  } else {
+    console.log('No MONGODB_URI found. Running with in-memory repositories.');
+  }
 
   // 1. Establish tenant scopes
   const operatorScope: TenantScope = {
@@ -30,16 +74,18 @@ export async function runOneCountyVerticalSlice() {
     countyId: 'county_travis_tx',
   };
 
-  // 2. Repositories
-  const docRepo = new InMemoryTenantScopedRepository<SourceDocument & { countyId: string }>();
-  const caseRepo = new InMemoryTenantScopedRepository<ProbateCase>();
-  const claimRepo = new InMemoryTenantScopedRepository<Claim>();
-  const parcelRepo = new InMemoryTenantScopedRepository<PropertyParcel>();
-  const authRepo = new InMemoryTenantScopedRepository<AuthorityAssessment>();
-  const ownRepo = new InMemoryTenantScopedRepository<OwnershipAssessment>();
-  const excRepo = new InMemoryTenantScopedRepository<InvestigationException>();
-  const qcRepo = new InMemoryTenantScopedRepository<QCReview>();
-  const pofRepo = new InMemoryTenantScopedRepository<ProbateOpportunityFile>();
+  // 2. Repositories (MongoDB Atlas or In-Memory)
+  const docRepo = getTenantScopedRepository<SourceDocument & { countyId: string }>('sourceDocuments', db);
+  const caseRepo = getTenantScopedRepository<ProbateCase>('probateCases', db);
+  const claimRepo = getTenantScopedRepository<Claim>('claims', db);
+  const parcelRepo = getTenantScopedRepository<PropertyParcel>('properties', db);
+  const authRepo = getTenantScopedRepository<AuthorityAssessment>('authorityAssessments', db);
+  const ownRepo = getTenantScopedRepository<OwnershipAssessment>('ownershipAssessments', db);
+  const scoreRepo = getTenantScopedRepository<OpportunityScore>('opportunityScores', db);
+  const oppRepo = getTenantScopedRepository<Opportunity>('opportunities', db);
+  const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
+  const qcRepo = getTenantScopedRepository<QCReview>('qcReviews', db);
+  const pofRepo = getTenantScopedRepository<ProbateOpportunityFile>('deliveries', db);
 
   // 3. Ingest primary source document fixture & compute real SHA-256
   const fixturePath = path.resolve(
@@ -200,6 +246,20 @@ export async function runOneCountyVerticalSlice() {
     estimatedLiensOrMortgageAmount: 75000,
   });
 
+  await scoreRepo.create(operatorScope, {
+    opportunityId: probateCase.id,
+    countyId: 'county_travis_tx',
+    equityScore: scoreResult.equityScore,
+    authorityScore: scoreResult.authorityScore,
+    riskScore: scoreResult.riskScore,
+    compositeScore: scoreResult.compositeScore,
+    priorityBand: scoreResult.priorityBand,
+    breakdown: scoreResult.breakdown,
+    ruleVersion: scoreResult.ruleVersion,
+    evaluatedAt: scoreResult.evaluatedAt,
+    schemaVersion: 1,
+  });
+
   console.log(`      Rule Version: ${scoreResult.ruleVersion}`);
   console.log(`      Composite Score: ${scoreResult.compositeScore}/100`);
   console.log(`      Priority Band: ${scoreResult.priorityBand}`);
@@ -238,6 +298,28 @@ export async function runOneCountyVerticalSlice() {
     schemaVersion: 1,
   });
   console.log(`      QC Decision: ${qcReview.decision}`);
+
+  // Project Opportunity with denormalized currentSnapshot (fast dashboard projection)
+  const currentSnapshot = buildOpportunitySnapshot({
+    caseNumber: probateCase.caseNumber,
+    decedentName: probateCase.decedentName,
+    filingDate: probateCase.filingDate,
+    property: parcel,
+    authority,
+    ownership,
+    score: scoreResult,
+    unresolvedExceptionsCount: 0,
+  });
+
+  const opportunity = await oppRepo.create(operatorScope, {
+    countyId: 'county_travis_tx',
+    caseId: probateCase.id,
+    parcelId: parcel.id,
+    status: 'QC_APPROVED',
+    currentSnapshot,
+    schemaVersion: 1,
+  });
+  console.log(`      Operational Opportunity Projection created: ${opportunity.id} (Status: ${opportunity.status})`);
 
   // 9. Publish Probate Opportunity File (POF)
   console.log(`\n[7/7] Publishing Probate Opportunity File (POF) to Client Organization...`);
@@ -296,11 +378,13 @@ export async function runOneCountyVerticalSlice() {
   console.log(`  Disclaimer:     "${pof.disclaimer}"`);
   console.log(`===============================================================\n`);
 
+  await closeMongoClient();
   return { sourceDoc, probateCase, pof, scoreResult };
 }
 
 // Auto-run if executed directly via node
-runOneCountyVerticalSlice().catch((err) => {
+runOneCountyVerticalSlice().catch(async (err) => {
   console.error('[Seeder Error]', err);
+  await closeMongoClient();
   process.exit(1);
 });

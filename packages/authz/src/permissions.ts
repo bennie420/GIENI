@@ -35,7 +35,15 @@ export const ROLE_PERMISSIONS: Record<ClerkRole, Permission[]> = {
 
 export function hasPermission(ctx: AuthContext, permission: Permission): boolean {
   const allowed = ROLE_PERMISSIONS[ctx.role] || [];
-  return allowed.includes('admin:all') || allowed.includes(permission);
+  const normalized = permission.startsWith('org:')
+    ? (permission.slice(4) as Permission)
+    : permission;
+  return (
+    allowed.includes('admin:all') ||
+    allowed.includes('org:admin:all' as Permission) ||
+    allowed.includes(normalized) ||
+    allowed.includes(`org:${normalized}` as Permission)
+  );
 }
 
 export function assertPermission(ctx: AuthContext, permission: Permission): void {
