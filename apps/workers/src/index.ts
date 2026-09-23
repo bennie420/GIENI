@@ -1,6 +1,7 @@
 import http from 'http';
 import { calculateOpportunityScore } from '@gieni/scoring';
 import { dispatchRealWebhook } from '@gieni/delivery';
+export * from './pipeline/document-intelligence.js';
 
 const PORT = process.env.PORT || 8080;
 

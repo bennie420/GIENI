@@ -1,3 +1,5 @@
+import { BaseEntity } from '@gieni/database';
+
 export type WorkflowStage =
   | 'DOCUMENT_INGEST'
   | 'OCR_LAYOUT'
@@ -17,10 +19,7 @@ export type WorkflowStatus =
   | 'RETRYING'
   | 'DEAD_LETTER';
 
-export interface WorkflowRun {
-  id: string;
-  organizationId: string;
-  countyId: string;
+export interface WorkflowRun extends BaseEntity {
   opportunityId?: string | null;
   stage: WorkflowStage;
   status: WorkflowStatus;
@@ -32,12 +31,9 @@ export interface WorkflowRun {
   errorMessage?: string | null;
   startedAt: string;
   completedAt?: string | null;
-  schemaVersion: number;
 }
 
-export interface AuditEvent {
-  id: string;
-  organizationId: string;
+export interface AuditEvent extends BaseEntity {
   userId: string;
   action: string;
   resourceType: string;
@@ -45,5 +41,4 @@ export interface AuditEvent {
   payloadSummary: Record<string, unknown>;
   ipAddress?: string | null;
   timestamp: string;
-  schemaVersion: number;
 }
