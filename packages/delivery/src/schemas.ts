@@ -68,6 +68,8 @@ export const ProbateOpportunityFileSchema = z.object({
   recommendedAction: z.string().min(1),
   disclaimer: z.literal(LEGAL_DISCLAIMER),
   publishedAt: z.string().datetime(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });
 

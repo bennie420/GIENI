@@ -28,8 +28,10 @@ export const InvestigationExceptionSchema = z.object({
   assignedTo: z.string().nullable().optional(),
   resolutionNote: z.string().nullable().optional(),
   resolvedAt: z.string().datetime().nullable().optional(),
+  clientId: z.string().nullable().optional(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
 });
 
 export const QCGateResultSchema = z.object({
@@ -47,11 +49,15 @@ export const QCDecisionSchema = z.enum([
 export const QCReviewSchema = z.object({
   id: z.string().min(1),
   organizationId: z.string().min(1),
+  clientId: z.string().nullable().optional(),
+  countyId: z.string().min(1),
   opportunityId: z.string().min(1),
   reviewerId: z.string().min(1),
   decision: QCDecisionSchema,
   gates: z.array(QCGateResultSchema),
   notes: z.string().nullable().optional(),
   reviewedAt: z.string().datetime(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });

@@ -24,5 +24,8 @@ export const OwnershipAssessmentSchema = z.object({
   ruleVersion: z.string().min(1),
   evaluatedAt: z.string().datetime(),
   evaluatorId: z.string().min(1),
+  clientId: z.string().nullable().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });

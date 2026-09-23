@@ -2,11 +2,13 @@
   "name": "@gieni/workers",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
+    "seed": "node dist/seed.js",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {

@@ -24,8 +24,10 @@ export interface InvestigationException {
   assignedTo?: string | null;
   resolutionNote?: string | null;
   resolvedAt?: string | null;
+  clientId?: string | null;
   createdAt: string;
   updatedAt: string;
+  schemaVersion: number;
 }
 
 export interface QCGateResult {
@@ -42,11 +44,15 @@ export type QCDecision =
 export interface QCReview {
   id: string;
   organizationId: string;
+  clientId?: string | null;
+  countyId: string;
   opportunityId: string;
   reviewerId: string;
   decision: QCDecision;
   gates: QCGateResult[];
   notes?: string | null;
   reviewedAt: string;
+  createdAt: string;
+  updatedAt: string;
   schemaVersion: number;
 }

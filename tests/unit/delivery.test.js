@@ -50,6 +50,8 @@ test('Delivery: requires mandatory legal disclaimer notice', () => {
     recommendedAction: 'Contact Executor to present acquisition terms',
     disclaimer: LEGAL_DISCLAIMER,
     publishedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     schemaVersion: 1,
   };
 
@@ -101,6 +103,8 @@ test('Delivery: authentic webhook dispatcher fails honestly on unreachable endpo
     recommendedAction: 'Contact Executor to present acquisition terms',
     disclaimer: LEGAL_DISCLAIMER,
     publishedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     schemaVersion: 1,
   };
 

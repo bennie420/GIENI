@@ -12,6 +12,7 @@
     "build": "npm run build --workspaces --if-present",
     "test": "node --test tests/unit/*.test.js",
     "type-check": "npm run type-check --workspaces --if-present",
+    "seed": "npm run seed --workspace=@gieni/workers",
     "lint": "npm run lint --workspaces --if-present"
   },
   "devDependencies": {

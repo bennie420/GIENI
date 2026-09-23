@@ -54,5 +54,8 @@ export interface AuthorityAssessment {
   evaluatedAt: string;
   evaluatorId: string;
   ruleVersion: string;
+  clientId?: string | null;
+  createdAt: string;
+  updatedAt: string;
   schemaVersion: number;
 }

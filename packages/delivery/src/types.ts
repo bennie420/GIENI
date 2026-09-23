@@ -58,6 +58,8 @@ export interface ProbateOpportunityFile {
   recommendedAction: string;
   disclaimer: typeof LEGAL_DISCLAIMER;
   publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
   schemaVersion: number;
 }
 

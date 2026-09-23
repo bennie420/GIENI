@@ -79,6 +79,8 @@ export const AuthorityAssessmentSchema = z.object({
   rejectionReason: z.string().nullable().optional(),
   evaluatedAt: z.string().datetime(),
   evaluatorId: z.string().min(1),
-  ruleVersion: z.string().min(1),
+  clientId: z.string().nullable().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });

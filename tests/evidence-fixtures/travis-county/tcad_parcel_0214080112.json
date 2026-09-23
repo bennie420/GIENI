@@ -1,0 +1,34 @@
+{
+  "apn": "02-1408-0112",
+  "county": "Travis",
+  "state": "TX",
+  "situsAddress": {
+    "street": "742 Evergreen Terrace",
+    "city": "Austin",
+    "state": "TX",
+    "zipCode": "78701",
+    "county": "Travis"
+  },
+  "legalDescription": "LOT 4 BLK B HIGHLAND PARK SEC 2",
+  "assessedLandValue": 220000,
+  "assessedImprovementValue": 485000,
+  "totalAssessedValue": 705000,
+  "taxYear": 2025,
+  "owners": [
+    {
+      "name": "JENKINS ARTHUR J",
+      "ownershipPercentage": 100,
+      "address": "742 Evergreen Terrace, Austin, TX 78701"
+    }
+  ],
+  "deedHistory": [
+    {
+      "instrumentNumber": "2018091428",
+      "recordingDate": "2018-06-15T00:00:00.000Z",
+      "deedType": "WARRANTY_DEED",
+      "grantor": "HIGHLAND HOMES AUSTIN LLC",
+      "grantee": "JENKINS ARTHUR J",
+      "considerationAmount": 460000
+    }
+  ]
+}

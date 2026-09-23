@@ -21,5 +21,8 @@ export interface OwnershipAssessment {
   ruleVersion: string;
   evaluatedAt: string;
   evaluatorId: string;
+  clientId?: string | null;
+  createdAt: string;
+  updatedAt: string;
   schemaVersion: number;
 }
