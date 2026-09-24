@@ -1,1 +1,99 @@
-<!DOCTYPE html><html><head><title>GIENI</title></head><body><h1>GIENI File Explorer</h1></body></html></h1></body></title></head></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIENI - Raw File Explorer</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 20px; background: #0d1117; color: #c9d1d9; }
+        h1 { font-size: 1.5rem; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+        #app { display: flex; gap: 20px; margin-top: 20px; }
+        #file-list { width: 350px; border-right: 1px solid #30363d; padding-right: 15px; max-height: 80vh; overflow-y: auto; }
+        #file-viewer { flex-grow: 1; background: #161b22; padding: 15px; border-radius: 6px; border: 1px solid #30363d; max-height: 80vh; overflow: auto; }
+        ul { list-style: none; padding-left: 0; }
+        li { margin: 6px 0; }
+        a, button { color: #58a6ff; background: none; border: none; cursor: pointer; text-decoration: none; font-size: 0.95rem; padding: 0; }
+        a:hover, button:hover { text-decoration: underline; }
+        .folder { font-weight: bold; color: #79c0ff; }
+        pre { margin: 0; white-space: pre-wrap; word-wrap: break-word; font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, monospace; font-size: 0.85rem; color: #e6edf3; }
+        .back-btn { margin-bottom: 10px; display: inline-block; color: #8b949e; }
+    </style>
+</head>
+<body>
+
+    <h1>GIENI // Raw Code Explorer</h1>
+    <div id="app">
+        <div id="file-list">Loading repository tree...</div>
+        <div id="file-viewer">
+            <pre>Select a file from the left to view its raw contents...</pre>
+        </div>
+    </div>
+
+    <script>
+        const owner = "bennie420";
+        const repo = "GIENI";
+        const branch = "master";
+
+        async function fetchContents(path = "") {
+            const listContainer = document.getElementById("file-list");
+            listContainer.innerHTML = "Loading...";
+            
+            try {
+                const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`GitHub API returned status ${response.status}`);
+                
+                const items = await response.json();
+                
+                let html = "<ul>";
+                if (path !== "") {
+                    const parentPath = path.split("/").slice(0, -1).join("/");
+                    html += `<li><a href="#" class="back-btn" onclick="fetchContents('${parentPath}')">📁 .. (Back)</a></li>`;
+                }
+
+                // Ensure items is an array (in case a single file is returned)
+                if (!Array.isArray(items)) {
+                    listContainer.innerHTML = "<p style='color: #f85149;'>Error: Path is not a directory.</p>";
+                    return;
+                }
+
+                // Sort: folders first, then files
+                items.sort((a, b) => (a.type === b.type) ? 0 : a.type === "dir" ? -1 : 1);
+
+                for (let item of items) {
+                    if (item.name === "index.html" && path === "") continue; // Skip explorer page itself optionally
+                    if (item.type === "dir") {
+                        html += `<li><span class="folder">📁</span> <a href="#" onclick="fetchContents('${item.path}')">${item.name}</a></li>`;
+                    } else {
+                        html += `<li>📄 <a href="#" onclick="viewFile('${item.download_url}')">${item.name}</a></li>`;
+                    }
+                }
+                html += "</ul>";
+                listContainer.innerHTML = html;
+            } catch (err) {
+                listContainer.innerHTML = `<p style="color: #f85149;">Error loading path: ${err.message}</p>`;
+            }
+        }
+
+        async function viewFile(downloadUrl) {
+            const viewer = document.getElementById("file-viewer");
+            viewer.innerHTML = "<pre>Fetching raw content...</pre>";
+            
+            try {
+                const response = await fetch(downloadUrl);
+                const text = await response.text();
+                viewer.innerHTML = `<pre>${escapeHtml(text)}</pre>`;
+            } catch (err) {
+                viewer.innerHTML = `<pre style="color: #f85149;">Error fetching raw file: ${err.message}</pre>`;
+            }
+        }
+
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+
+        // Initialize
+        fetchContents();
+    </script>
+</body>
+</html>
