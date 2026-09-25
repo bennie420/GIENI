@@ -50,7 +50,7 @@ export class MongoTenantScopedRepository<T extends BaseEntity>
     await this.ensureIndexes();
 
     const query: Filter<Document> = {
-      id,
+      $or: [{ id }, { _id: id as any }],
       organizationId: scope.organizationId,
     };
 
@@ -118,7 +118,8 @@ export class MongoTenantScopedRepository<T extends BaseEntity>
       `rec_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
     const now = new Date().toISOString();
 
-    const newRecord: BaseEntity = {
+    const newRecord: BaseEntity & { _id: string } = {
+      _id: id,
       ...entity,
       id,
       organizationId: scope.organizationId,

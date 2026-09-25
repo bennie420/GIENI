@@ -10,8 +10,9 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@gieni/authz": "*",
+    "@clerk/nextjs": "^7.9.4",
     "@gieni/authority": "*",
+    "@gieni/authz": "*",
     "@gieni/database": "*",
     "@gieni/delivery": "*",
     "@gieni/evidence": "*",

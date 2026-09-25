@@ -92,3 +92,46 @@ npm run build
 # Run linting
 npm run lint
 ```
+
+bounded-context dependency rules;
+tenant filtering requirements;
+no client-direct database access;
+evidence requirements for every material claim;
+deterministic scoring and transition rules;
+commands for lint, type-check, unit, integration and browser tests;
+prohibited shortcuts, including storing AI output directly as verified fact.
+
+Antigravity’s own best practices recommend explore → plan → execute, writing tests before changes, running local verification, and placing repository rules in GEMINI.md or AGENTS.md. Its default permission modes can require approval for writes, commands and network calls, or execute inside a sandbox.
+
+Practical agent loop
+
+For every feature:
+
+Explore: “Explain the existing evidence and tenancy boundaries. Do not edit.”
+Plan: require affected files, schema changes, tests, rollback and security impact.
+Approve the plan.
+Execute in a feature worktree.
+Verify: type-check, tests, seeded demo, browser walkthrough.
+Open a small GitHub PR.
+CodeScene gate and human review.
+Deploy only after CI passes.
+Let Antigravity generate
+scaffolding and repetitive CRUD;
+Zod schemas and TypeScript types;
+Clerk integration;
+adapters following an approved interface;
+test fixtures and browser tests;
+accessible UI components;
+deployment manifests and documentation.
+Keep human-owned and explicit
+authority classifications;
+score weights and thresholds;
+county-specific legal rules;
+tenant boundaries;
+exception routing;
+evidence sufficiency;
+delivery eligibility;
+retention/privacy policies;
+legal-disclaimer language.
+
+Antigravity should implement business rules from versioned specifications—never invent them.

@@ -1,3 +1,4 @@
+import { BaseEntity } from '@gieni/database';
 import { AuthorityAssessment } from '@gieni/authority';
 import { OwnershipAssessment } from '@gieni/ownership';
 import { PropertyParcel } from '@gieni/property';
@@ -12,11 +13,8 @@ export interface ScoreComponentBreakdown {
   riskPenalty: number;
 }
 
-export interface OpportunityScore {
-  id: string;
-  organizationId: string;
+export interface OpportunityScore extends BaseEntity {
   opportunityId: string;
-  countyId: string;
   equityScore: number;
   authorityScore: number;
   riskScore: number;
@@ -25,7 +23,6 @@ export interface OpportunityScore {
   breakdown: ScoreComponentBreakdown;
   ruleVersion: string;
   evaluatedAt: string;
-  schemaVersion: number;
 }
 
 export interface ScoringEngineInput {
