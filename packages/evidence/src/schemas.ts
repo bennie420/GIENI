@@ -93,4 +93,21 @@ export const ClaimAuditEventSchema = z.object({
   schemaVersion: z.number().int().min(1),
 });
 
+export const SourceRecordTypeSchema = z.enum(['COURT', 'ASSESSOR', 'RECORDER', 'GIS', 'TAX']);
 
+export const SourceRecordSchema = z.object({
+  id: z.string().min(1),
+  organizationId: z.string().min(1),
+  countyId: z.string().min(1),
+  sourceType: SourceRecordTypeSchema,
+  sourceUrl: z.string().url(),
+  retrievalTimestamp: z.string().datetime(),
+  artifactSha256: z.string().length(64),
+  sourceSystem: z.string().min(1),
+  rawPayloadLocation: z.string().min(1),
+  adapterVersion: z.string().min(1),
+  metadata: z.record(z.unknown()).optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
+});

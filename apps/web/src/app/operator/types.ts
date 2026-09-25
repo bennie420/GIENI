@@ -1,4 +1,4 @@
-export type TabKey = 'dashboard' | 'intake' | 'review' | 'investigation' | 'exceptions' | 'qc';
+export type TabKey = 'dashboard' | 'intake' | 'review' | 'investigation' | 'exceptions' | 'qc' | 'counties';
 
 export interface OperatorData {
   cases: any[];

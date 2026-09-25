@@ -14,6 +14,7 @@ import ReviewTab from './components/ReviewTab';
 import InvestigationTab from './components/InvestigationTab';
 import ExceptionsTab from './components/ExceptionsTab';
 import QcTab from './components/QcTab';
+import CountyHealthTab from './components/CountyHealthTab';
 
 interface OperatorConsoleProps {
   initialData: OperatorData;
@@ -67,6 +68,9 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
 
   const currentParcel = data.parcels[0] ?? null;
   const currentScore = data.scores[0] ?? null;
+  const currentCase = data.cases[0] ?? null;
+  const currentAuthority = data.authorities[0] ?? null;
+  const currentOwnership = data.ownerships[0] ?? null;
   const pendingExceptions = data.exceptions.filter((e) => e.status === 'PENDING_REVIEW');
 
   return (
@@ -96,7 +100,13 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
         />
       )}
       {activeTab === 'investigation' && (
-        <InvestigationTab currentParcel={currentParcel} currentScore={currentScore} />
+        <InvestigationTab
+          currentParcel={currentParcel}
+          currentScore={currentScore}
+          currentCase={currentCase}
+          currentAuthority={currentAuthority}
+          currentOwnership={currentOwnership}
+        />
       )}
       {activeTab === 'exceptions' && (
         <ExceptionsTab
@@ -109,6 +119,7 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
         />
       )}
       {activeTab === 'qc' && <QcTab hasPendingExceptions={pendingExceptions.length > 0} />}
+      {activeTab === 'counties' && <CountyHealthTab />}
     </div>
   );
 }

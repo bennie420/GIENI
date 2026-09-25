@@ -90,4 +90,21 @@ export interface ClaimAuditEvent {
   schemaVersion: number;
 }
 
+export type SourceRecordType = 'COURT' | 'ASSESSOR' | 'RECORDER' | 'GIS' | 'TAX';
 
+export interface SourceRecord {
+  id: string;
+  organizationId: string;
+  countyId: string;
+  sourceType: SourceRecordType;
+  sourceUrl: string;
+  retrievalTimestamp: string;
+  artifactSha256: string;
+  sourceSystem: string;
+  rawPayloadLocation: string;
+  adapterVersion: string;
+  metadata?: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}
