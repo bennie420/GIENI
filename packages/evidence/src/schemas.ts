@@ -65,3 +65,32 @@ export const ClaimSchema = z.object({
   updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });
+
+export const ClaimAuditEventTypeSchema = z.enum([
+  'CREATED',
+  'VERIFIED',
+  'REJECTED',
+  'SUPERSEDED',
+  'DELIVERED',
+  'ROLLED_BACK',
+]);
+
+export const ClaimAuditEventSchema = z.object({
+  id: z.string().min(1),
+  organizationId: z.string().min(1),
+  countyId: z.string().min(1),
+  clientId: z.string().optional(),
+  claimId: z.string().min(1),
+  eventType: ClaimAuditEventTypeSchema,
+  previousStatus: VerificationStatusSchema.optional(),
+  newStatus: z.union([VerificationStatusSchema, z.literal('DELIVERED'), z.literal('ROLLED_BACK')]),
+  actorId: z.string().min(1),
+  rationale: z.string().optional(),
+  evidenceId: z.string().optional(),
+  policyRuleVersion: z.string().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
+});
+
+

@@ -1,17 +1,34 @@
+import { z } from 'zod';
+
 /**
- * Gieni OS Data Classification & Security Boundaries.
+ * Gieni OS Data Classification & Security Boundaries (Section 11 P2-4).
  *
  * Tiers:
  * - PUBLIC_RECORD: Raw court dockets, public property rolls, county recording instruments.
+ * - BUSINESS: Commercial terms, organization profiles, feedback dispositions, subscription state.
+ * - CONFIDENTIAL: Person profiles, heirship determinations, case notes, unreleased POFs.
+ * - PII: Personal phone numbers, residential addresses, non-public personal identifiers.
+ * - REGULATED: Bank records, SSNs, financial bonds, state-protected sensitive records.
  * - INTERNAL_INTELLIGENCE: Claims, OCR layout, model confidence, deterministic scores, exceptions.
- * - CLIENT_CONFIDENTIAL: Delivery files, tenant feedback, notes, contract status.
- * - ENRICHED_PII: Phone numbers, personal email addresses, skip-trace findings.
  */
 export type DataClassificationTier =
   | 'PUBLIC_RECORD'
+  | 'BUSINESS'
+  | 'CONFIDENTIAL'
+  | 'PII'
+  | 'REGULATED'
   | 'INTERNAL_INTELLIGENCE'
-  | 'CLIENT_CONFIDENTIAL'
   | 'ENRICHED_PII';
+
+export const DataClassificationTierSchema = z.enum([
+  'PUBLIC_RECORD',
+  'BUSINESS',
+  'CONFIDENTIAL',
+  'PII',
+  'REGULATED',
+  'INTERNAL_INTELLIGENCE',
+  'ENRICHED_PII',
+]);
 
 export interface DataClassificationPolicy {
   tier: DataClassificationTier;
@@ -29,19 +46,40 @@ export const CLASSIFICATION_POLICIES: Record<DataClassificationTier, DataClassif
     encryptAtRest: true,
     auditReadEvents: false,
   },
+  BUSINESS: {
+    tier: 'BUSINESS',
+    allowClientRead: true,
+    maskInSessionReplay: true,
+    encryptAtRest: true,
+    auditReadEvents: true,
+  },
+  CONFIDENTIAL: {
+    tier: 'CONFIDENTIAL',
+    allowClientRead: false,
+    maskInSessionReplay: true,
+    encryptAtRest: true,
+    auditReadEvents: true,
+  },
+  PII: {
+    tier: 'PII',
+    allowClientRead: false,
+    maskInSessionReplay: true,
+    encryptAtRest: true,
+    auditReadEvents: true,
+  },
+  REGULATED: {
+    tier: 'REGULATED',
+    allowClientRead: false,
+    maskInSessionReplay: true,
+    encryptAtRest: true,
+    auditReadEvents: true,
+  },
   INTERNAL_INTELLIGENCE: {
     tier: 'INTERNAL_INTELLIGENCE',
     allowClientRead: false,
     maskInSessionReplay: true,
     encryptAtRest: true,
     auditReadEvents: false,
-  },
-  CLIENT_CONFIDENTIAL: {
-    tier: 'CLIENT_CONFIDENTIAL',
-    allowClientRead: true,
-    maskInSessionReplay: true,
-    encryptAtRest: true,
-    auditReadEvents: true,
   },
   ENRICHED_PII: {
     tier: 'ENRICHED_PII',
@@ -51,6 +89,26 @@ export const CLASSIFICATION_POLICIES: Record<DataClassificationTier, DataClassif
     auditReadEvents: true,
   },
 };
+
+/**
+ * Domain entity to data classification mapping.
+ */
+export const ENTITY_CLASSIFICATION_MAP: Record<string, DataClassificationTier> = {
+  PropertyParcel: 'PUBLIC_RECORD',
+  CourtRecord: 'PUBLIC_RECORD',
+  ProbateCase: 'PUBLIC_RECORD',
+  PersonRecord: 'CONFIDENTIAL',
+  FiduciaryContactPhone: 'PII',
+  FiduciaryContactEmail: 'REGULATED',
+  ClientFeedback: 'BUSINESS',
+  OpportunityScore: 'INTERNAL_INTELLIGENCE',
+  ClaimAuditEvent: 'CONFIDENTIAL',
+};
+
+export function getEntityClassification(entityType: string): DataClassificationTier {
+  return ENTITY_CLASSIFICATION_MAP[entityType] || 'CONFIDENTIAL';
+}
+
 
 /**
  * Aggressive PII masking for Sentry Session Replay, client exports, and logs.

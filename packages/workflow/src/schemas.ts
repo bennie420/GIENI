@@ -26,7 +26,9 @@ export const WorkflowRunSchema = z.object({
   organizationId: z.string().min(1),
   clientId: z.string().nullable().optional(),
   countyId: z.string().min(1),
+  correlationId: z.string().nullable().optional(),
   opportunityId: z.string().nullable().optional(),
+  caseId: z.string().nullable().optional(),
   stage: WorkflowStageSchema,
   status: WorkflowStatusSchema,
   idempotencyKey: z.string().min(1),
@@ -47,6 +49,7 @@ export const AuditEventSchema = z.object({
   organizationId: z.string().min(1),
   clientId: z.string().nullable().optional(),
   countyId: z.string().min(1),
+  correlationId: z.string().nullable().optional(),
   userId: z.string().min(1),
   action: z.string().min(1),
   resourceType: z.string().min(1),
@@ -58,3 +61,4 @@ export const AuditEventSchema = z.object({
   updatedAt: z.string(),
   schemaVersion: z.number().int().min(1),
 });
+

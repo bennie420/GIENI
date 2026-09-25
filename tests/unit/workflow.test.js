@@ -124,7 +124,15 @@ test('Document/AI Pipeline: proposals are strictly PROPOSED claims with authenti
   assert.equal(result.sourceDoc.artifactSha256.length, 64); // Valid SHA-256 hex length
 
   // 2. Verify Claims: MUST be stored as PROPOSED (LLM proposals are NOT facts)
-  assert.ok(result.claims.length > 0);
+  assert.ok(result.claims.length >= 6); // decedent, case number, filing date, court, fiduciary, property clue
+  const fieldPaths = result.claims.map(c => c.fieldPath);
+  assert.ok(fieldPaths.includes('decedent.fullName'), 'Must include decedent claim');
+  assert.ok(fieldPaths.includes('case.number'), 'Must include case number claim');
+  assert.ok(fieldPaths.includes('case.filingDate'), 'Must include filing date claim');
+  assert.ok(fieldPaths.includes('case.court'), 'Must include court claim');
+  assert.ok(fieldPaths.includes('authority.fiduciary'), 'Must include fiduciary claim');
+  assert.ok(fieldPaths.some(p => p.startsWith('property.clue')), 'Must include property clue claims');
+
   for (const claim of result.claims) {
     assert.equal(claim.claimType, 'EXTRACTED');
     assert.equal(claim.verificationStatus, 'PROPOSED');
@@ -133,6 +141,7 @@ test('Document/AI Pipeline: proposals are strictly PROPOSED claims with authenti
     assert.equal(claim.evidence[0].artifactSha256, result.sourceDoc.artifactSha256);
   }
 });
+
 
 test('Document/AI Pipeline: rejects synthetic Vance fiduciaries and quarantines to exception queue', async () => {
   const docRepo = new InMemoryTenantScopedRepository();

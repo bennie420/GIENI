@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "system": "Gieni OS Monorepo",
+  "components": [
+    {
+      "name": "Database & Tenancy",
+      "paths": ["packages/database/**"]
+    },
+    {
+      "name": "Evidence & Claims",
+      "paths": ["packages/evidence/**"]
+    },
+    {
+      "name": "Property Domain",
+      "paths": ["packages/property/**"]
+    },
+    {
+      "name": "Ownership Domain",
+      "paths": ["packages/ownership/**"]
+    },
+    {
+      "name": "Control Domain",
+      "paths": ["packages/control/**"]
+    },
+    {
+      "name": "Authority Domain",
+      "paths": ["packages/authority/**"]
+    },
+    {
+      "name": "Scoring Engine",
+      "paths": ["packages/scoring/**"]
+    },
+    {
+      "name": "Resilience & Circuit Breakers",
+      "paths": ["packages/resilience/**"]
+    },
+    {
+      "name": "QC & Human Verification",
+      "paths": ["packages/qc/**"]
+    },
+    {
+      "name": "Delivery & Dispatch",
+      "paths": ["packages/delivery/**"]
+    },
+    {
+      "name": "Workflow Orchestration",
+      "paths": ["packages/workflow/**"]
+    },
+    {
+      "name": "Web Operator & Client App",
+      "paths": ["apps/web/**"]
+    },
+    {
+      "name": "Worker Ingestion Pipeline",
+      "paths": ["apps/workers/**"]
+    }
+  ],
+  "rules": [
+    {
+      "description": "Evidence domain must never import delivery or QC",
+      "source": "packages/evidence/**",
+      "forbiddenDependencies": ["packages/delivery/**", "packages/qc/**", "apps/**"]
+    },
+    {
+      "description": "Database layer must not import from higher bounded contexts",
+      "source": "packages/database/**",
+      "forbiddenDependencies": ["packages/scoring/**", "packages/delivery/**", "apps/**"]
+    },
+    {
+      "description": "Packages must never import from apps",
+      "source": "packages/**",
+      "forbiddenDependencies": ["apps/**"]
+    },
+    {
+      "description": "Control domain must not depend on UI or web apps",
+      "source": "packages/control/**",
+      "forbiddenDependencies": ["apps/**"]
+    }
+  ]
+}

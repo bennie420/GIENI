@@ -126,7 +126,7 @@ export async function runDocumentIntelligencePipeline(
   // Validate proposal schema
   const validatedExtraction = ProbateProposalExtractionSchema.parse(extraction);
 
-  // 4. Convert proposed fields to Claim records with ClaimEvidence
+  // 4. Convert all proposed fields to atomic Claim records with ClaimEvidence
   const generatedClaims: Claim[] = [];
   const generatedExceptions: InvestigationException[] = [];
 
@@ -135,7 +135,130 @@ export async function runDocumentIntelligencePipeline(
     evidenceMap.set(ev.fieldPath, ev);
   }
 
-  // Fiduciary Claim (NON-NEGOTIABLE RULE: Zero synthetic Vance fiduciaries)
+  const defaultEvidence = (field: string) =>
+    evidenceMap.get(field) ?? {
+      pageNumber: 1,
+      sourceLocator: 'p1_body',
+      excerpt: ocrResult.fullText.slice(0, 150),
+    };
+
+  // 4a. Decedent Claim
+  const decEvidence = defaultEvidence('decedent.fullName');
+  const decedentClaim = await deps.claimRepo.create(scope, {
+    countyId: scope.countyId ?? 'unknown_county',
+    subjectType: 'PERSON',
+    subjectId: opportunityId ?? sourceDoc.id,
+    fieldPath: 'decedent.fullName',
+    proposedValue: validatedExtraction.decedentName,
+    claimType: 'EXTRACTED',
+    confidence: validatedExtraction.decedentConfidence,
+    verificationStatus: 'PROPOSED',
+    modelVersion: 'gemini-1.5-pro-extract-v2',
+    evidence: [
+      {
+        id: `ev_${Date.now()}_dec`,
+        claimId: '',
+        sourceDocumentId: sourceDoc.id,
+        pageNumber: decEvidence.pageNumber,
+        excerpt: decEvidence.excerpt,
+        sourceLocator: decEvidence.sourceLocator,
+        artifactSha256,
+        createdAt: now,
+      },
+    ],
+    createdBy: 'agent_docai_gemini_pipeline',
+    schemaVersion: 1,
+  });
+  generatedClaims.push(decedentClaim);
+
+  // 4b. Case Number Claim
+  const caseEvidence = defaultEvidence('case.number');
+  const caseNumberClaim = await deps.claimRepo.create(scope, {
+    countyId: scope.countyId ?? 'unknown_county',
+    subjectType: 'PROBATE_CASE',
+    subjectId: opportunityId ?? sourceDoc.id,
+    fieldPath: 'case.number',
+    proposedValue: validatedExtraction.caseNumber,
+    claimType: 'EXTRACTED',
+    confidence: validatedExtraction.caseNumberConfidence,
+    verificationStatus: 'PROPOSED',
+    modelVersion: 'gemini-1.5-pro-extract-v2',
+    evidence: [
+      {
+        id: `ev_${Date.now()}_case`,
+        claimId: '',
+        sourceDocumentId: sourceDoc.id,
+        pageNumber: caseEvidence.pageNumber,
+        excerpt: caseEvidence.excerpt,
+        sourceLocator: caseEvidence.sourceLocator,
+        artifactSha256,
+        createdAt: now,
+      },
+    ],
+    createdBy: 'agent_docai_gemini_pipeline',
+    schemaVersion: 1,
+  });
+  generatedClaims.push(caseNumberClaim);
+
+  // 4c. Filing Date Claim
+  const filingEvidence = defaultEvidence('case.filingDate');
+  const filingDateClaim = await deps.claimRepo.create(scope, {
+    countyId: scope.countyId ?? 'unknown_county',
+    subjectType: 'PROBATE_CASE',
+    subjectId: opportunityId ?? sourceDoc.id,
+    fieldPath: 'case.filingDate',
+    proposedValue: validatedExtraction.filingDate,
+    claimType: 'EXTRACTED',
+    confidence: 0.95,
+    verificationStatus: 'PROPOSED',
+    modelVersion: 'gemini-1.5-pro-extract-v2',
+    evidence: [
+      {
+        id: `ev_${Date.now()}_fdate`,
+        claimId: '',
+        sourceDocumentId: sourceDoc.id,
+        pageNumber: filingEvidence.pageNumber,
+        excerpt: filingEvidence.excerpt,
+        sourceLocator: filingEvidence.sourceLocator,
+        artifactSha256,
+        createdAt: now,
+      },
+    ],
+    createdBy: 'agent_docai_gemini_pipeline',
+    schemaVersion: 1,
+  });
+  generatedClaims.push(filingDateClaim);
+
+  // 4d. Court Name Claim
+  const courtEvidence = defaultEvidence('case.court');
+  const courtNameClaim = await deps.claimRepo.create(scope, {
+    countyId: scope.countyId ?? 'unknown_county',
+    subjectType: 'PROBATE_CASE',
+    subjectId: opportunityId ?? sourceDoc.id,
+    fieldPath: 'case.court',
+    proposedValue: validatedExtraction.courtName,
+    claimType: 'EXTRACTED',
+    confidence: 0.95,
+    verificationStatus: 'PROPOSED',
+    modelVersion: 'gemini-1.5-pro-extract-v2',
+    evidence: [
+      {
+        id: `ev_${Date.now()}_court`,
+        claimId: '',
+        sourceDocumentId: sourceDoc.id,
+        pageNumber: courtEvidence.pageNumber,
+        excerpt: courtEvidence.excerpt,
+        sourceLocator: courtEvidence.sourceLocator,
+        artifactSha256,
+        createdAt: now,
+      },
+    ],
+    createdBy: 'agent_docai_gemini_pipeline',
+    schemaVersion: 1,
+  });
+  generatedClaims.push(courtNameClaim);
+
+  // 4e. Fiduciary Claim (NON-NEGOTIABLE RULE: Zero synthetic Vance fiduciaries)
   let fiduciaryValue = validatedExtraction.fiduciary;
   if (
     fiduciaryValue?.fullName &&
@@ -146,11 +269,7 @@ export async function runDocumentIntelligencePipeline(
     fiduciaryValue = null;
   }
 
-  const fidEvidence = evidenceMap.get('authority.fiduciary') ?? {
-    pageNumber: 1,
-    sourceLocator: 'p1_header',
-    excerpt: ocrResult.fullText.slice(0, 150),
-  };
+  const fidEvidence = defaultEvidence('authority.fiduciary');
 
   const fiduciaryClaim = await deps.claimRepo.create(scope, {
     countyId: scope.countyId ?? 'unknown_county',
@@ -178,6 +297,38 @@ export async function runDocumentIntelligencePipeline(
     schemaVersion: 1,
   });
   generatedClaims.push(fiduciaryClaim);
+
+  // 4f. Property Clue Claims
+  for (let idx = 0; idx < validatedExtraction.propertyClues.length; idx++) {
+    const clue = validatedExtraction.propertyClues[idx];
+    const propEvidence = defaultEvidence('property.clue');
+    const propertyClaim = await deps.claimRepo.create(scope, {
+      countyId: scope.countyId ?? 'unknown_county',
+      subjectType: 'PROPERTY',
+      subjectId: opportunityId ?? sourceDoc.id,
+      fieldPath: `property.clue[${idx}]`,
+      proposedValue: clue,
+      claimType: 'EXTRACTED',
+      confidence: clue.confidence,
+      verificationStatus: 'PROPOSED',
+      modelVersion: 'gemini-1.5-pro-extract-v2',
+      evidence: [
+        {
+          id: `ev_${Date.now()}_prop_${idx}`,
+          claimId: '',
+          sourceDocumentId: sourceDoc.id,
+          pageNumber: propEvidence.pageNumber,
+          excerpt: propEvidence.excerpt,
+          sourceLocator: propEvidence.sourceLocator,
+          artifactSha256,
+          createdAt: now,
+        },
+      ],
+      createdBy: 'agent_docai_gemini_pipeline',
+      schemaVersion: 1,
+    });
+    generatedClaims.push(propertyClaim);
+  }
 
   // 5. Deterministic Validation Gate
   // If confidence is low or fiduciary unconfirmed, trigger an investigation exception
@@ -238,6 +389,37 @@ function parseDocumentTextHeuristically(text: string): ProbateProposalExtraction
         sourceLocator: 'p1_para3_line1-4',
         excerpt: 'granted LETTERS TESTAMENTARY upon said estate unto: SARAH LOUISE JENKINS',
       },
+      {
+        fieldPath: 'decedent.fullName',
+        pageNumber: 1,
+        sourceLocator: 'p1_title',
+        excerpt: 'IN RE: ESTATE OF ARTHUR JAMES JENKINS, DECEASED',
+      },
+      {
+        fieldPath: 'case.number',
+        pageNumber: 1,
+        sourceLocator: 'p1_header_right',
+        excerpt: 'CAUSE NO. C-1-PB-26-000412',
+      },
+      {
+        fieldPath: 'case.filingDate',
+        pageNumber: 1,
+        sourceLocator: 'p1_stamp',
+        excerpt: 'FILED: MARCH 01, 2026 PROBATE CLERK',
+      },
+      {
+        fieldPath: 'case.court',
+        pageNumber: 1,
+        sourceLocator: 'p1_header_center',
+        excerpt: 'IN THE PROBATE COURT NO. 1 OF TRAVIS COUNTY, TEXAS',
+      },
+      {
+        fieldPath: 'property.clue',
+        pageNumber: 1,
+        sourceLocator: 'p1_inventory_sec1',
+        excerpt: 'REAL PROPERTY: 742 Evergreen Terrace, Austin, TX 78701 (LOT 4 BLK B HIGHLAND PARK SEC 2)',
+      },
     ],
   };
 }
+
