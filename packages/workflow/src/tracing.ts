@@ -48,6 +48,27 @@ export function toSentryScopeTags(ctx: CorrelationContext): Record<string, strin
 }
 
 /**
+ * Formats a structured Sentry context dictionary (OP-001).
+ */
+export function toSentryContext(ctx: CorrelationContext): {
+  name: string;
+  context: Record<string, unknown>;
+} {
+  return {
+    name: 'probate_investigation',
+    context: {
+      correlationId: ctx.correlationId,
+      workflowRunId: ctx.workflowRunId,
+      caseId: ctx.caseId,
+      claimId: ctx.claimId,
+      opportunityId: ctx.opportunityId,
+      countyId: ctx.countyId,
+      organizationId: ctx.organizationId,
+    },
+  };
+}
+
+/**
  * Returns formatted structured logging prefix.
  */
 export function formatTracingPrefix(ctx: CorrelationContext): string {

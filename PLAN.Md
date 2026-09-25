@@ -207,12 +207,90 @@ Here is an analysis of the auditor's findings alongside a concrete remediation b
   - **Tests**: `tests/unit/scale-and-signals.test.js`
 
 
+
 ---
 
-### Status of Recommended Next 5 Tasks
-1. [x] **P0-1**: Implemented Clerk-derived dynamic `TenantScope` in `apps/web/src/lib/data.ts` and `apps/web/src/lib/actions.ts`.
-2. [x] **P0-2**: Implemented immutable `claimAuditEvents` stream in `packages/evidence`.
-3. [x] **P0-3**: Mapped all Document AI / Gemini fields (`decedentName`, `caseNumber`, `filingDate`, `courtName`, `propertyClues`) to atomic `Claim` records.
-4. [x] **P0-4**: Implemented Delivery Eligibility Engine blocking Tier 4 authority and unverified claims.
-5. [x] **P1-3**: Scaffolded `packages/control` to formally separate Ownership from Control & Authority.
+## 12. Pilot Hardening Plan (Pre-Customer Go/No-Go)
+
+**Objective**: Move from engineering-complete prototype to controlled pilot-ready platform with enterprise-grade security, governance, auditability, and operational controls.
+
+### Required Platform Invariants (Phase 0 — Go/No-Go Criteria)
+- [x] No hardcoded tenant identities in any production lifecycle.
+- [x] No hardcoded licensed counties (dynamically resolved via `LicenseService` and validated on every request).
+- [x] No unverified claim publication paths (enforced via `ClaimVerificationPolicy` and `DeliveryEligibilityEngine`).
+- [x] No Authority Tier 4 delivery path (strictly blocked from publication).
+- [x] Cryptographically tamper-evident audit trail for evidence lifecycle (hash-chained via `auditHash` and `previousAuditHash`).
+- [x] Cross-tenant isolation validated across all bounded contexts.
+- [x] Replay-safe webhook delivery with active nonce/signature tracking via `WebhookReplayRegistry`.
+- [x] Security incident alerting and disaster recovery documented.
+
+---
+
+### Workstream 1: Security Hardening (SH)
+- [x] **SH-001: Dynamic County Licensing** (`packages/authz/src/licensing.ts`):
+  - Collections: `licensedOrganizations`, `licensedCounties`.
+  - Services: `LicenseService`, `InMemoryLicenseRepository`.
+  - Eliminates hardcoded `['county_travis_tx']`; loads permissions dynamically per organization; immediate revocation blocking.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **SH-002: Remove Production Fallback Scopes** (`apps/web/src/lib/tenant-context.ts`, `data.ts`, `actions.ts`):
+  - Strictly enforce `throw UnauthorizedError` for any non-development environment.
+  - Production never creates synthetic tenant context under any circumstances.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **SH-003: Webhook Replay Registry** (`packages/delivery/src/replay-registry.ts`):
+  - Implement `WebhookReplayRegistry` storing `nonce`, `signature`, `expiration`, `firstSeen`.
+  - Reject duplicate payloads, signature reuse, and expired timestamps.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **SH-004: Read Audit Logging** (`packages/evidence/src/read-audit.ts`):
+  - Track reads of `CONFIDENTIAL`, `PII`, and `REGULATED` records.
+  - Event types: `RECORD_VIEWED`, `EXPORT_CREATED`, `DOWNLOAD_GENERATED`, `SEARCH_EXECUTED`.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+
+---
+
+### Workstream 2: Evidence Integrity (EI)
+- [x] **EI-001: Immutable Audit Chain** (`packages/evidence/src/audit-chain.ts`):
+  - Extend `ClaimAuditEvent` with `auditHash` and `previousAuditHash` (`event1 -> hash1`, `event2 -> hash2(hash1)`).
+  - Any record modification breaks chain verification (`verifyAuditChain`).
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **EI-002: Claim Verification Policy Engine** (`packages/evidence/src/verification-policy.ts`):
+  - Implement `ClaimVerificationPolicy` requiring: primary evidence present, SHA-256 match, title conflicts resolved, reviewer authenticated & authorized.
+  - Zero claims become `VERIFIED` without passing formal policy engine.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+
+---
+
+### Workstream 3: Compliance & Governance (CO)
+- [x] **CO-001: Data Retention Engine** (`packages/database/src/retention.ts`):
+  - Implement `RetentionPolicy`, `RetentionSchedule`, `RetentionJob`.
+  - Policies: Audit Events (7 yrs), QC Reviews (7 yrs), Operational Logs (90 days), Telemetry (30 days).
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **CO-002: Key Rotation Registry** (`packages/authz/src/key-registry.ts`):
+  - Track MongoDB credentials, Webhook keys, Clerk secrets, Sentry DSNs (`owner`, `createdAt`, `expiresAt`, `rotatedAt`).
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **CO-003: Security Incident Taxonomy** (`packages/resilience/src/security-incidents.ts`):
+  - Operationalize incidents: `SECURITY_INCIDENT`, `CREDENTIAL_COMPROMISE`, `TENANT_BREACH_ATTEMPT`, `DATA_EXFILTRATION`.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+
+---
+
+### Workstream 4: Operations & Observability (OP)
+- [x] **OP-001: Sentry Context Completion** (`packages/workflow/src/tracing.ts`):
+  - Wire `toSentryContext()` and `toSentryScopeTags()` for `correlationId`, `workflowRunId`, `claimId`, `caseId`, `opportunityId`.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **OP-002: Alerting & Incident Dispatcher** (`packages/resilience/src/alerting.ts`):
+  - Dispatch automated alerts on: circuit open, delivery failures, tenant isolation violations, backlog SLA breaches.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+- [x] **OP-003: County Health & Telemetry Dashboard** (`packages/qc/src/county-health.ts`):
+  - Expose county circuit state, pipeline throughput, queue health, exception volume, and delivery SLAs.
+  - **Tests**: `tests/unit/pilot-hardening.test.js`
+
+---
+
+### Workstream 5 & 6: Resilience Validation & Test Expansion (RV)
+- [x] **RV-001: Chaos & Injected Failure Tests** (`tests/unit/resilience-and-tracing.test.js`):
+  - Inject OCR failures, parser crashes, webhook timeouts, and queue backpressure.
+- [x] **RV-002: Park-and-Replay Cryptographic Drill** (`tests/unit/resilience-and-tracing.test.js`):
+  - Validate HMAC signature, expiration enforcement, and nonce deduplication during replay.
+- [x] **RV-003: Pilot Hardening Test Suite** (`tests/unit/pilot-hardening.test.js`):
+  - 100% green test coverage across all hardening modules (55/55 tests passing).
 

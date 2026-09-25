@@ -85,6 +85,9 @@ export async function getOperatorData(scopeOverride?: TenantScope) {
       isConnectedToAtlas: true,
     };
   } catch (err) {
+    if (process.env.NODE_ENV === 'production') {
+      throw err;
+    }
     console.warn('[Operator Data] Could not read from live MongoDB Atlas:', err);
     return {
       cases: [],
@@ -135,6 +138,9 @@ export async function getClientFeedData(scopeOverride?: TenantScope) {
       isConnectedToAtlas: true,
     };
   } catch (err) {
+    if (process.env.NODE_ENV === 'production') {
+      throw err;
+    }
     console.warn('[Client Data] Could not read from live MongoDB Atlas:', err);
     return {
       deliveries: [],

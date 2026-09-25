@@ -4,7 +4,12 @@ import {
   getMongoDb,
   getTenantScopedRepository,
 } from '@gieni/database';
-import { Claim, ClaimAuditEvent } from '@gieni/evidence';
+import { 
+  Claim, 
+  ClaimAuditEvent, 
+  ClaimVerificationPolicy, 
+  computeAuditEventHash 
+} from '@gieni/evidence';
 import { InvestigationException } from '@gieni/qc';
 import { ClientFeedback, ClientDisposition } from '@gieni/delivery';
 import { TenantScope } from '@gieni/database';
@@ -43,25 +48,49 @@ export async function verifyClaimAction(claimId: string, verifierId?: string) {
   const auditRepo = getTenantScopedRepository<ClaimAuditEvent>('claimAuditEvents', db);
 
   const existingClaim = await claimRepo.findById(scope, claimId);
-  const previousStatus = existingClaim?.verificationStatus;
+  if (!existingClaim) {
+    throw new Error(`Claim '${claimId}' not found for tenant.`);
+  }
+
+  // Enforce ClaimVerificationPolicy (EI-002)
+  const actorId = verifierId || scope.organizationId;
+  ClaimVerificationPolicy.assertCompliant(existingClaim, {
+    actorId,
+    actorRole: 'org:operator_admin',
+  });
+
+  const previousStatus = existingClaim.verificationStatus;
 
   const updatedClaim = await claimRepo.update(scope, claimId, {
     verificationStatus: 'VERIFIED',
-    verifiedBy: verifierId || scope.organizationId,
+    verifiedBy: actorId,
     verifiedAt: new Date().toISOString(),
   });
 
-  // Record immutable ClaimAuditEvent
-  await auditRepo.create(scope, {
+  // Record immutable ClaimAuditEvent with tamper-evident auditHash (EI-001)
+  const now = new Date().toISOString();
+  const auditEventData = {
+    id: `audit_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+    organizationId: scope.organizationId,
     countyId: scope.countyId || 'county_travis_tx',
     claimId,
-    eventType: 'VERIFIED',
+    eventType: 'VERIFIED' as const,
     previousStatus,
-    newStatus: 'VERIFIED',
-    actorId: verifierId || scope.organizationId,
-    rationale: 'Operator manual verification through Operator Console',
+    newStatus: 'VERIFIED' as const,
+    actorId,
+    rationale: 'Operator manual verification through Operator Console satisfying ClaimVerificationPolicy',
     schemaVersion: 1,
-  });
+    previousAuditHash: null,
+    createdAt: now,
+    updatedAt: now,
+  };
+
+  const auditHash = computeAuditEventHash(auditEventData, null);
+
+  await auditRepo.create(scope, {
+    ...auditEventData,
+    auditHash,
+  } as any);
 
 
   return updatedClaim;

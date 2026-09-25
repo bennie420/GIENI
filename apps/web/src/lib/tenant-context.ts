@@ -1,10 +1,23 @@
 import { auth } from '@clerk/nextjs/server';
-import { AuthenticatedTenantContext, ClerkRole, resolveTenantScope } from '@gieni/authz';
+import { 
+  AuthenticatedTenantContext, 
+  ClerkRole, 
+  resolveTenantScope, 
+  defaultLicenseService 
+} from '@gieni/authz';
 import { TenantScope } from '@gieni/database';
 
+export class UnauthorizedError extends Error {
+  constructor(message = 'Security Violation: Unauthorized - No valid Clerk session active') {
+    super(message);
+    this.name = 'UnauthorizedError';
+  }
+}
+
 /**
- * Derives an authenticated TenantScope strictly from the active Clerk session context.
- * Guarantees zero hardcoded tenant identifiers in production request lifecycles.
+ * Derives an authenticated TenantScope strictly from the active Clerk session context (Gieni OS SH-001 & SH-002).
+ * Dynamically resolves licensed counties via LicenseService without hardcoded arrays.
+ * Guarantees zero synthetic tenant identities in production request lifecycles.
  */
 export async function getSessionTenantScope(options?: {
   requiredRole?: ClerkRole;
@@ -15,17 +28,17 @@ export async function getSessionTenantScope(options?: {
   try {
     session = await auth();
   } catch (err) {
-    throw new Error(
-      'Security Violation: Unauthorized - Clerk authentication unavailable: ' + (err as Error).message
+    throw new UnauthorizedError(
+      'Security Violation: Clerk authentication unavailable: ' + (err as Error).message
     );
   }
 
   if (!session || !session.userId) {
-    throw new Error('Security Violation: Unauthorized - No valid Clerk session active');
+    throw new UnauthorizedError('Security Violation: Unauthorized - No valid Clerk session active');
   }
 
   if (!session.orgId) {
-    throw new Error(
+    throw new UnauthorizedError(
       'Security Violation: Unauthorized - Active Clerk Organization context is required'
     );
   }
@@ -39,8 +52,16 @@ export async function getSessionTenantScope(options?: {
     role !== options.requiredRole &&
     role !== 'org:operator_admin'
   ) {
-    throw new Error(
+    throw new UnauthorizedError(
       `Security Violation: Role '${role}' lacks permission for this tenant operation`
+    );
+  }
+
+  // Dynamic county licensing resolution from authoritative LicenseService (SH-001)
+  const dynamicCounties = await defaultLicenseService.getLicensedCountiesForOrg(session.orgId);
+  if (role !== 'org:operator_admin' && dynamicCounties.length === 0) {
+    throw new UnauthorizedError(
+      `Security Violation: Organization '${session.orgId}' has zero active licensed counties`
     );
   }
 
@@ -48,7 +69,7 @@ export async function getSessionTenantScope(options?: {
     clerkUserId: session.userId,
     clerkOrgId: session.orgId,
     role,
-    licensedCountyIds: ['county_travis_tx'],
+    licensedCountyIds: dynamicCounties,
     clientId: role === 'org:client_user' ? session.orgSlug || session.orgId : undefined,
   };
 
