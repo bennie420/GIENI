@@ -16,19 +16,20 @@ import {
   LEGAL_DISCLAIMER,
 } from '@gieni/delivery';
 
-export const OPERATOR_SCOPE: TenantScope = {
-  organizationId: 'org_gieni_internal',
-  countyId: 'county_travis_tx',
-};
+import { getSessionTenantScope } from './tenant-context';
 
-export const CLIENT_SCOPE: TenantScope = {
-  organizationId: 'org_gieni_internal',
-  clientId: 'client_austin_capital_partners',
-  countyId: 'county_travis_tx',
-};
-
-export async function getOperatorData() {
+export async function getOperatorData(scopeOverride?: TenantScope) {
   try {
+    let scope: TenantScope;
+    try {
+      scope = scopeOverride || (await getSessionTenantScope({ isOperator: true }));
+    } catch (authErr) {
+      if (process.env.NODE_ENV === 'development') {
+        scope = { organizationId: 'org_gieni_internal', countyId: 'county_travis_tx' };
+      } else {
+        throw authErr;
+      }
+    }
     const db = await getMongoDb();
 
     const caseRepo = getTenantScopedRepository<ProbateCase>('probateCases', db);
@@ -56,17 +57,17 @@ export async function getOperatorData() {
       qcReviews,
       deliveries,
     ] = await Promise.all([
-      caseRepo.findMany(OPERATOR_SCOPE),
-      docRepo.findMany(OPERATOR_SCOPE),
-      claimRepo.findMany(OPERATOR_SCOPE),
-      parcelRepo.findMany(OPERATOR_SCOPE),
-      authRepo.findMany(OPERATOR_SCOPE),
-      ownRepo.findMany(OPERATOR_SCOPE),
-      scoreRepo.findMany(OPERATOR_SCOPE),
-      oppRepo.findMany(OPERATOR_SCOPE),
-      excRepo.findMany(OPERATOR_SCOPE),
-      qcRepo.findMany(OPERATOR_SCOPE),
-      pofRepo.findMany(OPERATOR_SCOPE),
+      caseRepo.findMany(scope),
+      docRepo.findMany(scope),
+      claimRepo.findMany(scope),
+      parcelRepo.findMany(scope),
+      authRepo.findMany(scope),
+      ownRepo.findMany(scope),
+      scoreRepo.findMany(scope),
+      oppRepo.findMany(scope),
+      excRepo.findMany(scope),
+      qcRepo.findMany(scope),
+      pofRepo.findMany(scope),
     ]);
 
     return {
@@ -84,6 +85,9 @@ export async function getOperatorData() {
       isConnectedToAtlas: true,
     };
   } catch (err) {
+    if (process.env.NODE_ENV === 'production') {
+      throw err;
+    }
     console.warn('[Operator Data] Could not read from live MongoDB Atlas:', err);
     return {
       cases: [],
@@ -102,15 +106,30 @@ export async function getOperatorData() {
   }
 }
 
-export async function getClientFeedData() {
+export async function getClientFeedData(scopeOverride?: TenantScope) {
   try {
+    let scope: TenantScope;
+    try {
+      scope =
+        scopeOverride || (await getSessionTenantScope({ requiredRole: 'org:client_user' }));
+    } catch (authErr) {
+      if (process.env.NODE_ENV === 'development') {
+        scope = {
+          organizationId: 'org_gieni_internal',
+          clientId: 'client_austin_capital_partners',
+          countyId: 'county_travis_tx',
+        };
+      } else {
+        throw authErr;
+      }
+    }
     const db = await getMongoDb();
     const pofRepo = getTenantScopedRepository<ProbateOpportunityFile>('deliveries', db);
     const feedbackRepo = getTenantScopedRepository<ClientFeedback>('clientFeedback', db);
 
     const [deliveries, feedback] = await Promise.all([
-      pofRepo.findMany(CLIENT_SCOPE),
-      feedbackRepo.findMany(CLIENT_SCOPE),
+      pofRepo.findMany(scope),
+      feedbackRepo.findMany(scope),
     ]);
 
     return {
@@ -119,6 +138,9 @@ export async function getClientFeedData() {
       isConnectedToAtlas: true,
     };
   } catch (err) {
+    if (process.env.NODE_ENV === 'production') {
+      throw err;
+    }
     console.warn('[Client Data] Could not read from live MongoDB Atlas:', err);
     return {
       deliveries: [],
@@ -127,6 +149,7 @@ export async function getClientFeedData() {
     };
   }
 }
+
 
 export * from './actions';
 

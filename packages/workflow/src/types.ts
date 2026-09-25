@@ -20,7 +20,9 @@ export type WorkflowStatus =
   | 'DEAD_LETTER';
 
 export interface WorkflowRun extends BaseEntity {
+  correlationId?: string | null;
   opportunityId?: string | null;
+  caseId?: string | null;
   stage: WorkflowStage;
   status: WorkflowStatus;
   idempotencyKey: string;
@@ -34,6 +36,7 @@ export interface WorkflowRun extends BaseEntity {
 }
 
 export interface AuditEvent extends BaseEntity {
+  correlationId?: string | null;
   userId: string;
   action: string;
   resourceType: string;
@@ -42,3 +45,4 @@ export interface AuditEvent extends BaseEntity {
   ipAddress?: string | null;
   timestamp: string;
 }
+

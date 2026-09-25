@@ -7,6 +7,13 @@ export const ExceptionTypeSchema = z.enum([
   'OCR_CONFIDENCE_LOW',
   'DATA_MISMATCH',
   'MISSING_MANDATORY_EVIDENCE',
+  'HIGH_VALUE_AMBIGUITY',
+]);
+
+export const ExceptionPrioritySchema = z.enum([
+  'STANDARD',
+  'HIGH',
+  'EXPEDITE_SENIOR_REVIEW',
 ]);
 
 export const ExceptionStatusSchema = z.enum([
@@ -24,6 +31,9 @@ export const InvestigationExceptionSchema = z.object({
   opportunityId: z.string().min(1),
   type: ExceptionTypeSchema,
   status: ExceptionStatusSchema,
+  priority: ExceptionPrioritySchema.optional(),
+  isSoftGate: z.boolean().optional(),
+  estimatedValue: z.number().nullable().optional(),
   description: z.string().min(1),
   assignedTo: z.string().nullable().optional(),
   resolutionNote: z.string().nullable().optional(),
@@ -33,6 +43,7 @@ export const InvestigationExceptionSchema = z.object({
   updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });
+
 
 export const QCGateResultSchema = z.object({
   gateName: z.string().min(1),

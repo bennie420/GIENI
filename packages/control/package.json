@@ -1,0 +1,21 @@
+{
+  "name": "@gieni/control",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@gieni/evidence": "*",
+    "@gieni/property": "*",
+    "@gieni/ownership": "*",
+    "@gieni/authority": "*",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

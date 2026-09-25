@@ -63,3 +63,31 @@ export interface Claim<T = unknown> {
   updatedAt: string;
   schemaVersion: number;
 }
+
+export type ClaimAuditEventType =
+  | 'CREATED'
+  | 'VERIFIED'
+  | 'REJECTED'
+  | 'SUPERSEDED'
+  | 'DELIVERED'
+  | 'ROLLED_BACK';
+
+export interface ClaimAuditEvent {
+  id: string;
+  organizationId: string;
+  countyId: string;
+  clientId?: string;
+  claimId: string;
+  eventType: ClaimAuditEventType;
+  previousStatus?: VerificationStatus;
+  newStatus: VerificationStatus | 'DELIVERED' | 'ROLLED_BACK';
+  actorId: string;
+  rationale?: string;
+  evidenceId?: string;
+  policyRuleVersion?: string;
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}
+
+

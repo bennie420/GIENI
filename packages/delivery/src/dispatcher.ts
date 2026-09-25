@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { DeliveryDispatch, ProbateOpportunityFile } from './types.js';
 
 export interface WebhookDispatchOptions {
@@ -6,6 +7,7 @@ export interface WebhookDispatchOptions {
   payload: ProbateOpportunityFile;
   timeoutMs?: number;
   headers?: Record<string, string>;
+  webhookSecret?: string;
 }
 
 /**
@@ -14,6 +16,9 @@ export interface WebhookDispatchOptions {
  * CRITICAL COMPLIANCE ENFORCEMENT:
  * Under NO circumstances does this function return status="SUCCESS" without an authentic,
  * verified HTTP response returning 2xx from the remote server.
+ *
+ * SECURITY & AUTHENTICITY:
+ * Attaches X-Gieni-Timestamp and X-Gieni-Signature (HMAC-SHA256) when webhookSecret is provided.
  */
 export async function dispatchRealWebhook(
   options: WebhookDispatchOptions
@@ -24,15 +29,31 @@ export async function dispatchRealWebhook(
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const payloadJson = JSON.stringify(options.payload);
+
+  const authHeaders: Record<string, string> = {
+    'X-Gieni-Timestamp': timestamp,
+  };
+
+  if (options.webhookSecret) {
+    const signature = crypto
+      .createHmac('sha256', options.webhookSecret)
+      .update(`${timestamp}.${payloadJson}`)
+      .digest('hex');
+    authHeaders['X-Gieni-Signature'] = `sha256=${signature}`;
+  }
+
   try {
     const response = await fetch(options.targetWebhookUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'Gieni-OS-Delivery/1.0',
+        ...authHeaders,
         ...options.headers,
       },
-      body: JSON.stringify(options.payload),
+      body: payloadJson,
       signal: controller.signal,
     });
 
@@ -77,3 +98,34 @@ export async function dispatchRealWebhook(
     };
   }
 }
+
+/**
+ * Validates an incoming webhook signature and ensures timestamp is within tolerance window.
+ */
+export function verifyWebhookSignature(params: {
+  payload: string;
+  signature: string;
+  timestamp: string;
+  secret: string;
+  toleranceSeconds?: number;
+}): boolean {
+  const { payload, signature, timestamp, secret, toleranceSeconds = 300 } = params;
+  const now = Math.floor(Date.now() / 1000);
+  const ts = parseInt(timestamp, 10);
+  if (isNaN(ts) || Math.abs(now - ts) > toleranceSeconds) {
+    return false; // Replay attack prevention: timestamp outside tolerance window
+  }
+
+  const expected = crypto
+    .createHmac('sha256', secret)
+    .update(`${timestamp}.${payload}`)
+    .digest('hex');
+
+  const providedHex = signature.startsWith('sha256=') ? signature.slice(7) : signature;
+  if (expected.length !== providedHex.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(providedHex));
+}
+

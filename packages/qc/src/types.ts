@@ -4,7 +4,10 @@ export type ExceptionType =
   | 'TITLE_CONFLICT'
   | 'OCR_CONFIDENCE_LOW'
   | 'DATA_MISMATCH'
-  | 'MISSING_MANDATORY_EVIDENCE';
+  | 'MISSING_MANDATORY_EVIDENCE'
+  | 'HIGH_VALUE_AMBIGUITY';
+
+export type ExceptionPriority = 'STANDARD' | 'HIGH' | 'EXPEDITE_SENIOR_REVIEW';
 
 export type ExceptionStatus =
   | 'PENDING_REVIEW'
@@ -20,6 +23,9 @@ export interface InvestigationException {
   opportunityId: string;
   type: ExceptionType;
   status: ExceptionStatus;
+  priority?: ExceptionPriority;
+  isSoftGate?: boolean;
+  estimatedValue?: number | null;
   description: string;
   assignedTo?: string | null;
   resolutionNote?: string | null;
@@ -29,6 +35,7 @@ export interface InvestigationException {
   updatedAt: string;
   schemaVersion: number;
 }
+
 
 export interface QCGateResult {
   gateName: string;
