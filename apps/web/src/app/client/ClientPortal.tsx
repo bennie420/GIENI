@@ -7,6 +7,8 @@ import { PofCard } from './components/PofCard';
 import { EvidenceModal } from './components/EvidenceModal';
 import { DispositionModal } from './components/DispositionModal';
 import { FeedbackHistoryTable } from './components/FeedbackHistoryTable';
+import { OnboardingHero, SAMPLE_OPPORTUNITY } from './components/OnboardingHero';
+import { WebhookSetupModal } from './components/WebhookSetupModal';
 
 interface ClientPortalProps {
   initialData: {
@@ -23,6 +25,7 @@ export default function ClientPortal({ initialData }: ClientPortalProps) {
   const [feedbackPofId, setFeedbackPofId] = useState<string | null>(null);
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
   const [feedbackSuccessMessage, setFeedbackSuccessMessage] = useState<string | null>(null);
+  const [isWebhookModalOpen, setIsWebhookModalOpen] = useState(false);
 
   const handleFeedbackSubmit = async (
     pofId: string,
@@ -58,18 +61,35 @@ export default function ClientPortal({ initialData }: ClientPortalProps) {
             Verified, evidence-backed Probate Opportunity Files (POF) &bull; Travis County, TX
           </p>
         </div>
-        <span
-          style={{
-            padding: '6px 12px',
-            borderRadius: '999px',
-            fontSize: '0.8rem',
-            fontWeight: 600,
-            background: statusBg,
-            color: statusColor,
-          }}
-        >
-          {statusLabel}
-        </span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <button
+            onClick={() => setIsWebhookModalOpen(true)}
+            style={{
+              padding: '6px 12px',
+              borderRadius: '6px',
+              border: '1px solid #dadce0',
+              background: '#ffffff',
+              fontSize: '0.82rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              color: '#1a73e8',
+            }}
+          >
+            Webhook Settings
+          </button>
+          <span
+            style={{
+              padding: '6px 12px',
+              borderRadius: '999px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              background: statusBg,
+              color: statusColor,
+            }}
+          >
+            {statusLabel}
+          </span>
+        </div>
       </div>
 
       {/* Mandatory Legal Boundary Disclaimer */}
@@ -92,22 +112,24 @@ export default function ClientPortal({ initialData }: ClientPortalProps) {
         </div>
       )}
 
+      {/* Onboarding Guide if Feed is Empty */}
+      {deliveries.length === 0 && (
+        <OnboardingHero
+          onExploreSample={(sample) => setSelectedPofForEvidence(sample)}
+          onOpenWebhookSetup={() => setIsWebhookModalOpen(true)}
+        />
+      )}
+
       {/* Feed List */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '20px' }}>
-        {deliveries.length === 0 ? (
-          <div className="insight-card">
-            <p>No published Probate Opportunity Files delivered yet for this client organization.</p>
-          </div>
-        ) : (
-          deliveries.map((pof) => (
-            <PofCard
-              key={pof.id}
-              pof={pof}
-              onViewEvidence={setSelectedPofForEvidence}
-              onLogFeedback={setFeedbackPofId}
-            />
-          ))
-        )}
+        {deliveries.map((pof) => (
+          <PofCard
+            key={pof.id}
+            pof={pof}
+            onViewEvidence={setSelectedPofForEvidence}
+            onLogFeedback={setFeedbackPofId}
+          />
+        ))}
       </div>
 
       {/* Primary Evidence Modal */}
@@ -124,8 +146,15 @@ export default function ClientPortal({ initialData }: ClientPortalProps) {
         isSubmitting={submittingFeedback}
       />
 
+      {/* Webhook Settings Modal */}
+      <WebhookSetupModal
+        isOpen={isWebhookModalOpen}
+        onClose={() => setIsWebhookModalOpen(false)}
+      />
+
       {/* Recent Dispositions History */}
       <FeedbackHistoryTable feedbackList={feedbackList} />
     </div>
   );
 }
+

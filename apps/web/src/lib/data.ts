@@ -109,8 +109,8 @@ async function resolveClientScope(scopeOverride?: TenantScope): Promise<TenantSc
 }
 
 export async function getClientFeedData(scopeOverride?: TenantScope) {
+  const scope = await resolveClientScope(scopeOverride);
   try {
-    const scope = await resolveClientScope(scopeOverride);
     const db = await getMongoDb();
     const [deliveries, feedback] = await Promise.all([
       getTenantScopedRepository<ProbateOpportunityFile>('deliveries', db).findMany(scope),
@@ -119,9 +119,17 @@ export async function getClientFeedData(scopeOverride?: TenantScope) {
 
     return { deliveries, feedback, isConnectedToAtlas: true };
   } catch (err) {
-    if (process.env.NODE_ENV === 'production') throw err;
-    console.warn('[Client Data] Could not read from live MongoDB Atlas:', err);
-    return { deliveries: [], feedback: [], isConnectedToAtlas: false };
+    try {
+      const [deliveries, feedback] = await Promise.all([
+        getTenantScopedRepository<ProbateOpportunityFile>('deliveries', undefined).findMany(scope),
+        getTenantScopedRepository<ClientFeedback>('clientFeedback', undefined).findMany(scope),
+      ]);
+      return { deliveries, feedback, isConnectedToAtlas: false };
+    } catch (localErr) {
+      if (process.env.NODE_ENV === 'production') throw err;
+      console.warn('[Client Data] Could not read from live MongoDB Atlas or local store:', localErr);
+      return { deliveries: [], feedback: [], isConnectedToAtlas: false };
+    }
   }
 }
 

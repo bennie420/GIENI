@@ -51,6 +51,15 @@ All agents and contributors must strictly adhere to these anti-pattern prohibiti
 - Every commercial presentation and opportunity file must carry the legal boundary notice:
   > *"Research finding—not legal opinion or title guarantee."*
 
+### 8. Strict Domain Enum Adherence
+- All mock records, test fixtures, UI previews, and seeders must parse through domain Zod schemas and strictly adhere to defined type unions (e.g. `FiduciaryRole` = `'EXECUTOR' | 'ADMINISTRATOR' | 'PERSONAL_REPRESENTATIVE' | 'SPECIAL_ADMINISTRATOR' | 'UNAPPOINTED' | 'UNKNOWN'`). Never invent ad-hoc variants.
+
+### 9. No Swallowed Persistence
+- Background pipelines, municipal scrapers, and server actions that persist data to MongoDB Atlas or the tenant store must capture persistence status directly in output results and telemetry streams. Never swallow persistence failures into silent `console.warn` logs.
+
+### 10. Customer Portal Activation & Lifecycle
+- Commercial client surfaces must never present dead-end empty states. When a tenant organization has no published records, provide an interactive onboarding walkthrough, verified sample dossier preview, and self-service webhook configuration.
+
 ---
 
 ## 3. Tenancy & Isolation Rules

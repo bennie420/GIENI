@@ -142,6 +142,7 @@ export async function submitClientFeedbackAction(
 
 /**
  * Triggers an authentic municipal docket scraper run via the County Adapter subsystem.
+ */
 async function persistBatchIfMissing<T extends { id: string }>(
   repo: any,
   scope: TenantScope,
@@ -208,6 +209,8 @@ export async function triggerMunicipalScraperAction(
   });
 
   // Attempt database persistence (MongoDB Atlas or persistent local store)
+  let persistenceSucceeded = false;
+  let persistenceError: string | null = null;
   try {
     let db: any = undefined;
     try {
@@ -216,9 +219,22 @@ export async function triggerMunicipalScraperAction(
       // Atlas unreachable in local/sandbox, will persist to local store
     }
     await persistIngestionRunData(db, scope, countyId, result.data);
+    persistenceSucceeded = true;
   } catch (dbErr: any) {
-    console.warn('[Municipal Ingestion] DB persistence warning (offline/sandbox):', dbErr.message);
+    persistenceError = dbErr instanceof Error ? dbErr.message : String(dbErr);
+    console.warn('[Municipal Ingestion] DB persistence warning:', persistenceError);
   }
+
+  // Record persistence outcome in telemetry event stream
+  result.telemetry.push({
+    timestamp: new Date().toISOString(),
+    stage: 'COMPLETE',
+    level: persistenceSucceeded ? 'SUCCESS' : 'WARN',
+    message: persistenceSucceeded
+      ? `Ingestion run persisted successfully to tenant storage (${scope.organizationId})`
+      : `Ingestion run memory-only: Storage persistence failed: ${persistenceError}`,
+    details: { persistenceSucceeded, persistenceError },
+  });
 
   return result;
 }

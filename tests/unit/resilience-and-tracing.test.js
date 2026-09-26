@@ -256,3 +256,86 @@ test('Workflow Tracing: CorrelationContext propagates IDs and formats Sentry sco
 
   assert.doesNotThrow(() => WorkflowRunSchema.parse(runPayload));
 });
+
+test('QC: scanStalledHighValueReviews detects aging senior review exceptions', async () => {
+  const { scanStalledHighValueReviews, generateOperatorMorningBriefing } = await import(
+    '../../packages/qc/dist/index.js'
+  );
+
+  const mockExceptions = [
+    {
+      id: 'exc_stalled_1',
+      organizationId: 'org_test',
+      countyId: 'county_travis_tx',
+      opportunityId: 'opp_high_1',
+      type: 'HIGH_VALUE_AMBIGUITY',
+      status: 'PENDING_REVIEW',
+      priority: 'EXPEDITE_SENIOR_REVIEW',
+      isSoftGate: true,
+      estimatedValue: 750000,
+      description: 'Expedite Senior Review',
+      assignedTo: 'role:senior_qc_lead',
+      createdAt: new Date(Date.now() - 30 * 3600 * 1000).toISOString(), // 30h ago
+      updatedAt: new Date().toISOString(),
+      schemaVersion: 1,
+    },
+    {
+      id: 'exc_fresh_2',
+      organizationId: 'org_test',
+      countyId: 'county_travis_tx',
+      opportunityId: 'opp_high_2',
+      type: 'HIGH_VALUE_AMBIGUITY',
+      status: 'PENDING_REVIEW',
+      priority: 'EXPEDITE_SENIOR_REVIEW',
+      isSoftGate: true,
+      estimatedValue: 600000,
+      description: 'Expedite Senior Review',
+      assignedTo: 'role:senior_qc_lead',
+      createdAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString(), // 2h ago
+      updatedAt: new Date().toISOString(),
+      schemaVersion: 1,
+    },
+  ];
+
+  const alerts = scanStalledHighValueReviews({
+    exceptions: mockExceptions,
+    stalledThresholdHours: 24,
+  });
+
+  assert.equal(alerts.length, 1);
+  assert.equal(alerts[0].exceptionId, 'exc_stalled_1');
+  assert.equal(alerts[0].urgency, 'WARNING_STALLED_REVIEW');
+  assert.ok(alerts[0].escalationMessage.includes('$750,000'));
+
+  // Test Morning Briefing generation
+  const briefing = generateOperatorMorningBriefing({
+    organizationId: 'org_test',
+    countyHealthReports: [
+      {
+        countyId: 'county_travis_tx',
+        countyName: 'Travis County',
+        stateCode: 'TX',
+        casesHarvestedLast24h: 14,
+        layoutDriftDetected: false,
+        queueHealth: {
+          countyId: 'county_travis_tx',
+          organizationId: 'org_test',
+          totalPendingExceptions: 1,
+          expeditedSeniorCount: 1,
+          standardCount: 0,
+          oldestPendingHours: 30,
+          averageResolutionMinutes: 45,
+          breachedSlaCount: 1,
+          healthStatus: 'DEGRADED',
+          alerts: ['Oldest item breached 24h SLA'],
+          evaluatedAt: new Date().toISOString(),
+        },
+      },
+    ],
+  });
+
+  assert.equal(briefing.totalBreachedSlas, 1);
+  assert.equal(briefing.overallSystemHealth, 'DEGRADED_OPERATIONS');
+  assert.equal(briefing.countySummaries.length, 1);
+});
+
