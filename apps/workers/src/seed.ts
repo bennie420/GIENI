@@ -260,14 +260,17 @@ async function seedAuthorityRecord(
   });
 }
 
-async function seedPropertyAndAssessments(
-  repos: SeedRepositories,
-  scope: TenantScope,
-  sourceDocId: string,
-  probateCaseId: string,
-  proposedClaimId: string,
-  evidenceRecordId: string
-) {
+export interface SeedPropertyAndAssessmentsParams {
+  repos: SeedRepositories;
+  scope: TenantScope;
+  sourceDocId: string;
+  probateCaseId: string;
+  proposedClaimId: string;
+  evidenceRecordId: string;
+}
+
+async function seedPropertyAndAssessments(params: SeedPropertyAndAssessmentsParams) {
+  const { repos, scope, sourceDocId, probateCaseId, proposedClaimId, evidenceRecordId } = params;
   console.log(`\n[4/7] Reconciling Assessor Parcel & Ownership...`);
   await repos.claimRepo.update(scope, proposedClaimId, {
     verificationStatus: 'VERIFIED',
@@ -281,6 +284,7 @@ async function seedPropertyAndAssessments(
 
   return { parcel, ownership, authority };
 }
+
 
 async function seedScoringRecord(
   scoreRepo: SeedRepositories['scoreRepo'],
@@ -390,30 +394,45 @@ async function seedOpportunityRecord(
   return opportunity;
 }
 
-async function seedScoringAndExceptions(
-  repos: SeedRepositories,
-  scope: TenantScope,
-  probateCase: ProbateCase,
-  parcel: PropertyParcel,
-  authority: AuthorityAssessment,
-  ownership: OwnershipAssessment
-) {
+export interface SeedScoringAndExceptionsParams {
+  repos: SeedRepositories;
+  scope: TenantScope;
+  probateCase: ProbateCase;
+  parcel: PropertyParcel;
+  authority: AuthorityAssessment;
+  ownership: OwnershipAssessment;
+}
+
+async function seedScoringAndExceptions(params: SeedScoringAndExceptionsParams) {
+  const { repos, scope, probateCase, parcel, authority, ownership } = params;
   const scoreResult = await seedScoringRecord(repos.scoreRepo, scope, probateCase, parcel, authority, ownership);
   await seedExceptionAndQc(repos, scope, probateCase.id);
   await seedOpportunityRecord(repos.oppRepo, scope, probateCase, parcel, authority, ownership, scoreResult);
   return scoreResult;
 }
 
-function buildPofPayload(
-  clientScope: TenantScope,
-  probateCase: ProbateCase,
-  parcel: PropertyParcel,
-  authority: AuthorityAssessment,
-  ownership: OwnershipAssessment,
-  scoreResult: OpportunityScore,
-  sourceDoc: SourceDocument,
-  evidenceRecord: ClaimEvidence
-) {
+export interface BuildPofPayloadParams {
+  clientScope: TenantScope;
+  probateCase: ProbateCase;
+  parcel: PropertyParcel;
+  authority: AuthorityAssessment;
+  ownership: OwnershipAssessment;
+  scoreResult: OpportunityScore;
+  sourceDoc: SourceDocument;
+  evidenceRecord: ClaimEvidence;
+}
+
+function buildPofPayload(params: BuildPofPayloadParams) {
+  const {
+    probateCase,
+    parcel,
+    authority,
+    ownership,
+    scoreResult,
+    sourceDoc,
+    evidenceRecord,
+  } = params;
+
   return {
     countyId: 'county_travis_tx',
     caseNumber: probateCase.caseNumber,
@@ -460,19 +479,14 @@ function buildPofPayload(
   };
 }
 
-async function publishPofDelivery(
-  pofRepo: SeedRepositories['pofRepo'],
-  clientScope: TenantScope,
-  probateCase: ProbateCase,
-  parcel: PropertyParcel,
-  authority: AuthorityAssessment,
-  ownership: OwnershipAssessment,
-  scoreResult: OpportunityScore,
-  sourceDoc: SourceDocument,
-  evidenceRecord: ClaimEvidence
-) {
+export interface PublishPofDeliveryParams extends BuildPofPayloadParams {
+  pofRepo: SeedRepositories['pofRepo'];
+}
+
+async function publishPofDelivery(params: PublishPofDeliveryParams) {
+  const { pofRepo, clientScope } = params;
   console.log(`\n[7/7] Publishing Probate Opportunity File (POF) to Client Organization...`);
-  const payload = buildPofPayload(clientScope, probateCase, parcel, authority, ownership, scoreResult, sourceDoc, evidenceRecord);
+  const payload = buildPofPayload(params);
   const pof = await pofRepo.create(clientScope, payload);
 
   console.log(`\n===============================================================`);
@@ -517,26 +531,26 @@ export async function runOneCountyVerticalSlice() {
     docHash
   );
 
-  const { parcel, ownership, authority } = await seedPropertyAndAssessments(
+  const { parcel, ownership, authority } = await seedPropertyAndAssessments({
     repos,
-    operatorScope,
-    sourceDoc.id,
-    probateCase.id,
-    proposedClaim.id,
-    evidenceRecord.id
-  );
+    scope: operatorScope,
+    sourceDocId: sourceDoc.id,
+    probateCaseId: probateCase.id,
+    proposedClaimId: proposedClaim.id,
+    evidenceRecordId: evidenceRecord.id,
+  });
 
-  const scoreResult = await seedScoringAndExceptions(
+  const scoreResult = await seedScoringAndExceptions({
     repos,
-    operatorScope,
+    scope: operatorScope,
     probateCase,
     parcel,
     authority,
-    ownership
-  );
+    ownership,
+  });
 
-  const pof = await publishPofDelivery(
-    repos.pofRepo,
+  const pof = await publishPofDelivery({
+    pofRepo: repos.pofRepo,
     clientScope,
     probateCase,
     parcel,
@@ -544,12 +558,13 @@ export async function runOneCountyVerticalSlice() {
     ownership,
     scoreResult,
     sourceDoc,
-    evidenceRecord
-  );
+    evidenceRecord,
+  });
 
   await closeMongoClient();
   return { sourceDoc, probateCase, pof, scoreResult };
 }
+
 
 // Auto-run if executed directly via node
 runOneCountyVerticalSlice().catch(async (err) => {

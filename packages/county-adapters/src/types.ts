@@ -79,3 +79,10 @@ export interface ICountyAdapter {
   getHealthStatus(): Promise<CountyAdapterHealth>;
   detectLayoutDrift(documentText: string, expectedDocType: string): Promise<LayoutDriftResult>;
 }
+
+import { z } from 'zod';
+import { CaseTypeSchema, CanonicalCaseTypeSchema, FilingTypeSchema } from './schemas.js';
+
+export type CaseType = z.infer<typeof CaseTypeSchema>;
+export type CanonicalCaseType = z.infer<typeof CanonicalCaseTypeSchema>;
+export type FilingType = z.infer<typeof FilingTypeSchema>;

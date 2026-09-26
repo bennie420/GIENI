@@ -29,75 +29,95 @@ function getBondDisplay(bondAmount?: number): string {
   return 'Waived (Independent)';
 }
 
-function buildTimelineSteps(probateCase?: any, authority?: any): TimelineStep[] {
+function buildPetitionStep(probateCase?: any): TimelineStep {
   const caseNumber = probateCase?.caseNumber ?? 'C-1-PB-26-000412';
   const courtName = probateCase?.courtName ?? 'Travis County Probate Court No. 1';
   const filingDate = probateCase?.filingDate ?? '2026-03-01';
   const decedent = probateCase?.decedentName ?? 'Arthur James Jenkins';
 
+  return {
+    step: 1,
+    title: 'Petition Filed',
+    subtitle: `Application for Probate & Letters filed in ${courtName}`,
+    date: filingDate,
+    status: 'COMPLETED',
+    badge: 'PROBATE FILED',
+    details: [
+      { label: 'Cause No.', value: caseNumber },
+      { label: 'Decedent', value: decedent },
+      { label: 'Filing Date', value: filingDate },
+    ],
+  };
+}
+
+function buildFiduciaryStep(authority?: any): TimelineStep {
   const fiduciary = authority?.fiduciary;
   const fiduciaryName = fiduciary?.fullName;
   const fiduciaryRole = fiduciary?.role ?? 'EXECUTOR';
-  const lettersIssued = fiduciary?.lettersIssued ?? true;
   const appointmentDate = fiduciary?.appointmentDate ?? '2026-03-01';
   const authorityStatus = authority?.status ?? 'CONFIRMED';
   const authorityTier = authority?.tier ?? 1;
 
+  return {
+    step: 2,
+    title: 'Fiduciary Appointed',
+    subtitle: `${fiduciaryRole} legally designated by judicial order`,
+    date: appointmentDate,
+    status: fiduciaryName ? 'COMPLETED' : 'PENDING',
+    badge: authorityStatus,
+    details: [
+      { label: 'Designated Party', value: fiduciaryName ?? 'None (Unappointed)' },
+      { label: 'Role', value: fiduciaryRole },
+      { label: 'Authority Tier', value: `Tier ${authorityTier} (Sole Decision Maker)` },
+    ],
+  };
+}
+
+function buildLettersStep(authority?: any): TimelineStep {
+  const fiduciary = authority?.fiduciary;
+  const lettersIssued = fiduciary?.lettersIssued ?? true;
+  const appointmentDate = fiduciary?.appointmentDate ?? '2026-03-01';
+
+  return {
+    step: 3,
+    title: 'Letters Issued',
+    subtitle: 'Letters Testamentary / Letters of Administration granted',
+    date: appointmentDate,
+    status: lettersIssued ? 'COMPLETED' : 'PENDING',
+    badge: lettersIssued ? 'LETTERS ACTIVE' : 'AWAITING OATH/BOND',
+    details: [
+      { label: 'Letters Status', value: lettersIssued ? 'Active / Granted' : 'Pending' },
+      { label: 'Bond Required', value: getBondDisplay(fiduciary?.bondAmount) },
+      { label: 'Evidence Citation', value: fiduciary?.verifiedEvidenceId ?? 'doc_travis_probate_001#p1' },
+    ],
+  };
+}
+
+function buildInventoryStep(): TimelineStep {
+  return {
+    step: 4,
+    title: 'Inventory & Appraisement',
+    subtitle: 'Inventory filed or statutory creditor notification published',
+    date: '2026-03-15',
+    status: 'IN_PROGRESS',
+    badge: 'STATUTORY WINDOW',
+    details: [
+      { label: 'Filing Deadline', value: '90 Days Post-Qualification' },
+      { label: 'Notice to Creditors', value: 'Published (Travis County Commercial Recorder)' },
+      { label: 'Claim Status', value: 'Open statutory creditor period' },
+    ],
+  };
+}
+
+function buildTimelineSteps(probateCase?: any, authority?: any): TimelineStep[] {
   return [
-    {
-      step: 1,
-      title: 'Petition Filed',
-      subtitle: `Application for Probate & Letters filed in ${courtName}`,
-      date: filingDate,
-      status: 'COMPLETED',
-      badge: 'PROBATE FILED',
-      details: [
-        { label: 'Cause No.', value: caseNumber },
-        { label: 'Decedent', value: decedent },
-        { label: 'Filing Date', value: filingDate },
-      ],
-    },
-    {
-      step: 2,
-      title: 'Fiduciary Appointed',
-      subtitle: `${fiduciaryRole} legally designated by judicial order`,
-      date: appointmentDate,
-      status: fiduciaryName ? 'COMPLETED' : 'PENDING',
-      badge: authorityStatus,
-      details: [
-        { label: 'Designated Party', value: fiduciaryName ?? 'None (Unappointed)' },
-        { label: 'Role', value: fiduciaryRole },
-        { label: 'Authority Tier', value: `Tier ${authorityTier} (Sole Decision Maker)` },
-      ],
-    },
-    {
-      step: 3,
-      title: 'Letters Issued',
-      subtitle: 'Letters Testamentary / Letters of Administration granted',
-      date: appointmentDate,
-      status: lettersIssued ? 'COMPLETED' : 'PENDING',
-      badge: lettersIssued ? 'LETTERS ACTIVE' : 'AWAITING OATH/BOND',
-      details: [
-        { label: 'Letters Status', value: lettersIssued ? 'Active / Granted' : 'Pending' },
-        { label: 'Bond Required', value: getBondDisplay(fiduciary?.bondAmount) },
-        { label: 'Evidence Citation', value: fiduciary?.verifiedEvidenceId ?? 'doc_travis_probate_001#p1' },
-      ],
-    },
-    {
-      step: 4,
-      title: 'Inventory & Appraisement',
-      subtitle: 'Inventory filed or statutory creditor notification published',
-      date: '2026-03-15',
-      status: 'IN_PROGRESS',
-      badge: 'STATUTORY WINDOW',
-      details: [
-        { label: 'Filing Deadline', value: '90 Days Post-Qualification' },
-        { label: 'Notice to Creditors', value: 'Published (Travis County Commercial Recorder)' },
-        { label: 'Claim Status', value: 'Open statutory creditor period' },
-      ],
-    },
+    buildPetitionStep(probateCase),
+    buildFiduciaryStep(authority),
+    buildLettersStep(authority),
+    buildInventoryStep(),
   ];
 }
+
 
 function TimelineStepCard({ step }: { step: TimelineStep }) {
   const isCompleted = step.status === 'COMPLETED';

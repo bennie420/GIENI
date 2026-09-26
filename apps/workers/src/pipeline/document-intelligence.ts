@@ -56,6 +56,7 @@ export interface DocumentPipelineDependencies {
   claimRepo: ITenantScopedRepository<Claim>;
   exceptionRepo: ITenantScopedRepository<InvestigationException>;
   ocrAdapter?: (buffer: Buffer) => Promise<DocumentOcrLayoutResult>;
+  ocrFallbackAdapter?: (buffer: Buffer) => Promise<DocumentOcrLayoutResult>;
   geminiExtractor?: (ocr: DocumentOcrLayoutResult) => Promise<ProbateProposalExtraction>;
 }
 
@@ -295,6 +296,14 @@ export async function runDocumentIntelligencePipeline(
 ): Promise<DocumentPipelineResult> {
   const { fileBuffer, filename, mimeType, storageUri, sourceUrl, opportunityId, termsNote } = input;
 
+  // Enforce memory protection for large files (max 50MB single buffer limit)
+  const MAX_DOCUMENT_BUFFER_BYTES = 50 * 1024 * 1024;
+  if (fileBuffer.byteLength > MAX_DOCUMENT_BUFFER_BYTES) {
+    throw new Error(
+      `Document buffer exceeds maximum allowed limit of 50MB (received ${Math.round(fileBuffer.byteLength / (1024 * 1024))}MB).`
+    );
+  }
+
   // 1. Preserve raw file & compute authentic SHA-256 hash
   const artifactSha256 = crypto.createHash('sha256').update(fileBuffer).digest('hex');
   const now = new Date().toISOString();
@@ -312,13 +321,21 @@ export async function runDocumentIntelligencePipeline(
   });
 
   // 2. Document AI OCR / Layout processing
-  const ocrResult: DocumentOcrLayoutResult = deps.ocrAdapter
+  let ocrResult: DocumentOcrLayoutResult = deps.ocrAdapter
     ? await deps.ocrAdapter(fileBuffer)
     : {
         fullText: fileBuffer.toString('utf-8'),
         pageCount: 1,
         pages: [{ pageNumber: 1, text: fileBuffer.toString('utf-8') }],
       };
+
+  // 2a. OCR Fallback: If text is too sparse (< 50 chars, indicative of scanned/image-only PDF), trigger fallback OCR
+  if (ocrResult.fullText.trim().length < 50 && deps.ocrFallbackAdapter) {
+    const fallbackResult = await deps.ocrFallbackAdapter(fileBuffer);
+    if (fallbackResult.fullText.trim().length > ocrResult.fullText.trim().length) {
+      ocrResult = fallbackResult;
+    }
+  }
 
   // 3. Gemini Structured Extraction
   const extraction: ProbateProposalExtraction = deps.geminiExtractor

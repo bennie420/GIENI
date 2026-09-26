@@ -22,3 +22,5 @@ export * from './adapters/arizona/maricopa.js';
 export * from './adapters/washington/pierce.js';
 export * from './adapters/washington/king.js';
 export * from './adapters/washington/thurston.js';
+export * from './adapter-utils.js';
+

@@ -12,6 +12,13 @@ import {
   DocumentLayoutFingerprint 
 } from '../../types.js';
 import { evaluateDocumentLayoutDrift, computeTemplateStructureHash } from '../../drift.js';
+import { buildParcelRecord, buildCaseDocumentRecord } from '../../adapter-utils.js';
+
+const MARICOPA_PARCELS_RAW = [
+  { apn: '132-45-890A', street: '4210 E Camelback Rd', city: 'Phoenix', zip: '85018', legal: 'LOT 12 ARCADIA ESTATES MCR 104-18', landVal: 300000, impVal: 540000, totalVal: 840000 },
+  { apn: '112-45-089A', street: '6114 N 7th Ave', city: 'Phoenix', zip: '85013', legal: 'NORTH CENTRAL MANOR LOT 19', landVal: 180000, impVal: 330000, totalVal: 510000 },
+  { apn: '174-22-104C', street: '8205 E Indian Bend Rd', city: 'Scottsdale', zip: '85250', legal: 'INDIAN BEND ESTATES LOT 42', landVal: 320000, impVal: 570000, totalVal: 890000 },
+];
 
 function daysAgo(days: number): string {
   return new Date(Date.now() - days * 86400000).toISOString();
@@ -98,151 +105,52 @@ export class MaricopaCountyAdapter implements ICountyAdapter {
     const sha3 = crypto.createHash('sha256').update(lettersText).digest('hex');
     const sha4 = crypto.createHash('sha256').update(invText).digest('hex');
 
-    return [
-      {
-        id: `sr_maricopa_${caseNumber}_application`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://www.clerkofcourt.maricopa.gov/records/probate/${caseNumber}/application.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha1,
-        sourceSystem: 'Maricopa Superior Court Electronic Records System',
-        rawPayloadLocation: `gs://gieni-evidence-maricopa/cases/${caseNumber}/application_for_probate.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_maricopa_${caseNumber}_order`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://www.clerkofcourt.maricopa.gov/records/probate/${caseNumber}/order.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha2,
-        sourceSystem: 'Maricopa Superior Court Electronic Records System',
-        rawPayloadLocation: `gs://gieni-evidence-maricopa/cases/${caseNumber}/order_of_appointment.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_maricopa_${caseNumber}_letters`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://www.clerkofcourt.maricopa.gov/records/probate/${caseNumber}/letters.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha3,
-        sourceSystem: 'Maricopa Superior Court Electronic Records System',
-        rawPayloadLocation: `gs://gieni-evidence-maricopa/cases/${caseNumber}/letters_of_personal_representative.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_maricopa_${caseNumber}_inventory`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://www.clerkofcourt.maricopa.gov/records/probate/${caseNumber}/inventory.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha4,
-        sourceSystem: 'Maricopa Superior Court Electronic Records System',
-        rawPayloadLocation: `gs://gieni-evidence-maricopa/cases/${caseNumber}/inventory_and_appraisement.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
+    const docConfigs = [
+      { key: 'application', sha: sha1, path: 'application_for_probate.pdf', url: 'application.pdf', filingType: 'PETITION_FOR_PROBATE' as const },
+      { key: 'order', sha: sha2, path: 'order_of_appointment.pdf', url: 'order.pdf', filingType: 'ORDER_APPOINTING_PR' as const },
+      { key: 'letters', sha: sha3, path: 'letters_of_personal_representative.pdf', url: 'letters.pdf', filingType: 'LETTERS_TESTAMENTARY' as const },
+      { key: 'inventory', sha: sha4, path: 'inventory_and_appraisement.pdf', url: 'inventory.pdf', filingType: 'INVENTORY_AND_APPRAISEMENT' as const },
     ];
+
+    return docConfigs.map((doc) =>
+      buildCaseDocumentRecord({
+        id: `sr_maricopa_${caseNumber}_${doc.key}`,
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://www.clerkofcourt.maricopa.gov/records/probate/${caseNumber}/${doc.url}`,
+        artifactSha256: doc.sha,
+        sourceSystem: 'Maricopa Superior Court Electronic Records System',
+        rawPayloadLocation: `gs://gieni-evidence-maricopa/cases/${caseNumber}/${doc.path}`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: doc.filingType,
+      })
+    );
   }
 
   public async getParcels(options?: ParcelQueryOptions): Promise<PropertyParcel[]> {
-    const defaultParcels: PropertyParcel[] = [
-      {
-        id: `parcel_${this.countyId}_132-45-890A`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '132-45-890A',
-        address: {
-          street: '4210 E Camelback Rd',
-          city: 'Phoenix',
-          state: 'AZ',
-          zipCode: '85018',
-          county: 'Maricopa',
-        },
-        legalDescription: 'LOT 12 ARCADIA ESTATES MCR 104-18',
-        assessedLandValue: 300000,
-        assessedImprovementValue: 540000,
-        totalAssessedValue: 840000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_mcpa_132-45-890A'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_112-45-089A`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '112-45-089A',
-        address: {
-          street: '6114 N 7th Ave',
-          city: 'Phoenix',
-          state: 'AZ',
-          zipCode: '85013',
-          county: 'Maricopa',
-        },
-        legalDescription: 'NORTH CENTRAL MANOR LOT 19',
-        assessedLandValue: 180000,
-        assessedImprovementValue: 330000,
-        totalAssessedValue: 510000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_mcpa_112-45-089A'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_174-22-104C`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '174-22-104C',
-        address: {
-          street: '8205 E Indian Bend Rd',
-          city: 'Scottsdale',
-          state: 'AZ',
-          zipCode: '85250',
-          county: 'Maricopa',
-        },
-        legalDescription: 'INDIAN BEND ESTATES LOT 42',
-        assessedLandValue: 320000,
-        assessedImprovementValue: 570000,
-        totalAssessedValue: 890000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_mcpa_174-22-104C'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-    ];
+    const list = options?.apn
+      ? MARICOPA_PARCELS_RAW.filter((p) => p.apn === options.apn)
+      : MARICOPA_PARCELS_RAW.slice(0, options?.limit ?? MARICOPA_PARCELS_RAW.length);
 
-    if (options?.apn) {
-      return defaultParcels.filter((p) => p.apn === options.apn);
-    }
-    return defaultParcels.slice(0, options?.limit ?? defaultParcels.length);
+    return list.map((p) =>
+      buildParcelRecord({
+        countyId: this.countyId,
+        apn: p.apn,
+        street: p.street,
+        city: p.city,
+        state: 'AZ',
+        zipCode: p.zip,
+        county: 'Maricopa',
+        legalDescription: p.legal,
+        assessedLandValue: p.landVal,
+        assessedImprovementValue: p.impVal,
+        totalAssessedValue: p.totalVal,
+        verifiedEvidenceIds: [`sr_mcpa_${p.apn}`],
+      })
+    );
   }
+
 
   public async getRecordedDocuments(apnOrName: string): Promise<SourceRecord[]> {
     if (apnOrName.toLowerCase().includes('unindexed') || apnOrName.toLowerCase().includes('unlocated')) {

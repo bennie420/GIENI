@@ -71,8 +71,14 @@ function resolveUserRole(sessionRole?: string, isOperator?: boolean): ClerkRole 
 /**
  * Validates that the active role satisfies any required role constraints.
  */
+function isRolePermitted(role: ClerkRole, requiredRole?: ClerkRole): boolean {
+  if (!requiredRole) return true;
+  if (role === 'org:operator_admin') return true;
+  return role === requiredRole;
+}
+
 function assertAuthorizedRole(role: ClerkRole, requiredRole?: ClerkRole): void {
-  if (!requiredRole || role === 'org:operator_admin' || role === requiredRole) {
+  if (isRolePermitted(role, requiredRole)) {
     return;
   }
   throw new UnauthorizedError(
@@ -80,28 +86,40 @@ function assertAuthorizedRole(role: ClerkRole, requiredRole?: ClerkRole): void {
   );
 }
 
+export interface CountyLicenseValidationContext {
+  role: ClerkRole;
+  orgId: string;
+  licensedCounties: string[];
+}
+
 /**
  * Validates that non-operator organizations possess at least one licensed county.
  */
-function assertActiveCountyLicenses(role: ClerkRole, orgId: string, licensedCounties: string[]): void {
-  if (role === 'org:operator_admin') {
+function assertActiveCountyLicenses(ctx: CountyLicenseValidationContext): void {
+  if (ctx.role === 'org:operator_admin') {
     return;
   }
-  if (licensedCounties.length === 0) {
+  if (ctx.licensedCounties.length === 0) {
     throw new UnauthorizedError(
-      `Security Violation: Organization '${orgId}' has zero active licensed counties`
+      `Security Violation: Organization '${ctx.orgId}' has zero active licensed counties`
     );
   }
+}
+
+export interface ClientScopeContext {
+  role: ClerkRole;
+  orgSlug?: string;
+  orgId?: string;
 }
 
 /**
  * Derives the tenant client identifier for client-tier users.
  */
-function resolveClientId(role: ClerkRole, orgSlug?: string, orgId?: string): string | undefined {
-  if (role !== 'org:client_user') {
+function resolveClientId(ctx: ClientScopeContext): string | undefined {
+  if (ctx.role !== 'org:client_user') {
     return undefined;
   }
-  return orgSlug || orgId;
+  return ctx.orgSlug || ctx.orgId;
 }
 
 /**
@@ -116,15 +134,16 @@ export async function getSessionTenantScope(options?: SessionTenantOptions): Pro
   assertAuthorizedRole(role, options?.requiredRole);
 
   const dynamicCounties = await defaultLicenseService.getLicensedCountiesForOrg(session.orgId);
-  assertActiveCountyLicenses(role, session.orgId, dynamicCounties);
+  assertActiveCountyLicenses({ role, orgId: session.orgId, licensedCounties: dynamicCounties });
 
   const authContext: AuthenticatedTenantContext = {
     clerkUserId: session.userId,
     clerkOrgId: session.orgId,
     role,
     licensedCountyIds: dynamicCounties,
-    clientId: resolveClientId(role, session.orgSlug, session.orgId),
+    clientId: resolveClientId({ role, orgSlug: session.orgSlug, orgId: session.orgId }),
   };
 
   return resolveTenantScope(authContext, options?.targetCountyId);
 }
+

@@ -77,6 +77,188 @@ function ScraperHeader({ isRunning, onClose }: ScraperHeaderProps) {
   );
 }
 
+const LOOKBACK_PRESETS = [
+  { label: '14d', val: 14 },
+  { label: '30d', val: 30 },
+  { label: '90d Backfill', val: 90 },
+] as const;
+
+function CountySelectorField({
+  countyId,
+  setCountyId,
+  isRunning,
+}: {
+  countyId: string;
+  setCountyId: (id: string) => void;
+  isRunning: boolean;
+}) {
+  return (
+    <div>
+      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '6px' }}>
+        TARGET COUNTY DOCKET REPOSITORY
+      </label>
+      <select
+        value={countyId}
+        onChange={(e) => setCountyId(e.target.value)}
+        disabled={isRunning}
+        style={{
+          width: '100%',
+          padding: '8px 12px',
+          borderRadius: '6px',
+          background: '#131b2e',
+          border: '1px solid #334155',
+          color: '#f8fafc',
+          fontSize: '0.85rem',
+          outline: 'none',
+        }}
+      >
+        <option value="county_thurston_wa">Thurston County, WA &bull; Superior Court (Odyssey Portal & Records)</option>
+        <option value="county_pierce_wa">Pierce County, WA &bull; Superior Court (LINX / Odyssey Portal)</option>
+        <option value="county_king_wa">King County, WA &bull; Superior Court (ECR Portal & Records)</option>
+        <option value="county_travis_tx">Travis County, TX &bull; Probate Court No. 1 (Odyssey Portal)</option>
+        <option value="county_maricopa_az">Maricopa County, AZ &bull; Superior Court (PB Records Portal)</option>
+      </select>
+    </div>
+  );
+}
+
+function LookbackWindowField({
+  lookbackDays,
+  setLookbackDays,
+  isRunning,
+}: {
+  lookbackDays: number;
+  setLookbackDays: (days: number) => void;
+  isRunning: boolean;
+}) {
+  return (
+    <div>
+      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '6px' }}>
+        LOOKBACK WINDOW
+      </label>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <input
+          type="number"
+          min={1}
+          max={90}
+          value={lookbackDays}
+          onChange={(e) => setLookbackDays(Number(e.target.value))}
+          disabled={isRunning}
+          style={{
+            width: '100%',
+            padding: '8px 12px',
+            borderRadius: '6px',
+            background: '#131b2e',
+            border: '1px solid #334155',
+            color: '#f8fafc',
+            fontSize: '0.85rem',
+            outline: 'none',
+          }}
+        />
+        <span style={{ marginLeft: '8px', fontSize: '0.8rem', color: '#64748b' }}>days</span>
+      </div>
+      <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
+        {LOOKBACK_PRESETS.map((preset) => (
+          <button
+            key={preset.val}
+            type="button"
+            disabled={isRunning}
+            onClick={() => setLookbackDays(preset.val)}
+            style={{
+              background: lookbackDays === preset.val ? '#4f46e5' : '#1e293b',
+              color: lookbackDays === preset.val ? '#fff' : '#94a3b8',
+              border: '1px solid #334155',
+              borderRadius: '4px',
+              padding: '2px 8px',
+              fontSize: '0.72rem',
+              cursor: 'pointer',
+            }}
+          >
+            {preset.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function HarvestLimitField({
+  harvestLimit,
+  setHarvestLimit,
+  isRunning,
+}: {
+  harvestLimit: number;
+  setHarvestLimit: (limit: number) => void;
+  isRunning: boolean;
+}) {
+  return (
+    <div>
+      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '6px' }}>
+        HARVEST LIMIT
+      </label>
+      <select
+        value={harvestLimit}
+        onChange={(e) => setHarvestLimit(Number(e.target.value))}
+        disabled={isRunning}
+        style={{
+          width: '100%',
+          padding: '8px 12px',
+          borderRadius: '6px',
+          background: '#131b2e',
+          border: '1px solid #334155',
+          color: '#f8fafc',
+          fontSize: '0.85rem',
+          outline: 'none',
+        }}
+      >
+        <option value={15}>15 Dockets</option>
+        <option value={30}>30 Dockets</option>
+        <option value={50}>50 Dockets</option>
+        <option value={100}>100 (Full 90-Day Backfill)</option>
+      </select>
+    </div>
+  );
+}
+
+function ScraperSubmitButton({ isRunning }: { isRunning: boolean }) {
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+      <button
+        type="submit"
+        disabled={isRunning}
+        style={{
+          width: '100%',
+          padding: '9px 16px',
+          borderRadius: '6px',
+          background: isRunning ? '#312e81' : '#4f46e5',
+          border: 'none',
+          color: '#fff',
+          fontWeight: 600,
+          fontSize: '0.85rem',
+          cursor: isRunning ? 'not-allowed' : 'pointer',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          transition: 'background 0.2s',
+        }}
+      >
+        {isRunning ? (
+          <>
+            <span style={{ animation: 'spin 1s linear infinite' }}>&#9696;</span>
+            <span>Scraping Municipal Portal...</span>
+          </>
+        ) : (
+          <>
+            <span>&#9654;</span>
+            <span>Run Municipal Intake Scraper</span>
+          </>
+        )}
+      </button>
+    </div>
+  );
+}
+
 interface ScraperConfigFormProps {
   countyId: string;
   setCountyId: (id: string) => void;
@@ -110,145 +292,10 @@ function ScraperConfigForm({
         background: '#090d16',
       }}
     >
-      <div>
-        <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '6px' }}>
-          TARGET COUNTY DOCKET REPOSITORY
-        </label>
-        <select
-          value={countyId}
-          onChange={(e) => setCountyId(e.target.value)}
-          disabled={isRunning}
-          style={{
-            width: '100%',
-            padding: '8px 12px',
-            borderRadius: '6px',
-            background: '#131b2e',
-            border: '1px solid #334155',
-            color: '#f8fafc',
-            fontSize: '0.85rem',
-            outline: 'none',
-          }}
-        >
-                    <option value="county_thurston_wa">Thurston County, WA &bull; Superior Court (Odyssey Portal & Records)</option>
-          <option value="county_pierce_wa">Pierce County, WA &bull; Superior Court (LINX / Odyssey Portal)</option>
-          <option value="county_king_wa">King County, WA &bull; Superior Court (ECR Portal & Records)</option>
-          <option value="county_travis_tx">Travis County, TX &bull; Probate Court No. 1 (Odyssey Portal)</option>
-          <option value="county_maricopa_az">Maricopa County, AZ &bull; Superior Court (PB Records Portal)</option>
-        </select>
-      </div>
-
-      <div>
-        <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '6px' }}>
-          LOOKBACK WINDOW
-        </label>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
-          <input
-            type="number"
-            min={1}
-            max={90}
-            value={lookbackDays}
-            onChange={(e) => setLookbackDays(Number(e.target.value))}
-            disabled={isRunning}
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              borderRadius: '6px',
-              background: '#131b2e',
-              border: '1px solid #334155',
-              color: '#f8fafc',
-              fontSize: '0.85rem',
-              outline: 'none',
-            }}
-          />
-          <span style={{ marginLeft: '8px', fontSize: '0.8rem', color: '#64748b' }}>days</span>
-        </div>
-        <div style={{ display: 'flex', gap: '6px', marginTop: '6px' }}>
-          {[
-            { label: '14d', val: 14 },
-            { label: '30d', val: 30 },
-            { label: '90d Backfill', val: 90 },
-          ].map((preset) => (
-            <button
-              key={preset.val}
-              type="button"
-              disabled={isRunning}
-              onClick={() => setLookbackDays(preset.val)}
-              style={{
-                background: lookbackDays === preset.val ? '#4f46e5' : '#1e293b',
-                color: lookbackDays === preset.val ? '#fff' : '#94a3b8',
-                border: '1px solid #334155',
-                borderRadius: '4px',
-                padding: '2px 8px',
-                fontSize: '0.72rem',
-                cursor: 'pointer',
-              }}
-            >
-              {preset.label}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', marginBottom: '6px' }}>
-          HARVEST LIMIT
-        </label>
-        <select
-          value={harvestLimit}
-          onChange={(e) => setHarvestLimit(Number(e.target.value))}
-          disabled={isRunning}
-          style={{
-            width: '100%',
-            padding: '8px 12px',
-            borderRadius: '6px',
-            background: '#131b2e',
-            border: '1px solid #334155',
-            color: '#f8fafc',
-            fontSize: '0.85rem',
-            outline: 'none',
-          }}
-        >
-          <option value={15}>15 Dockets</option>
-          <option value={30}>30 Dockets</option>
-          <option value={50}>50 Dockets</option>
-          <option value={100}>100 (Full 90-Day Backfill)</option>
-        </select>
-      </div>
-
-      <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-        <button
-          type="submit"
-          disabled={isRunning}
-          style={{
-            width: '100%',
-            padding: '9px 16px',
-            borderRadius: '6px',
-            background: isRunning ? '#312e81' : '#4f46e5',
-            border: 'none',
-            color: '#fff',
-            fontWeight: 600,
-            fontSize: '0.85rem',
-            cursor: isRunning ? 'not-allowed' : 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            transition: 'background 0.2s',
-          }}
-        >
-          {isRunning ? (
-            <>
-              <span style={{ animation: 'spin 1s linear infinite' }}>&#9696;</span>
-              <span>Scraping Municipal Portal...</span>
-            </>
-          ) : (
-            <>
-              <span>&#9654;</span>
-              <span>Run Municipal Intake Scraper</span>
-            </>
-          )}
-        </button>
-      </div>
+      <CountySelectorField countyId={countyId} setCountyId={setCountyId} isRunning={isRunning} />
+      <LookbackWindowField lookbackDays={lookbackDays} setLookbackDays={setLookbackDays} isRunning={isRunning} />
+      <HarvestLimitField harvestLimit={harvestLimit} setHarvestLimit={setHarvestLimit} isRunning={isRunning} />
+      <ScraperSubmitButton isRunning={isRunning} />
     </form>
   );
 }

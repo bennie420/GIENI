@@ -62,11 +62,28 @@ export async function verifyClaimAction(claimId: string, verifierId?: string) {
     throw new Error(`Claim '${claimId}' not found for tenant.`);
   }
 
+  const docRepo = getTenantScopedRepository<SourceDocument>('sourceDocuments', db);
+  const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
+
+  const [docs, exceptions] = await Promise.all([
+    docRepo.findMany(scope),
+    excRepo.findMany(scope),
+  ]);
+
+  const verifiedHashes = new Set<string>(docs.map((d: SourceDocument) => d.artifactSha256).filter(Boolean));
+
   // Enforce ClaimVerificationPolicy (EI-002)
   const actorId = verifierId || scope.organizationId;
   ClaimVerificationPolicy.assertCompliant(existingClaim, {
     actorId,
     actorRole: 'org:operator_admin',
+    verifiedArtifactHashes: verifiedHashes.size > 0 ? verifiedHashes : undefined,
+    knownExceptions: exceptions.map((e) => ({
+      id: e.id,
+      status: e.status,
+      subjectId: (e as any).subjectId ?? e.opportunityId,
+      type: e.type,
+    })),
   });
 
   const previousStatus = existingClaim.verificationStatus;
@@ -125,6 +142,56 @@ export async function submitClientFeedbackAction(
 
 /**
  * Triggers an authentic municipal docket scraper run via the County Adapter subsystem.
+async function persistBatchIfMissing<T extends { id: string }>(
+  repo: any,
+  scope: TenantScope,
+  countyId: string,
+  items: T[],
+  keySelector: (item: T) => string
+): Promise<void> {
+  const existing = await repo.findMany(scope);
+  const existingKeys = new Set(existing.map(keySelector));
+
+  for (const item of items) {
+    if (!existingKeys.has(keySelector(item))) {
+      const { id, createdAt, updatedAt, organizationId, ...payload } = item as any;
+      await repo.create(scope, {
+        ...payload,
+        countyId,
+      });
+    }
+  }
+}
+
+async function persistIngestionRunData(
+  db: any,
+  scope: TenantScope,
+  countyId: string,
+  data: IngestionRunResult['data']
+): Promise<void> {
+  const caseRepo = getTenantScopedRepository<ProbateCase>('probateCases', db);
+  const docRepo = getTenantScopedRepository<SourceDocument & { countyId: string }>('sourceDocuments', db);
+  const parcelRepo = getTenantScopedRepository<PropertyParcel>('properties', db);
+  const claimRepo = getTenantScopedRepository<Claim>('claims', db);
+  const authRepo = getTenantScopedRepository<AuthorityAssessment>('authorityAssessments', db);
+  const ownRepo = getTenantScopedRepository<OwnershipAssessment>('ownershipAssessments', db);
+  const scoreRepo = getTenantScopedRepository<OpportunityScore>('opportunityScores', db);
+  const oppRepo = getTenantScopedRepository<Opportunity>('opportunities', db);
+  const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
+
+  await persistBatchIfMissing(caseRepo, scope, countyId, data.cases, (c) => c.caseNumber);
+  await persistBatchIfMissing(docRepo, scope, countyId, data.documents, (d) => d.artifactSha256);
+  await persistBatchIfMissing(parcelRepo, scope, countyId, data.parcels, (p) => p.apn);
+  await persistBatchIfMissing(claimRepo, scope, countyId, data.claims, (cl) => cl.id);
+  await persistBatchIfMissing(authRepo, scope, countyId, data.authorities, (a) => a.id);
+  await persistBatchIfMissing(ownRepo, scope, countyId, data.ownerships, (o) => o.id);
+  await persistBatchIfMissing(scoreRepo, scope, countyId, data.scores, (s) => s.id);
+  await persistBatchIfMissing(oppRepo, scope, countyId, data.opportunities, (op) => op.id);
+  await persistBatchIfMissing(excRepo, scope, countyId, data.exceptions, (e) => e.id);
+}
+
+/**
+ * Triggers a live municipal scraper execution for a specified county jurisdiction.
  * Emits live timestamped telemetry, persists records to the tenant store, and returns results.
  */
 export async function triggerMunicipalScraperAction(
@@ -148,144 +215,14 @@ export async function triggerMunicipalScraperAction(
     } catch {
       // Atlas unreachable in local/sandbox, will persist to local store
     }
-    const caseRepo = getTenantScopedRepository<ProbateCase>('probateCases', db);
-    const docRepo = getTenantScopedRepository<SourceDocument & { countyId: string }>('sourceDocuments', db);
-    const parcelRepo = getTenantScopedRepository<PropertyParcel>('properties', db);
-
-    const existingCases = await caseRepo.findMany(scope);
-    const existingCaseNumbers = new Set(existingCases.map((c) => c.caseNumber));
-
-    for (const c of result.data.cases) {
-      if (!existingCaseNumbers.has(c.caseNumber)) {
-        const { id, createdAt, updatedAt, organizationId, ...casePayload } = c;
-        await caseRepo.create(scope, {
-          ...casePayload,
-          countyId,
-        });
-      }
-    }
-
-    const existingDocs = await docRepo.findMany(scope);
-    const existingDocHashes = new Set(existingDocs.map((d) => d.artifactSha256));
-
-    for (const doc of result.data.documents) {
-      if (!existingDocHashes.has(doc.artifactSha256)) {
-        const { id, createdAt, updatedAt, organizationId, ...docPayload } = doc;
-        await docRepo.create(scope, {
-          ...docPayload,
-          countyId,
-        });
-      }
-    }
-
-    const existingParcels = await parcelRepo.findMany(scope);
-    const existingApns = new Set(existingParcels.map((p) => p.apn));
-
-    for (const p of result.data.parcels) {
-      if (!existingApns.has(p.apn)) {
-        const { id, createdAt, updatedAt, organizationId, ...parcelPayload } = p;
-        await parcelRepo.create(scope, {
-          ...parcelPayload,
-          countyId,
-        });
-      }
-    }
-
-    // Persist Document AI Claims
-    const claimRepo = getTenantScopedRepository<Claim>('claims', db);
-    const existingClaims = await claimRepo.findMany(scope);
-    const existingClaimIds = new Set(existingClaims.map((cl) => cl.id));
-
-    for (const cl of result.data.claims) {
-      if (!existingClaimIds.has(cl.id)) {
-        const { id, createdAt, updatedAt, organizationId, ...claimPayload } = cl;
-        await claimRepo.create(scope, {
-          ...claimPayload,
-          countyId,
-        });
-      }
-    }
-
-    // Persist Authority Assessments
-    const authRepo = getTenantScopedRepository<AuthorityAssessment>('authorityAssessments', db);
-    const existingAuths = await authRepo.findMany(scope);
-    const existingAuthIds = new Set(existingAuths.map((a) => a.id));
-
-    for (const a of result.data.authorities) {
-      if (!existingAuthIds.has(a.id)) {
-        const { id, createdAt, updatedAt, organizationId, ...authPayload } = a;
-        await authRepo.create(scope, {
-          ...authPayload,
-          countyId,
-        });
-      }
-    }
-
-    // Persist Ownership Assessments
-    const ownRepo = getTenantScopedRepository<OwnershipAssessment>('ownershipAssessments', db);
-    const existingOwns = await ownRepo.findMany(scope);
-    const existingOwnIds = new Set(existingOwns.map((o) => o.id));
-
-    for (const o of result.data.ownerships) {
-      if (!existingOwnIds.has(o.id)) {
-        const { id, createdAt, updatedAt, organizationId, ...ownPayload } = o;
-        await ownRepo.create(scope, {
-          ...ownPayload,
-          countyId,
-        });
-      }
-    }
-
-    // Persist Opportunity Scores
-    const scoreRepo = getTenantScopedRepository<OpportunityScore>('opportunityScores', db);
-    const existingScores = await scoreRepo.findMany(scope);
-    const existingScoreIds = new Set(existingScores.map((s) => s.id));
-
-    for (const s of result.data.scores) {
-      if (!existingScoreIds.has(s.id)) {
-        const { id, createdAt, updatedAt, organizationId, ...scorePayload } = s;
-        await scoreRepo.create(scope, {
-          ...scorePayload,
-          countyId,
-        });
-      }
-    }
-
-    // Persist Projected Opportunities
-    const oppRepo = getTenantScopedRepository<Opportunity>('opportunities', db);
-    const existingOpps = await oppRepo.findMany(scope);
-    const existingOppIds = new Set(existingOpps.map((op) => op.id));
-
-    for (const op of result.data.opportunities) {
-      if (!existingOppIds.has(op.id)) {
-        const { id, createdAt, updatedAt, organizationId, ...oppPayload } = op;
-        await oppRepo.create(scope, {
-          ...oppPayload,
-          countyId,
-        });
-      }
-    }
-
-    // Persist Investigation Exceptions
-    const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
-    const existingExceptions = await excRepo.findMany(scope);
-    const existingExcIds = new Set(existingExceptions.map((e) => e.id));
-
-    for (const exc of result.data.exceptions) {
-      if (!existingExcIds.has(exc.id)) {
-        const { id, createdAt, updatedAt, organizationId, ...excPayload } = exc;
-        await excRepo.create(scope, {
-          ...excPayload,
-          countyId,
-        });
-      }
-    }
+    await persistIngestionRunData(db, scope, countyId, result.data);
   } catch (dbErr: any) {
     console.warn('[Municipal Ingestion] DB persistence warning (offline/sandbox):', dbErr.message);
   }
 
   return result;
 }
+
 
 /**
  * Queries real-time health, circuit breaker state, and layout drift for all registered county adapters.

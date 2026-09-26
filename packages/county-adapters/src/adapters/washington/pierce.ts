@@ -12,6 +12,14 @@ import {
   DocumentLayoutFingerprint 
 } from '../../types.js';
 import { evaluateDocumentLayoutDrift, computeTemplateStructureHash } from '../../drift.js';
+import { buildParcelRecord, buildCaseDocumentRecord, parseCountyFilingDate } from '../../adapter-utils.js';
+
+const PIERCE_PARCELS_RAW = [
+  { apn: '0221143091', street: '4812 N 16th St', city: 'Tacoma', zip: '98406', legal: 'SECTION 14 TOWNSHIP 21 RANGE 02 QUARTER 31 HIGHLAND PARK ADDN', landVal: 245000, impVal: 485000, totalVal: 730000 },
+  { apn: '0219153042', street: '8402 Steilacoom Blvd SW', city: 'Lakewood', zip: '98498', legal: 'SECTION 15 TOWNSHIP 19 RANGE 02 QUARTER 42 LAKEWOOD ESTATES LOT 4', landVal: 210000, impVal: 440000, totalVal: 650000 },
+  { apn: '0320143021', street: '1042 S 11th St', city: 'Tacoma', zip: '98405', legal: 'SECTION 14 TOWNSHIP 20 RANGE 03 CENTRAL ADDN LOT 12', landVal: 165000, impVal: 320000, totalVal: 485000 },
+  { apn: '0421081015', street: '512 Puyallup Ave', city: 'Puyallup', zip: '98371', legal: 'SECTION 08 TOWNSHIP 21 RANGE 04 MEEKER ADDN LOT 5', landVal: 190000, impVal: 370000, totalVal: 560000 },
+];
 
 function daysAgo(days: number): string {
   return new Date(Date.now() - days * 86400000).toISOString();
@@ -94,7 +102,8 @@ export class PierceCountyAdapter implements ICountyAdapter {
     ];
 
     if (options?.sinceDate) {
-      const sinceMs = new Date(options.sinceDate).getTime();
+      const parsedSince = parseCountyFilingDate(options.sinceDate) ?? options.sinceDate;
+      const sinceMs = new Date(parsedSince).getTime();
       return allCases.filter((c) => new Date(c.filingDate).getTime() >= sinceMs).slice(0, options?.limit ?? allCases.length);
     }
     return allCases.slice(0, options?.limit ?? allCases.length);
@@ -110,36 +119,30 @@ export class PierceCountyAdapter implements ICountyAdapter {
       const sha2 = crypto.createHash('sha256').update(cpaText).digest('hex');
 
       return [
-        {
+        buildCaseDocumentRecord({
           id: `sr_pierce_${caseNumber}_lopa`,
-          organizationId: 'org_gieni_internal',
           countyId: this.countyId,
           sourceType: 'RECORDER',
           sourceUrl: `https://armsweb.co.pierce.wa.us/recorder/search?doc=${caseNumber}_lopa`,
-          retrievalTimestamp: new Date().toISOString(),
           artifactSha256: sha1,
           sourceSystem: 'Pierce County Auditor Public Recording Department',
           rawPayloadLocation: `gs://gieni-evidence-pierce/cases/${caseNumber}/lack_of_probate_affidavit.pdf`,
           adapterVersion: this.adapterVersion,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          schemaVersion: 1,
-        },
-        {
+          caseNumber,
+          filingType: 'LACK_OF_PROBATE_AFFIDAVIT',
+        }),
+        buildCaseDocumentRecord({
           id: `sr_pierce_${caseNumber}_cpa`,
-          organizationId: 'org_gieni_internal',
           countyId: this.countyId,
           sourceType: 'RECORDER',
           sourceUrl: `https://armsweb.co.pierce.wa.us/recorder/search?doc=${caseNumber}_cpa`,
-          retrievalTimestamp: new Date().toISOString(),
           artifactSha256: sha2,
           sourceSystem: 'Pierce County Auditor Public Recording Department',
           rawPayloadLocation: `gs://gieni-evidence-pierce/cases/${caseNumber}/community_property_agreement.pdf`,
           adapterVersion: this.adapterVersion,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          schemaVersion: 1,
-        },
+          caseNumber,
+          filingType: 'COMMUNITY_PROPERTY_AGREEMENT',
+        }),
       ];
     }
 
@@ -153,175 +156,52 @@ export class PierceCountyAdapter implements ICountyAdapter {
     const sha3 = crypto.createHash('sha256').update(lettersText).digest('hex');
     const sha4 = crypto.createHash('sha256').update(invText).digest('hex');
 
-    return [
-      {
-        id: `sr_pierce_${caseNumber}_petition`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://linxonline.co.pierce.wa.us/linxweb/Docket.cfm?case_num=${caseNumber}&doc=petition`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha1,
-        sourceSystem: 'Pierce County LINX Superior Court Docket Portal',
-        rawPayloadLocation: `gs://gieni-evidence-pierce/cases/${caseNumber}/petition_for_probate.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_pierce_${caseNumber}_order`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://linxonline.co.pierce.wa.us/linxweb/Docket.cfm?case_num=${caseNumber}&doc=order`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha2,
-        sourceSystem: 'Pierce County LINX Superior Court Docket Portal',
-        rawPayloadLocation: `gs://gieni-evidence-pierce/cases/${caseNumber}/order_admitting_will.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_pierce_${caseNumber}_letters`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://linxonline.co.pierce.wa.us/linxweb/Docket.cfm?case_num=${caseNumber}&doc=letters`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha3,
-        sourceSystem: 'Pierce County LINX Superior Court Docket Portal',
-        rawPayloadLocation: `gs://gieni-evidence-pierce/cases/${caseNumber}/letters_testamentary.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_pierce_${caseNumber}_inventory`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://linxonline.co.pierce.wa.us/linxweb/Docket.cfm?case_num=${caseNumber}&doc=inventory`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha4,
-        sourceSystem: 'Pierce County LINX Superior Court Docket Portal',
-        rawPayloadLocation: `gs://gieni-evidence-pierce/cases/${caseNumber}/inventory_appraisement.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
+    const docConfigs = [
+      { key: 'petition', sha: sha1, path: 'petition_for_probate.pdf', url: 'doc=petition', filingType: 'PETITION_FOR_PROBATE' as const },
+      { key: 'order', sha: sha2, path: 'order_admitting_will.pdf', url: 'doc=order', filingType: 'ORDER_APPOINTING_PR' as const },
+      { key: 'letters', sha: sha3, path: 'letters_testamentary.pdf', url: 'doc=letters', filingType: 'LETTERS_TESTAMENTARY' as const },
+      { key: 'inventory', sha: sha4, path: 'inventory_appraisement.pdf', url: 'doc=inventory', filingType: 'INVENTORY_AND_APPRAISEMENT' as const },
     ];
+
+    return docConfigs.map((doc) =>
+      buildCaseDocumentRecord({
+        id: `sr_pierce_${caseNumber}_${doc.key}`,
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://linxonline.co.pierce.wa.us/linxweb/Docket.cfm?case_num=${caseNumber}&${doc.url}`,
+        artifactSha256: doc.sha,
+        sourceSystem: 'Pierce County LINX Superior Court Docket Portal',
+        rawPayloadLocation: `gs://gieni-evidence-pierce/cases/${caseNumber}/${doc.path}`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: doc.filingType,
+      })
+    );
   }
 
   public async getParcels(options?: ParcelQueryOptions): Promise<PropertyParcel[]> {
-    const defaultParcels: PropertyParcel[] = [
-      {
-        id: `parcel_${this.countyId}_0221143091`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '0221143091',
-        address: {
-          street: '4812 N 16th St',
-          city: 'Tacoma',
-          state: 'WA',
-          zipCode: '98406',
-          county: 'Pierce',
-        },
-        legalDescription: 'SECTION 14 TOWNSHIP 21 RANGE 02 QUARTER 31 HIGHLAND PARK ADDN',
-        assessedLandValue: 245000,
-        assessedImprovementValue: 485000,
-        totalAssessedValue: 730000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_pierce_at_0221143091'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_0219153042`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '0219153042',
-        address: {
-          street: '8402 Steilacoom Blvd SW',
-          city: 'Lakewood',
-          state: 'WA',
-          zipCode: '98498',
-          county: 'Pierce',
-        },
-        legalDescription: 'SECTION 15 TOWNSHIP 19 RANGE 02 QUARTER 42 LAKEWOOD ESTATES LOT 4',
-        assessedLandValue: 210000,
-        assessedImprovementValue: 440000,
-        totalAssessedValue: 650000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_pierce_at_0219153042'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_0320143021`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '0320143021',
-        address: {
-          street: '1042 S 11th St',
-          city: 'Tacoma',
-          state: 'WA',
-          zipCode: '98405',
-          county: 'Pierce',
-        },
-        legalDescription: 'SECTION 14 TOWNSHIP 20 RANGE 03 CENTRAL ADDN LOT 12',
-        assessedLandValue: 165000,
-        assessedImprovementValue: 320000,
-        totalAssessedValue: 485000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_pierce_at_0320143021'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_0421081015`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '0421081015',
-        address: {
-          street: '512 Puyallup Ave',
-          city: 'Puyallup',
-          state: 'WA',
-          zipCode: '98371',
-          county: 'Pierce',
-        },
-        legalDescription: 'SECTION 08 TOWNSHIP 21 RANGE 04 MEEKER ADDN LOT 5',
-        assessedLandValue: 190000,
-        assessedImprovementValue: 370000,
-        totalAssessedValue: 560000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_pierce_at_0421081015'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-    ];
+    const list = options?.apn
+      ? PIERCE_PARCELS_RAW.filter((p) => p.apn === options.apn)
+      : PIERCE_PARCELS_RAW.slice(0, options?.limit ?? PIERCE_PARCELS_RAW.length);
 
-    if (options?.apn) {
-      return defaultParcels.filter((p) => p.apn === options.apn);
-    }
-    return defaultParcels.slice(0, options?.limit ?? defaultParcels.length);
+    return list.map((p) =>
+      buildParcelRecord({
+        countyId: this.countyId,
+        apn: p.apn,
+        street: p.street,
+        city: p.city,
+        state: 'WA',
+        zipCode: p.zip,
+        county: 'Pierce',
+        legalDescription: p.legal,
+        assessedLandValue: p.landVal,
+        assessedImprovementValue: p.impVal,
+        totalAssessedValue: p.totalVal,
+        verifiedEvidenceIds: [`sr_pierce_at_${p.apn}`],
+      })
+    );
   }
+
 
   public async getRecordedDocuments(apnOrName: string): Promise<SourceRecord[]> {
     if (apnOrName.toLowerCase().includes('unindexed') || apnOrName.toLowerCase().includes('unlocated')) {

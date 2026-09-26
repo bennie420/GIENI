@@ -16,6 +16,42 @@ export function computeTemplateStructureHash(documentText: string): string {
   return crypto.createHash('sha256').update(signature).digest('hex');
 }
 
+function checkHeaderPattern(documentText: string, pattern: string): string | null {
+  const headerRegex = new RegExp(pattern, 'i');
+  if (!headerRegex.test(documentText)) {
+    return `Header pattern mismatch: Expected regex '${pattern}' not found in document text.`;
+  }
+  return null;
+}
+
+function checkTemplateHash(documentText: string, expectedHash: string): string | null {
+  const currentStructureHash = computeTemplateStructureHash(documentText);
+  if (currentStructureHash !== expectedHash) {
+    return `Structural template hash mismatch: Recorded template '${expectedHash.slice(0, 8)}...' does not match current layout signature '${currentStructureHash.slice(0, 8)}...'.`;
+  }
+  return null;
+}
+
+function checkWatermark(documentText: string, pattern?: string): string | null {
+  if (!pattern) return null;
+  const watermarkRegex = new RegExp(pattern, 'i');
+  if (!watermarkRegex.test(documentText)) {
+    return `Watermark or seal pattern mismatch: '${pattern}' absent from document.`;
+  }
+  return null;
+}
+
+function calculateDriftConfidence(violationsCount: number): number {
+  if (violationsCount === 0) return 0.0;
+  return violationsCount >= 2 ? 0.95 : 0.65;
+}
+
+function resolveRecommendedAction(confidence: number): LayoutDriftResult['recommendedAction'] {
+  if (confidence >= 0.9) return 'QUARANTINE_PARSER';
+  if (confidence > 0) return 'REVIEW_LAYOUT';
+  return 'NONE';
+}
+
 /**
  * Evaluates whether a county document exhibits structural layout drift (Gieni OS PRD v1.0 CH-002).
  * Catches page layout changes, court header revisions, and watermark changes before parser breakdown.
@@ -25,52 +61,20 @@ export function evaluateDocumentLayoutDrift(params: {
   fingerprint: DocumentLayoutFingerprint;
 }): LayoutDriftResult {
   const { documentText, fingerprint } = params;
-  const driftDetails: string[] = [];
 
-  // 1. Header Pattern Regex Check
-  const headerRegex = new RegExp(fingerprint.headerPatternRegex, 'i');
-  if (!headerRegex.test(documentText)) {
-    driftDetails.push(
-      `Header pattern mismatch: Expected regex '${fingerprint.headerPatternRegex}' not found in document text.`
-    );
-  }
+  const violations = [
+    checkHeaderPattern(documentText, fingerprint.headerPatternRegex),
+    checkTemplateHash(documentText, fingerprint.templateHash),
+    checkWatermark(documentText, fingerprint.watermarkPattern),
+  ].filter((v): v is string => v !== null);
 
-  // 2. Template Structure Hash Check
-  const currentStructureHash = computeTemplateStructureHash(documentText);
-  if (currentStructureHash !== fingerprint.templateHash) {
-    driftDetails.push(
-      `Structural template hash mismatch: Recorded template '${fingerprint.templateHash.slice(0, 8)}...' does not match current layout signature '${currentStructureHash.slice(0, 8)}...'.`
-    );
-  }
-
-  // 3. Watermark presence check (if defined)
-  if (fingerprint.watermarkPattern) {
-    const watermarkRegex = new RegExp(fingerprint.watermarkPattern, 'i');
-    if (!watermarkRegex.test(documentText)) {
-      driftDetails.push(
-        `Watermark or seal pattern mismatch: '${fingerprint.watermarkPattern}' absent from document.`
-      );
-    }
-  }
-
-  const hasDrift = driftDetails.length > 0;
-  const driftConfidence = hasDrift
-    ? driftDetails.length >= 2
-      ? 0.95
-      : 0.65
-    : 0.0;
-
-  let recommendedAction: LayoutDriftResult['recommendedAction'] = 'NONE';
-  if (driftConfidence >= 0.9) {
-    recommendedAction = 'QUARANTINE_PARSER';
-  } else if (driftConfidence > 0) {
-    recommendedAction = 'REVIEW_LAYOUT';
-  }
+  const driftConfidence = calculateDriftConfidence(violations.length);
 
   return {
-    hasDrift,
+    hasDrift: violations.length > 0,
     driftConfidence,
-    driftDetails,
-    recommendedAction,
+    driftDetails: violations,
+    recommendedAction: resolveRecommendedAction(driftConfidence),
   };
 }
+

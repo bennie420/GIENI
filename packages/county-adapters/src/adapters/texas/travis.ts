@@ -12,6 +12,13 @@ import {
   DocumentLayoutFingerprint 
 } from '../../types.js';
 import { evaluateDocumentLayoutDrift, computeTemplateStructureHash } from '../../drift.js';
+import { buildParcelRecord, buildCaseDocumentRecord } from '../../adapter-utils.js';
+
+const TRAVIS_PARCELS_RAW = [
+  { apn: '02-1408-0112', street: '742 Evergreen Terrace', city: 'Austin', zip: '78701', legal: 'LOT 4 BLK B WEST AUSTIN SEC 2', landVal: 200000, impVal: 505000, totalVal: 705000 },
+  { apn: '01-0812-0455', street: '2104 E 7th St', city: 'Austin', zip: '78702', legal: 'EAST AUSTIN ADDITION LOT 8 BLK 15', landVal: 250000, impVal: 370000, totalVal: 620000 },
+  { apn: '03-2219-0871', street: '4912 Spicewood Springs Rd', city: 'Austin', zip: '78759', legal: 'NORTHWEST HILLS SEC 4 LOT 22', landVal: 310000, impVal: 430000, totalVal: 740000 },
+];
 
 function daysAgo(days: number): string {
   return new Date(Date.now() - days * 86400000).toISOString();
@@ -98,151 +105,52 @@ export class TravisCountyAdapter implements ICountyAdapter {
     const sha3 = crypto.createHash('sha256').update(lettersText).digest('hex');
     const sha4 = crypto.createHash('sha256').update(invText).digest('hex');
 
-    return [
-      {
-        id: `sr_travis_${caseNumber}_application`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/application.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha1,
-        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
-        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/application_for_letters.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_travis_${caseNumber}_order`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/order.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha2,
-        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
-        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/order_admitting_will.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_travis_${caseNumber}_letters`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/letters.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha3,
-        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
-        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/letters_testamentary.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_travis_${caseNumber}_inventory`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/inventory.pdf`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha4,
-        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
-        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/inventory_appraisement.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
+    const docConfigs = [
+      { key: 'application', sha: sha1, path: 'application_for_letters.pdf', url: 'application.pdf', filingType: 'PETITION_FOR_PROBATE' as const },
+      { key: 'order', sha: sha2, path: 'order_admitting_will.pdf', url: 'order.pdf', filingType: 'ORDER_APPOINTING_PR' as const },
+      { key: 'letters', sha: sha3, path: 'letters_testamentary.pdf', url: 'letters.pdf', filingType: 'LETTERS_TESTAMENTARY' as const },
+      { key: 'inventory', sha: sha4, path: 'inventory_appraisement.pdf', url: 'inventory.pdf', filingType: 'INVENTORY_AND_APPRAISEMENT' as const },
     ];
+
+    return docConfigs.map((doc) =>
+      buildCaseDocumentRecord({
+        id: `sr_travis_${caseNumber}_${doc.key}`,
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/${doc.url}`,
+        artifactSha256: doc.sha,
+        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
+        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/${doc.path}`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: doc.filingType,
+      })
+    );
   }
 
   public async getParcels(options?: ParcelQueryOptions): Promise<PropertyParcel[]> {
-    const defaultParcels: PropertyParcel[] = [
-      {
-        id: `parcel_${this.countyId}_02-1408-0112`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '02-1408-0112',
-        address: {
-          street: '742 Evergreen Terrace',
-          city: 'Austin',
-          state: 'TX',
-          zipCode: '78701',
-          county: 'Travis',
-        },
-        legalDescription: 'LOT 4 BLK B WEST AUSTIN SEC 2',
-        assessedLandValue: 200000,
-        assessedImprovementValue: 505000,
-        totalAssessedValue: 705000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_tcad_02-1408-0112'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_01-0812-0455`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '01-0812-0455',
-        address: {
-          street: '2104 E 7th St',
-          city: 'Austin',
-          state: 'TX',
-          zipCode: '78702',
-          county: 'Travis',
-        },
-        legalDescription: 'EAST AUSTIN ADDITION LOT 8 BLK 15',
-        assessedLandValue: 250000,
-        assessedImprovementValue: 370000,
-        totalAssessedValue: 620000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_tcad_01-0812-0455'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_03-2219-0871`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '03-2219-0871',
-        address: {
-          street: '4912 Spicewood Springs Rd',
-          city: 'Austin',
-          state: 'TX',
-          zipCode: '78759',
-          county: 'Travis',
-        },
-        legalDescription: 'NORTHWEST HILLS SEC 4 LOT 22',
-        assessedLandValue: 310000,
-        assessedImprovementValue: 430000,
-        totalAssessedValue: 740000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_tcad_03-2219-0871'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-    ];
+    const list = options?.apn
+      ? TRAVIS_PARCELS_RAW.filter((p) => p.apn === options.apn)
+      : TRAVIS_PARCELS_RAW.slice(0, options?.limit ?? TRAVIS_PARCELS_RAW.length);
 
-    if (options?.apn) {
-      return defaultParcels.filter((p) => p.apn === options.apn);
-    }
-    return defaultParcels.slice(0, options?.limit ?? defaultParcels.length);
+    return list.map((p) =>
+      buildParcelRecord({
+        countyId: this.countyId,
+        apn: p.apn,
+        street: p.street,
+        city: p.city,
+        state: 'TX',
+        zipCode: p.zip,
+        county: 'Travis',
+        legalDescription: p.legal,
+        assessedLandValue: p.landVal,
+        assessedImprovementValue: p.impVal,
+        totalAssessedValue: p.totalVal,
+        verifiedEvidenceIds: [`sr_tcad_${p.apn}`],
+      })
+    );
   }
+
 
   public async getRecordedDocuments(apnOrName: string): Promise<SourceRecord[]> {
     if (apnOrName.toLowerCase().includes('unindexed') || apnOrName.toLowerCase().includes('unlocated')) {

@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Stops the Gieni OS Monorepo servers (ports 3000 and 8080).
 
@@ -30,22 +30,29 @@ Write-Host "   GIENI OS MONOREPO - STOPPING SERVERS                             
 Write-Host " ====================================================================== " -ForegroundColor DarkYellow
 Write-Host ""
 
+function Kill-ProcessById ([int]$ProcessId, [int]$Port, [string]$ServiceName) {
+    if ($ProcessId -le 0) {
+        return
+    }
+    $proc = Get-Process -Id $ProcessId -ErrorAction SilentlyContinue
+    $procName = "PID $ProcessId"
+    if ($proc) {
+        $procName = $proc.ProcessName
+    }
+    Write-Host " [*] Stopping $ServiceName ($procName on Port $Port, PID: $ProcessId)..." -ForegroundColor Cyan
+    Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
+    Write-Host " [✓] $ServiceName stopped." -ForegroundColor Green
+}
+
 function Stop-ProcessOnPort ([int]$Port, [string]$ServiceName) {
     try {
         $connections = Get-NetTCPConnection -LocalPort $Port -ErrorAction SilentlyContinue | Where-Object { $_.State -eq 'Listen' }
-        if ($connections) {
-            foreach ($conn in $connections) {
-                $pidToKill = $conn.OwningProcess
-                if ($pidToKill -gt 0) {
-                    $proc = Get-Process -Id $pidToKill -ErrorAction SilentlyContinue
-                    $procName = if ($proc) { $proc.ProcessName } else { "PID $pidToKill" }
-                    Write-Host " [*] Stopping $ServiceName ($procName on Port $Port, PID: $pidToKill)..." -ForegroundColor Cyan
-                    Stop-Process -Id $pidToKill -Force -ErrorAction SilentlyContinue
-                    Write-Host " [✓] $ServiceName stopped." -ForegroundColor Green
-                }
-            }
-        } else {
+        if (-not $connections) {
             Write-Host " [i] No active process listening on Port $Port ($ServiceName)." -ForegroundColor Gray
+            return
+        }
+        foreach ($conn in $connections) {
+            Kill-ProcessById -ProcessId $conn.OwningProcess -Port $Port -ServiceName $ServiceName
         }
     } catch {
         Write-Host " [!] Error stopping process on Port $Port : $_" -ForegroundColor Red

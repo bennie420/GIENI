@@ -12,6 +12,13 @@ import {
   DocumentLayoutFingerprint 
 } from '../../types.js';
 import { evaluateDocumentLayoutDrift, computeTemplateStructureHash } from '../../drift.js';
+import { buildParcelRecord, buildCaseDocumentRecord } from '../../adapter-utils.js';
+
+const KING_PARCELS_RAW = [
+  { apn: '7230400190', street: '2304 42nd Ave SW', city: 'Seattle', zip: '98116', legal: 'PLAT OF WEST SEATTLE LOT 9 BLK 14', landVal: 410000, impVal: 580000, totalVal: 990000 },
+  { apn: '3840200155', street: '1415 15th Ave', city: 'Seattle', zip: '98122', legal: 'CAPITOL HILL ADDITION LOT 11 BLK 28', landVal: 340000, impVal: 480000, totalVal: 820000 },
+  { apn: '5100400812', street: '7732 24th Ave NW', city: 'Seattle', zip: '98117', legal: 'BALLARD MANOR DIV NO 2 LOT 4', landVal: 390000, impVal: 520000, totalVal: 910000 },
+];
 
 function daysAgo(days: number): string {
   return new Date(Date.now() - days * 86400000).toISOString();
@@ -98,151 +105,52 @@ export class KingCountyAdapter implements ICountyAdapter {
     const sha3 = crypto.createHash('sha256').update(lettersText).digest('hex');
     const sha4 = crypto.createHash('sha256').update(invText).digest('hex');
 
-    return [
-      {
-        id: `sr_king_${caseNumber}_petition`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://dja-prd-ecexap1.kingcounty.gov/?case_id=${caseNumber}&doc=petition`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha1,
-        sourceSystem: 'King County Superior Court Electronic Court Records (ECR)',
-        rawPayloadLocation: `gs://gieni-evidence-king/cases/${caseNumber}/petition_for_probate.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_king_${caseNumber}_order`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://dja-prd-ecexap1.kingcounty.gov/?case_id=${caseNumber}&doc=order`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha2,
-        sourceSystem: 'King County Superior Court Electronic Court Records (ECR)',
-        rawPayloadLocation: `gs://gieni-evidence-king/cases/${caseNumber}/order_granting_nonintervention.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_king_${caseNumber}_letters`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://dja-prd-ecexap1.kingcounty.gov/?case_id=${caseNumber}&doc=letters`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha3,
-        sourceSystem: 'King County Superior Court Electronic Court Records (ECR)',
-        rawPayloadLocation: `gs://gieni-evidence-king/cases/${caseNumber}/letters_testamentary.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_king_${caseNumber}_inventory`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://dja-prd-ecexap1.kingcounty.gov/?case_id=${caseNumber}&doc=inventory`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha4,
-        sourceSystem: 'King County Superior Court Electronic Court Records (ECR)',
-        rawPayloadLocation: `gs://gieni-evidence-king/cases/${caseNumber}/inventory_and_claims.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
+    const docConfigs = [
+      { key: 'petition', sha: sha1, path: 'petition_for_probate.pdf', url: 'doc=petition', filingType: 'PETITION_FOR_PROBATE' as const },
+      { key: 'order', sha: sha2, path: 'order_granting_nonintervention.pdf', url: 'doc=order', filingType: 'ORDER_APPOINTING_PR' as const },
+      { key: 'letters', sha: sha3, path: 'letters_testamentary.pdf', url: 'doc=letters', filingType: 'LETTERS_TESTAMENTARY' as const },
+      { key: 'inventory', sha: sha4, path: 'inventory_and_claims.pdf', url: 'doc=inventory', filingType: 'INVENTORY_AND_APPRAISEMENT' as const },
     ];
+
+    return docConfigs.map((doc) =>
+      buildCaseDocumentRecord({
+        id: `sr_king_${caseNumber}_${doc.key}`,
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://dja-prd-ecexap1.kingcounty.gov/?case_id=${caseNumber}&${doc.url}`,
+        artifactSha256: doc.sha,
+        sourceSystem: 'King County Superior Court Electronic Court Records (ECR)',
+        rawPayloadLocation: `gs://gieni-evidence-king/cases/${caseNumber}/${doc.path}`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: doc.filingType,
+      })
+    );
   }
 
   public async getParcels(options?: ParcelQueryOptions): Promise<PropertyParcel[]> {
-    const defaultParcels: PropertyParcel[] = [
-      {
-        id: `parcel_${this.countyId}_7230400190`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '7230400190',
-        address: {
-          street: '2304 42nd Ave SW',
-          city: 'Seattle',
-          state: 'WA',
-          zipCode: '98116',
-          county: 'King',
-        },
-        legalDescription: 'PLAT OF WEST SEATTLE LOT 9 BLK 14',
-        assessedLandValue: 410000,
-        assessedImprovementValue: 580000,
-        totalAssessedValue: 990000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_king_assessor_7230400190'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_3840200155`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '3840200155',
-        address: {
-          street: '1415 15th Ave',
-          city: 'Seattle',
-          state: 'WA',
-          zipCode: '98122',
-          county: 'King',
-        },
-        legalDescription: 'CAPITOL HILL ADDITION LOT 11 BLK 28',
-        assessedLandValue: 340000,
-        assessedImprovementValue: 480000,
-        totalAssessedValue: 820000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_king_assessor_3840200155'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `parcel_${this.countyId}_5100400812`,
-        countyId: this.countyId,
-        organizationId: 'org_gieni_internal',
-        apn: '5100400812',
-        address: {
-          street: '7732 24th Ave NW',
-          city: 'Seattle',
-          state: 'WA',
-          zipCode: '98117',
-          county: 'King',
-        },
-        legalDescription: 'BALLARD MANOR DIV NO 2 LOT 4',
-        assessedLandValue: 390000,
-        assessedImprovementValue: 520000,
-        totalAssessedValue: 910000,
-        taxYear: 2025,
-        lastSaleDate: null,
-        lastSalePrice: null,
-        verifiedEvidenceIds: ['sr_king_assessor_5100400812'],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-    ];
+    const list = options?.apn
+      ? KING_PARCELS_RAW.filter((p) => p.apn === options.apn)
+      : KING_PARCELS_RAW.slice(0, options?.limit ?? KING_PARCELS_RAW.length);
 
-    if (options?.apn) {
-      return defaultParcels.filter((p) => p.apn === options.apn);
-    }
-    return defaultParcels.slice(0, options?.limit ?? defaultParcels.length);
+    return list.map((p) =>
+      buildParcelRecord({
+        countyId: this.countyId,
+        apn: p.apn,
+        street: p.street,
+        city: p.city,
+        state: 'WA',
+        zipCode: p.zip,
+        county: 'King',
+        legalDescription: p.legal,
+        assessedLandValue: p.landVal,
+        assessedImprovementValue: p.impVal,
+        totalAssessedValue: p.totalVal,
+        verifiedEvidenceIds: [`sr_king_assessor_${p.apn}`],
+      })
+    );
   }
+
 
   public async getRecordedDocuments(apnOrName: string): Promise<SourceRecord[]> {
     if (apnOrName.toLowerCase().includes('unindexed') || apnOrName.toLowerCase().includes('unlocated')) {

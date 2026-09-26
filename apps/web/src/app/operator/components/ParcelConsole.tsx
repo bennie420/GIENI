@@ -53,43 +53,85 @@ function ParcelTabBar({
   );
 }
 
-function AssessorPanel({ parcel }: { parcel?: any }) {
+function resolveAssessorMetrics(parcel?: any) {
   const apn = parcel?.apn ?? 'UNINDEXED';
   const county = parcel?.address?.county ?? 'Travis County';
   const assessedValue: number | null = parcel?.totalAssessedValue ?? null;
   const landValue = parcel?.assessedLandValue ?? (assessedValue != null ? Math.round(assessedValue * 0.4) : null);
   const impValue = parcel?.assessedImprovementValue ?? (assessedValue != null ? Math.round(assessedValue * 0.6) : null);
+  return { apn, county, assessedValue, landValue, impValue };
+}
+
+function formatAssessedValue(val: number | null): string {
+  if (val == null) return 'UNINDEXED';
+  return `$${val.toLocaleString()}`;
+}
+
+function formatLandAndImprovement(land: number | null, imp: number | null): string {
+  if (land == null || imp == null) return 'N/A';
+  return `$${land.toLocaleString()} / $${imp.toLocaleString()}`;
+}
+
+function AssessorPanel({ parcel }: { parcel?: any }) {
+  const metrics = resolveAssessorMetrics(parcel);
 
   return (
     <div style={{ padding: '14px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
         <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--accent)' }}>ASSESSOR (TCAD)</span>
-        <span className="hash-chip">{county}</span>
+        <span className="hash-chip">{metrics.county}</span>
       </div>
       <div style={{ fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
         <div>
           <span style={{ color: 'var(--text-sub)' }}>APN: </span>
-          <strong>{apn}</strong>
+          <strong>{metrics.apn}</strong>
         </div>
         <div>
           <span style={{ color: 'var(--text-sub)' }}>Total Assessed: </span>
-          <strong style={{ color: '#137333' }}>
-            {assessedValue != null ? `$${assessedValue.toLocaleString()}` : 'UNINDEXED'}
-          </strong>
+          <strong style={{ color: '#137333' }}>{formatAssessedValue(metrics.assessedValue)}</strong>
         </div>
         <div>
           <span style={{ color: 'var(--text-sub)' }}>Land / Improvement: </span>
-          <span>
-            {landValue != null && impValue != null
-              ? `$${landValue.toLocaleString()} / $${impValue.toLocaleString()}`
-              : 'N/A'}
-          </span>
+          <span>{formatLandAndImprovement(metrics.landValue, metrics.impValue)}</span>
         </div>
         <div>
           <span style={{ color: 'var(--text-sub)' }}>Property Class: </span>
           <span>Single Family Residence (A1)</span>
         </div>
       </div>
+    </div>
+  );
+}
+
+function EmptyRecorderNotice() {
+  return (
+    <div style={{ color: 'var(--text-sub)', fontStyle: 'italic', padding: '8px 0' }}>
+      NO_RECORDS_LOCATED: Unindexed county recorder instruments.
+    </div>
+  );
+}
+
+function DeedInstrumentRow({ evt, isLast }: { evt: ChainEvent; isLast: boolean }) {
+  const docType = evt.documentType?.replace(/_/g, ' ') ?? 'DOCUMENT';
+  const recDate = evt.recordingDate || 'Undated';
+  const instNum = evt.instrumentNumber || 'No instrument #';
+
+  return (
+    <div
+      style={{
+        borderBottom: isLast ? 'none' : '1px dashed var(--border)',
+        paddingBottom: '4px',
+      }}
+    >
+      <div style={{ fontWeight: 600 }}>{docType}</div>
+      <div style={{ color: 'var(--text-sub)', fontSize: '0.75rem' }}>
+        {recDate} &bull; {instNum}
+      </div>
+      {evt.grantee && (
+        <div style={{ fontSize: '0.75rem' }}>
+          Grantee: <strong>{evt.grantee}</strong>
+        </div>
+      )}
     </div>
   );
 }
@@ -108,28 +150,10 @@ function RecorderPanel({ ownership }: { ownership?: any }) {
       </div>
       <div style={{ fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
         {!hasEvents ? (
-          <div style={{ color: 'var(--text-sub)', fontStyle: 'italic', padding: '8px 0' }}>
-            NO_RECORDS_LOCATED: Unindexed county recorder instruments.
-          </div>
+          <EmptyRecorderNotice />
         ) : (
           chainEvents.map((evt, idx) => (
-            <div
-              key={idx}
-              style={{
-                borderBottom: idx < chainEvents.length - 1 ? '1px dashed var(--border)' : 'none',
-                paddingBottom: '4px',
-              }}
-            >
-              <div style={{ fontWeight: 600 }}>{evt.documentType?.replace(/_/g, ' ') ?? 'DOCUMENT'}</div>
-              <div style={{ color: 'var(--text-sub)', fontSize: '0.75rem' }}>
-                {evt.recordingDate || 'Undated'} &bull; {evt.instrumentNumber || 'No instrument #'}
-              </div>
-              {evt.grantee && (
-                <div style={{ fontSize: '0.75rem' }}>
-                  Grantee: <strong>{evt.grantee}</strong>
-                </div>
-              )}
-            </div>
+            <DeedInstrumentRow key={idx} evt={evt} isLast={idx === chainEvents.length - 1} />
           ))
         )}
       </div>

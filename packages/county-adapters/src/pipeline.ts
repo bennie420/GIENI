@@ -12,6 +12,7 @@ import { OwnershipAssessment, OwnershipStatus } from '@gieni/ownership';
 import {
   Opportunity,
   OpportunityScore,
+  OpportunityLifecycleStatus,
   calculateOpportunityScore,
   buildOpportunitySnapshot,
 } from '@gieni/scoring';
@@ -85,6 +86,37 @@ type TelemetryLogger = (
   message: string,
   details?: Record<string, any>
 ) => void;
+
+export interface ScoringPipelineInput {
+  cases: ProbateCase[];
+  parcels: PropertyParcel[];
+  authorities: AuthorityAssessment[];
+  ownerships: OwnershipAssessment[];
+  taxRecords: CountyTaxRecord[];
+  countyId: string;
+  log: TelemetryLogger;
+}
+
+interface RunSummaryParams {
+  runId: string;
+  options: IngestionRunOptions;
+  adapterName: string;
+  startedAt: string;
+  completedAt: string;
+  durationMs: number;
+  driftResult: { hasDrift: boolean; driftConfidence: number };
+  telemetry: IngestionTelemetryEvent[];
+  cases: ProbateCase[];
+  documents: (SourceDocument & { countyId: string })[];
+  parcels: PropertyParcel[];
+  taxRecords: CountyTaxRecord[];
+  claims: Claim[];
+  authorities: AuthorityAssessment[];
+  ownerships: OwnershipAssessment[];
+  scores: OpportunityScore[];
+  opportunities: Opportunity[];
+  exceptions: InvestigationException[];
+}
 
 const COUNTY_SAMPLE_TEXTS: Record<string, string> = {
   county_travis_tx:
@@ -587,6 +619,92 @@ export class MunicipalIngestionPipeline {
     return claims;
   }
 
+  private static isSpecialProbateCase(caseType: string): boolean {
+    return caseType.includes('COMMUNITY_PROPERTY') || caseType.includes('LACK_OF_PROBATE');
+  }
+
+  private static resolveFiduciaryAuthority(
+    caseType: string,
+    fidClaim?: Claim
+  ): { status: AuthorityStatus; tier: AuthorityTier; fiduciary: FiduciaryAppointment | null } {
+    if (!fidClaim?.proposedValue) {
+      return { status: 'NO_APPOINTMENT', tier: 4, fiduciary: null };
+    }
+
+    const fiduciary = fidClaim.proposedValue as FiduciaryAppointment;
+    if (fiduciary.lettersIssued || this.isSpecialProbateCase(caseType)) {
+      return { status: 'CONFIRMED', tier: 1, fiduciary };
+    }
+
+    return { status: 'UNRESOLVED', tier: 2, fiduciary };
+  }
+
+  private static buildAuthorityAssessment(params: {
+    probateCase: ProbateCase;
+    countyId: string;
+    authId: string;
+    status: AuthorityStatus;
+    tier: AuthorityTier;
+    fiduciary: FiduciaryAppointment | null;
+    fidClaim?: Claim;
+    timestamp: string;
+  }): AuthorityAssessment {
+    const { probateCase, countyId, authId, status, tier, fiduciary, fidClaim, timestamp } = params;
+    return {
+      id: authId,
+      organizationId: probateCase.organizationId,
+      caseId: probateCase.id,
+      countyId,
+      status,
+      tier,
+      fiduciary,
+      verifiedClaimIds: fidClaim ? [fidClaim.id] : [],
+      evaluatedAt: timestamp,
+      evaluatorId: 'system_authority_engine',
+      ruleVersion: 'v1.0.0-statutory',
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      schemaVersion: 1,
+    };
+  }
+
+  private static evaluateSingleAuthority(params: {
+    probateCase: ProbateCase;
+    claims: Claim[];
+    countyId: string;
+    now: string;
+    log: TelemetryLogger;
+  }): AuthorityAssessment {
+    const { probateCase, claims, countyId, now, log } = params;
+    const authId = `auth_${probateCase.caseNumber}`;
+    const fidClaim = claims.find(
+      (cl) => cl.subjectType === 'AUTHORITY' && cl.subjectId === authId
+    );
+
+    const { status, tier, fiduciary } = this.resolveFiduciaryAuthority(probateCase.caseType, fidClaim);
+    const assessment = this.buildAuthorityAssessment({
+      probateCase,
+      countyId,
+      authId,
+      status,
+      tier,
+      fiduciary,
+      fidClaim,
+      timestamp: now,
+    });
+
+    const logStatus = status === 'CONFIRMED' ? 'SUCCESS' : 'WARN';
+    const fidName = fiduciary?.fullName ?? 'None (Unappointed)';
+    log(
+      'AUTHORITY_EVAL',
+      logStatus,
+      `Authority Tier ${tier} (${status}) for ${probateCase.caseNumber}: Fiduciary '${fidName}'`,
+      { tier, status, fiduciary: fiduciary?.fullName }
+    );
+
+    return assessment;
+  }
+
   /**
    * Authority Assessment: Evaluates fiduciary authority tiers and flags unappointed fiduciaries honestly.
    */
@@ -596,62 +714,12 @@ export class MunicipalIngestionPipeline {
     countyId: string,
     log: TelemetryLogger
   ): AuthorityAssessment[] {
-    const assessments: AuthorityAssessment[] = [];
     const now = new Date().toISOString();
-
-    for (const c of cases) {
-      const authId = `auth_${c.caseNumber}`;
-      const fidClaim = claims.find(
-        (cl) => cl.subjectType === 'AUTHORITY' && cl.subjectId === authId
-      );
-
-      let status: AuthorityStatus = 'NO_APPOINTMENT';
-      let tier: AuthorityTier = 4;
-      let fiduciary: FiduciaryAppointment | null = null;
-
-      if (fidClaim && fidClaim.proposedValue) {
-        fiduciary = fidClaim.proposedValue as FiduciaryAppointment;
-        if (fiduciary.lettersIssued) {
-          status = 'CONFIRMED';
-          tier = 1;
-        } else if (c.caseType.includes('COMMUNITY_PROPERTY') || c.caseType.includes('LACK_OF_PROBATE')) {
-          status = 'CONFIRMED';
-          tier = 1;
-        } else {
-          status = 'UNRESOLVED';
-          tier = 2;
-        }
-      }
-
-      const assessment: AuthorityAssessment = {
-        id: authId,
-        organizationId: c.organizationId,
-        caseId: c.id,
-        countyId,
-        status,
-        tier,
-        fiduciary,
-        verifiedClaimIds: fidClaim ? [fidClaim.id] : [],
-        evaluatedAt: now,
-        evaluatorId: 'system_authority_engine',
-        ruleVersion: 'v1.0.0-statutory',
-        createdAt: now,
-        updatedAt: now,
-        schemaVersion: 1,
-      };
-
-      assessments.push(assessment);
-
-      log(
-        'AUTHORITY_EVAL',
-        status === 'CONFIRMED' ? 'SUCCESS' : 'WARN',
-        `Authority Tier ${tier} (${status}) for ${c.caseNumber}: Fiduciary '${fiduciary?.fullName ?? 'None (Unappointed)'}'`,
-        { tier, status, fiduciary: fiduciary?.fullName }
-      );
-    }
-
-    return assessments;
+    return cases.map((c) =>
+      this.evaluateSingleAuthority({ probateCase: c, claims, countyId, now, log })
+    );
   }
+
 
   /**
    * Ownership Chain Assessment: Evaluates deed history, vesting, and survivorship rights.
@@ -714,156 +782,233 @@ export class MunicipalIngestionPipeline {
     return assessments;
   }
 
+  private static isUnresolvedAuthority(auth: AuthorityAssessment | null): boolean {
+    if (!auth) return true;
+    if (auth.tier === 4) return true;
+    return auth.status !== 'CONFIRMED';
+  }
+
+  private static isHighDelinquencyTax(tax: CountyTaxRecord | null): boolean {
+    if (!tax?.isDelinquent) return false;
+    return tax.delinquentAmount > 5000;
+  }
+
+  private static buildAuthorityException(
+    probateCase: ProbateCase,
+    oppId: string,
+    countyId: string,
+    timestamp: string
+  ): InvestigationException {
+    return {
+      id: `exc_auth_${oppId}`,
+      organizationId: probateCase.organizationId,
+      countyId,
+      opportunityId: oppId,
+      type: 'AUTHORITY_UNRESOLVED',
+      status: 'PENDING_REVIEW',
+      priority: 'HIGH',
+      description: `Docket ${probateCase.caseNumber} lacks confirmed fiduciary letters. Personal representative unappointed.`,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      schemaVersion: 1,
+    };
+  }
+
+  private static buildTaxDelinquencyException(params: {
+    probateCase: ProbateCase;
+    parcel: PropertyParcel | null;
+    tax: CountyTaxRecord;
+    oppId: string;
+    countyId: string;
+    timestamp: string;
+  }): InvestigationException {
+    const { probateCase, parcel, tax, oppId, countyId, timestamp } = params;
+    return {
+      id: `exc_tax_${oppId}`,
+      organizationId: probateCase.organizationId,
+      countyId,
+      opportunityId: oppId,
+      type: 'HIGH_VALUE_AMBIGUITY',
+      status: 'PENDING_REVIEW',
+      priority: 'HIGH',
+      description: `Tax roll APN ${parcel?.apn} has delinquent balance of $${tax.delinquentAmount.toLocaleString()}. Prior lien review required.`,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      schemaVersion: 1,
+    };
+  }
+
+  private static routeCaseExceptions(params: {
+    probateCase: ProbateCase;
+    parcel: PropertyParcel | null;
+    authority: AuthorityAssessment | null;
+    tax: CountyTaxRecord | null;
+    oppId: string;
+    countyId: string;
+    timestamp: string;
+    log: TelemetryLogger;
+  }): InvestigationException[] {
+    const { probateCase, parcel, authority, tax, oppId, countyId, timestamp, log } = params;
+    const exceptions: InvestigationException[] = [];
+
+    if (this.isUnresolvedAuthority(authority)) {
+      const exc = this.buildAuthorityException(probateCase, oppId, countyId, timestamp);
+      exceptions.push(exc);
+      log('EXCEPTION_ROUTED', 'WARN', `Routed Investigation Exception [${exc.type}]: ${exc.description}`, {
+        exceptionId: exc.id,
+        priority: exc.priority,
+      });
+    }
+
+    if (tax && this.isHighDelinquencyTax(tax)) {
+      const exc = this.buildTaxDelinquencyException({
+        probateCase,
+        parcel,
+        tax,
+        oppId,
+        countyId,
+        timestamp,
+      });
+      exceptions.push(exc);
+      log('EXCEPTION_ROUTED', 'WARN', `Routed Investigation Exception [${exc.type}]: ${exc.description}`, {
+        exceptionId: exc.id,
+        priority: exc.priority,
+      });
+    }
+
+    return exceptions;
+  }
+
+  private static projectSingleOpportunity(params: {
+    probateCase: ProbateCase;
+    index: number;
+    parcels: PropertyParcel[];
+    authorities: AuthorityAssessment[];
+    ownerships: OwnershipAssessment[];
+    taxRecords: CountyTaxRecord[];
+    countyId: string;
+    now: string;
+    log: TelemetryLogger;
+  }): {
+    score: OpportunityScore;
+    opportunity: Opportunity;
+    exceptions: InvestigationException[];
+  } {
+    const { probateCase: c, index: i, parcels, authorities, ownerships, taxRecords, countyId, now, log } = params;
+    const p = parcels[i % parcels.length] ?? null;
+    const auth = authorities.find((a) => a.caseId === c.id) ?? null;
+    const own = ownerships.find((o) => o.caseId === c.id) ?? null;
+    const tax = p ? taxRecords.find((t) => t.apn === p.apn) ?? null : null;
+
+    const oppId = `opp_${c.caseNumber.replace(/[^a-zA-Z0-9]/g, '_')}`;
+    const scoreId = `score_${oppId}`;
+
+    const score = calculateOpportunityScore(scoreId, {
+      organizationId: c.organizationId,
+      opportunityId: oppId,
+      countyId,
+      property: p,
+      authority: auth,
+      ownership: own,
+      filingDate: c.filingDate,
+      estimatedLiensOrMortgageAmount: tax?.delinquentAmount || 0,
+    });
+
+    log(
+      'OPPORTUNITY_SCORING',
+      'SUCCESS',
+      `Scored ${c.caseNumber}: Composite ${score.compositeScore}/100 [Band: ${score.priorityBand}] (Auth: ${score.breakdown.authorityComponent}, Equity: ${score.breakdown.equityComponent})`,
+      { scoreId, compositeScore: score.compositeScore, priorityBand: score.priorityBand }
+    );
+
+    const caseExceptions = this.routeCaseExceptions({
+      probateCase: c,
+      parcel: p,
+      authority: auth,
+      tax,
+      oppId,
+      countyId,
+      timestamp: now,
+      log,
+    });
+
+    const snapshot = buildOpportunitySnapshot({
+      caseNumber: c.caseNumber,
+      decedentName: c.decedentName,
+      filingDate: c.filingDate,
+      property: p,
+      authority: auth,
+      ownership: own,
+      score,
+      unresolvedExceptionsCount: caseExceptions.length,
+    });
+
+    const oppStatus: OpportunityLifecycleStatus =
+      caseExceptions.length > 0 ? 'EXCEPTION' : 'READY_FOR_QC';
+
+    log(
+      'OPPORTUNITY_PROJECTED',
+      'SUCCESS',
+      `Projected Opportunity ${oppId} -> Status: ${oppStatus} | Assessed: $${(snapshot.assessedValue || 0).toLocaleString()} | Fiduciary: ${snapshot.fiduciaryName ?? 'None'}`,
+      { oppId, status: oppStatus, snapshot }
+    );
+
+    const opportunity: Opportunity = {
+      id: oppId,
+      organizationId: c.organizationId,
+      countyId,
+      caseId: c.id,
+      parcelId: p?.id ?? null,
+      status: oppStatus,
+      currentSnapshot: snapshot,
+      createdAt: now,
+      updatedAt: now,
+      schemaVersion: 1,
+    };
+
+    return { score, opportunity, exceptions: caseExceptions };
+  }
+
   /**
    * Deterministic Opportunity Scoring & Snapshot Projection:
    * Combines authority, ownership, cadastre equity, and docket freshness into actionable institutional opportunities.
    */
-  private static scoreAndProjectOpportunities(
-    cases: ProbateCase[],
-    parcels: PropertyParcel[],
-    authorities: AuthorityAssessment[],
-    ownerships: OwnershipAssessment[],
-    taxRecords: CountyTaxRecord[],
-    countyId: string,
-    log: TelemetryLogger
-  ): {
+  private static scoreAndProjectOpportunities(input: ScoringPipelineInput): {
     scores: OpportunityScore[];
     opportunities: Opportunity[];
     exceptions: InvestigationException[];
   } {
+    const { cases, parcels, authorities, ownerships, taxRecords, countyId, log } = input;
     const scores: OpportunityScore[] = [];
-    let opportunities: Opportunity[] = [];
+    const opportunities: Opportunity[] = [];
     const exceptions: InvestigationException[] = [];
     const now = new Date().toISOString();
 
-    opportunities = cases.map((c, i) => {
-      const p = parcels[i % parcels.length] ?? null;
-      const auth = authorities.find((a) => a.caseId === c.id) ?? null;
-      const own = ownerships.find((o) => o.caseId === c.id) ?? null;
-      const tax = p ? taxRecords.find((t) => t.apn === p.apn) ?? null : null;
-
-      const oppId = `opp_${c.caseNumber.replace(/[^a-zA-Z0-9]/g, '_')}`;
-
-      // 1. Deterministic Opportunity Scoring
-      const scoreId = `score_${oppId}`;
-      const score = calculateOpportunityScore(scoreId, {
-        organizationId: c.organizationId,
-        opportunityId: oppId,
+    for (let i = 0; i < cases.length; i++) {
+      const projected = this.projectSingleOpportunity({
+        probateCase: cases[i]!,
+        index: i,
+        parcels,
+        authorities,
+        ownerships,
+        taxRecords,
         countyId,
-        property: p,
-        authority: auth,
-        ownership: own,
-        filingDate: c.filingDate,
-        estimatedLiensOrMortgageAmount: tax?.delinquentAmount || 0,
+        now,
+        log,
       });
-      scores.push(score);
-
-      log(
-        'OPPORTUNITY_SCORING',
-        'SUCCESS',
-        `Scored ${c.caseNumber}: Composite ${score.compositeScore}/100 [Band: ${score.priorityBand}] (Auth: ${score.breakdown.authorityComponent}, Equity: ${score.breakdown.equityComponent})`,
-        { scoreId, compositeScore: score.compositeScore, priorityBand: score.priorityBand }
-      );
-
-      // 2. Exception Routing (if unappointed fiduciary, disputed, or high tax delinquency)
-      let unresolvedExceptionsCount = 0;
-
-      if (!auth || auth.tier === 4 || auth.status !== 'CONFIRMED') {
-        unresolvedExceptionsCount++;
-        const excId = `exc_auth_${oppId}`;
-        const exc: InvestigationException = {
-          id: excId,
-          organizationId: c.organizationId,
-          countyId,
-          opportunityId: oppId,
-          type: 'AUTHORITY_UNRESOLVED',
-          status: 'PENDING_REVIEW',
-          priority: 'HIGH',
-          description: `Docket ${c.caseNumber} lacks confirmed fiduciary letters. Personal representative unappointed.`,
-          createdAt: now,
-          updatedAt: now,
-          schemaVersion: 1,
-        };
-        exceptions.push(exc);
-
-        log(
-          'EXCEPTION_ROUTED',
-          'WARN',
-          `Routed Investigation Exception [${exc.type}]: ${exc.description}`,
-          { exceptionId: excId, priority: exc.priority }
-        );
-      }
-
-      if (tax && tax.isDelinquent && tax.delinquentAmount > 5000) {
-        unresolvedExceptionsCount++;
-        const excId = `exc_tax_${oppId}`;
-        const exc: InvestigationException = {
-          id: excId,
-          organizationId: c.organizationId,
-          countyId,
-          opportunityId: oppId,
-          type: 'HIGH_VALUE_AMBIGUITY',
-          status: 'PENDING_REVIEW',
-          priority: 'HIGH',
-          description: `Tax roll APN ${p?.apn} has delinquent balance of $${tax.delinquentAmount.toLocaleString()}. Prior lien review required.`,
-          createdAt: now,
-          updatedAt: now,
-          schemaVersion: 1,
-        };
-        exceptions.push(exc);
-
-        log(
-          'EXCEPTION_ROUTED',
-          'WARN',
-          `Routed Investigation Exception [${exc.type}]: ${exc.description}`,
-          { exceptionId: excId, priority: exc.priority }
-        );
-      }
-
-      // 3. Institutional Opportunity Snapshot Projection
-      const snapshot = buildOpportunitySnapshot({
-        caseNumber: c.caseNumber,
-        decedentName: c.decedentName,
-        filingDate: c.filingDate,
-        property: p,
-        authority: auth,
-        ownership: own,
-        score,
-        unresolvedExceptionsCount,
-      });
-
-      const oppStatus = unresolvedExceptionsCount > 0 ? 'EXCEPTION' : 'READY_FOR_QC';
-
-      log(
-        'OPPORTUNITY_PROJECTED',
-        'SUCCESS',
-        `Projected Opportunity ${oppId} -> Status: ${oppStatus} | Assessed: $${(snapshot.assessedValue || 0).toLocaleString()} | Fiduciary: ${snapshot.fiduciaryName ?? 'None'}`,
-        { oppId, status: oppStatus, snapshot }
-      );
-
-      return {
-        id: oppId,
-        organizationId: c.organizationId,
-        countyId,
-        caseId: c.id,
-        parcelId: p?.id ?? null,
-        status: oppStatus,
-        currentSnapshot: snapshot,
-        createdAt: now,
-        updatedAt: now,
-        schemaVersion: 1,
-      };
-    });
+      scores.push(projected.score);
+      opportunities.push(projected.opportunity);
+      exceptions.push(...projected.exceptions);
+    }
 
     return { scores, opportunities, exceptions };
   }
 
-  public static async execute(options: IngestionRunOptions): Promise<IngestionRunResult> {
-    const startedAtMs = Date.now();
-    const startedAt = new Date(startedAtMs).toISOString();
-    const runId = `ingest_${options.countyId}_${startedAtMs}`;
+  private static createTelemetryCollector(): {
+    telemetry: IngestionTelemetryEvent[];
+    log: TelemetryLogger;
+  } {
     const telemetry: IngestionTelemetryEvent[] = [];
-
     const log: TelemetryLogger = (stage, level, message, details) => {
       telemetry.push({
         timestamp: new Date().toISOString(),
@@ -873,6 +1018,86 @@ export class MunicipalIngestionPipeline {
         details,
       });
     };
+    return { telemetry, log };
+  }
+
+  private static buildRunSummary(params: RunSummaryParams): IngestionRunResult {
+    return {
+      runId: params.runId,
+      countyId: params.options.countyId,
+      countyName: params.adapterName,
+      startedAt: params.startedAt,
+      completedAt: params.completedAt,
+      durationMs: params.durationMs,
+      casesHarvested: params.cases.length,
+      documentsPreserved: params.documents.length,
+      claimsExtracted: params.claims.length,
+      parcelsMatched: params.parcels.length,
+      authoritiesEvaluated: params.authorities.length,
+      opportunitiesScored: params.scores.length,
+      exceptionsFlagged: params.exceptions.length,
+      layoutDriftDetected: params.driftResult.hasDrift,
+      driftConfidence: params.driftResult.driftConfidence,
+      telemetry: params.telemetry,
+      data: {
+        cases: params.cases,
+        documents: params.documents,
+        parcels: params.parcels,
+        taxRecords: params.taxRecords,
+        claims: params.claims,
+        authorities: params.authorities,
+        ownerships: params.ownerships,
+        scores: params.scores,
+        opportunities: params.opportunities,
+        exceptions: params.exceptions,
+      },
+    };
+  }
+
+  private static async executeIngestionStages(
+    adapter: any,
+    options: IngestionRunOptions,
+    log: TelemetryLogger
+  ) {
+    const driftResult = await this.evaluateLayoutDrift(adapter, options.countyId, log);
+    const cases = await this.harvestCourtDockets(adapter, options, log);
+    const documents = await this.ingestCaseDocuments(adapter, cases, options.countyId, log);
+    const parcels = await this.matchParcels(adapter, cases.length, log);
+    const taxRecords = await this.verifyTaxRolls(adapter, parcels, log);
+    const claims = this.extractDocumentClaims(cases, documents, parcels, options.countyId, log);
+    const authorities = this.evaluateAuthorities(cases, claims, options.countyId, log);
+    const ownerships = this.evaluateOwnerships(cases, parcels, options.countyId, log);
+
+    const { scores, opportunities, exceptions } = this.scoreAndProjectOpportunities({
+      cases,
+      parcels,
+      authorities,
+      ownerships,
+      taxRecords,
+      countyId: options.countyId,
+      log,
+    });
+
+    return {
+      driftResult,
+      cases,
+      documents,
+      parcels,
+      taxRecords,
+      claims,
+      authorities,
+      ownerships,
+      scores,
+      opportunities,
+      exceptions,
+    };
+  }
+
+  public static async execute(options: IngestionRunOptions): Promise<IngestionRunResult> {
+    const startedAtMs = Date.now();
+    const startedAt = new Date(startedAtMs).toISOString();
+    const runId = `ingest_${options.countyId}_${startedAtMs}`;
+    const { telemetry, log } = this.createTelemetryCollector();
 
     log('INIT', 'INFO', `Initiating municipal ingestion pipeline for '${options.countyId}'`, {
       runId,
@@ -893,40 +1118,7 @@ export class MunicipalIngestionPipeline {
       `Target Adapter: ${adapter.countyName} (${adapter.stateCode}) v${adapter.adapterVersion}`
     );
 
-    // Stage 1: Pre-ingestion layout drift check
-    const driftResult = await this.evaluateLayoutDrift(adapter, options.countyId, log);
-
-    // Stage 2: Municipal court docket harvesting
-    const cases = await this.harvestCourtDockets(adapter, options, log);
-
-    // Stage 3: Primary evidence capture & SHA-256 preservation
-    const documents = await this.ingestCaseDocuments(adapter, cases, options.countyId, log);
-
-    // Stage 4: County Assessor cadastre parcel matching
-    const parcels = await this.matchParcels(adapter, cases.length, log);
-
-    // Stage 5: County tax roll verification
-    const taxRecords = await this.verifyTaxRolls(adapter, parcels, log);
-
-    // Stage 6: Document AI atomic claim extraction
-    const claims = this.extractDocumentClaims(cases, documents, parcels, options.countyId, log);
-
-    // Stage 7: Authority evaluation (Fiduciary appointments & letters)
-    const authorities = this.evaluateAuthorities(cases, claims, options.countyId, log);
-
-    // Stage 8: Ownership chain assessment (Vesting & deed analysis)
-    const ownerships = this.evaluateOwnerships(cases, parcels, options.countyId, log);
-
-    // Stage 9, 10, 11: Deterministic scoring, Opportunity projection & Exception triage
-    const { scores, opportunities, exceptions } = this.scoreAndProjectOpportunities(
-      cases,
-      parcels,
-      authorities,
-      ownerships,
-      taxRecords,
-      options.countyId,
-      log
-    );
+    const stages = await this.executeIngestionStages(adapter, options, log);
 
     const completedAtMs = Date.now();
     const durationMs = completedAtMs - startedAtMs;
@@ -935,39 +1127,19 @@ export class MunicipalIngestionPipeline {
     log(
       'COMPLETE',
       'SUCCESS',
-      `Ingestion cycle finished successfully in ${durationMs}ms: ${cases.length} dockets, ${documents.length} filings, ${claims.length} claims, ${parcels.length} parcels, ${authorities.length} authorities, ${opportunities.length} opportunities, ${exceptions.length} exceptions.`,
-      { durationMs, totalEntities: cases.length + documents.length + claims.length + parcels.length + opportunities.length }
+      `Ingestion cycle finished successfully in ${durationMs}ms: ${stages.cases.length} dockets, ${stages.documents.length} filings, ${stages.claims.length} claims, ${stages.parcels.length} parcels, ${stages.authorities.length} authorities, ${stages.opportunities.length} opportunities, ${stages.exceptions.length} exceptions.`,
+      { durationMs, totalEntities: stages.cases.length + stages.documents.length + stages.claims.length + stages.parcels.length + stages.opportunities.length }
     );
 
-    return {
+    return this.buildRunSummary({
       runId,
-      countyId: options.countyId,
-      countyName: adapter.countyName,
+      options,
+      adapterName: adapter.countyName,
       startedAt,
       completedAt,
       durationMs,
-      casesHarvested: cases.length,
-      documentsPreserved: documents.length,
-      claimsExtracted: claims.length,
-      parcelsMatched: parcels.length,
-      authoritiesEvaluated: authorities.length,
-      opportunitiesScored: scores.length,
-      exceptionsFlagged: exceptions.length,
-      layoutDriftDetected: driftResult.hasDrift,
-      driftConfidence: driftResult.driftConfidence,
       telemetry,
-      data: {
-        cases,
-        documents,
-        parcels,
-        taxRecords,
-        claims,
-        authorities,
-        ownerships,
-        scores,
-        opportunities,
-        exceptions,
-      },
-    };
+      ...stages,
+    });
   }
-}
+}

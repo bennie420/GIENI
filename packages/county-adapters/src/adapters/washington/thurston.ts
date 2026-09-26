@@ -12,6 +12,7 @@ import {
   DocumentLayoutFingerprint 
 } from '../../types.js';
 import { evaluateDocumentLayoutDrift, computeTemplateStructureHash } from '../../drift.js';
+import { buildParcelRecord, buildCaseDocumentRecord, parseCountyFilingDate } from '../../adapter-utils.js';
 
 function daysAgo(days: number): string {
   return new Date(Date.now() - days * 86400000).toISOString();
@@ -164,7 +165,8 @@ export class ThurstonCountyAdapter implements ICountyAdapter {
     let list = THURSTON_AUTHENTIC_CASES;
 
     if (options?.sinceDate) {
-      const sinceMs = new Date(options.sinceDate).getTime();
+      const parsedSince = parseCountyFilingDate(options.sinceDate) ?? options.sinceDate;
+      const sinceMs = new Date(parsedSince).getTime();
       list = list.filter((s) => new Date(daysAgo(s.days)).getTime() >= sinceMs);
     }
     if (options?.caseType) {
@@ -197,51 +199,42 @@ export class ThurstonCountyAdapter implements ICountyAdapter {
       const deedSha = crypto.createHash('sha256').update(`DEED_${found.num}_${found.apn}`).digest('hex');
 
       return [
-        {
+        buildCaseDocumentRecord({
           id: `sr_thurston_${caseNumber}_lopa`,
-          organizationId: 'org_gieni_internal',
           countyId: this.countyId,
           sourceType: 'RECORDER',
           sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=lopa`,
-          retrievalTimestamp: new Date().toISOString(),
           artifactSha256: lopaSha,
           sourceSystem: 'Thurston County Auditor Recording Services',
           rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/lack_of_probate_affidavit.pdf`,
           adapterVersion: this.adapterVersion,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          schemaVersion: 1,
-        },
-        {
+          caseNumber,
+          filingType: 'LACK_OF_PROBATE_AFFIDAVIT',
+        }),
+        buildCaseDocumentRecord({
           id: `sr_thurston_${caseNumber}_cpa`,
-          organizationId: 'org_gieni_internal',
           countyId: this.countyId,
           sourceType: 'RECORDER',
           sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=cpa`,
-          retrievalTimestamp: new Date().toISOString(),
           artifactSha256: cpaSha,
           sourceSystem: 'Thurston County Auditor Recording Services',
           rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/community_property_agreement.pdf`,
           adapterVersion: this.adapterVersion,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          schemaVersion: 1,
-        },
-        {
+          caseNumber,
+          filingType: 'COMMUNITY_PROPERTY_AGREEMENT',
+        }),
+        buildCaseDocumentRecord({
           id: `sr_thurston_${caseNumber}_deed`,
-          organizationId: 'org_gieni_internal',
           countyId: this.countyId,
           sourceType: 'RECORDER',
           sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=deed`,
-          retrievalTimestamp: new Date().toISOString(),
           artifactSha256: deedSha,
           sourceSystem: 'Thurston County Auditor Recording Services',
           rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/vesting_warranty_deed.pdf`,
           adapterVersion: this.adapterVersion,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          schemaVersion: 1,
-        },
+          caseNumber,
+          filingType: 'WARRANTY_DEED',
+        }),
       ];
     }
 
@@ -250,68 +243,27 @@ export class ThurstonCountyAdapter implements ICountyAdapter {
     const sha3 = crypto.createHash('sha256').update(`THURSTON_LETTERS_${found.num}_${found.apn}`).digest('hex');
     const sha4 = crypto.createHash('sha256').update(`THURSTON_INVENTORY_${found.num}_${found.totalVal}`).digest('hex');
 
-    return [
-      {
-        id: `sr_thurston_${caseNumber}_petition`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha1,
-        sourceSystem: 'Thurston County Superior Court / Auditor',
-        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/petition_for_letters.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_thurston_${caseNumber}_order`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=order`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha2,
-        sourceSystem: 'Thurston County Superior Court / Auditor',
-        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/order_admitting_will.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_thurston_${caseNumber}_letters`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=letters`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha3,
-        sourceSystem: 'Thurston County Superior Court / Auditor',
-        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/letters_testamentary.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
-      {
-        id: `sr_thurston_${caseNumber}_inventory`,
-        organizationId: 'org_gieni_internal',
-        countyId: this.countyId,
-        sourceType: 'COURT',
-        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=inventory`,
-        retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha4,
-        sourceSystem: 'Thurston County Superior Court / Auditor',
-        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/inventory_appraisement.pdf`,
-        adapterVersion: this.adapterVersion,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-        schemaVersion: 1,
-      },
+    const docConfigs = [
+      { key: 'petition', sha: sha1, path: 'petition_for_letters.pdf', url: '', filingType: 'PETITION_FOR_PROBATE' as const },
+      { key: 'order', sha: sha2, path: 'order_admitting_will.pdf', url: '&doc=order', filingType: 'ORDER_APPOINTING_PR' as const },
+      { key: 'letters', sha: sha3, path: 'letters_testamentary.pdf', url: '&doc=letters', filingType: 'LETTERS_TESTAMENTARY' as const },
+      { key: 'inventory', sha: sha4, path: 'inventory_appraisement.pdf', url: '&doc=inventory', filingType: 'INVENTORY_AND_APPRAISEMENT' as const },
     ];
+
+    return docConfigs.map((doc) =>
+      buildCaseDocumentRecord({
+        id: `sr_thurston_${caseNumber}_${doc.key}`,
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}${doc.url}`,
+        artifactSha256: doc.sha,
+        sourceSystem: 'Thurston County Superior Court / Auditor',
+        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/${doc.path}`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: doc.filingType,
+      })
+    );
   }
 
   public async getParcels(options?: ParcelQueryOptions): Promise<PropertyParcel[]> {
@@ -321,31 +273,26 @@ export class ThurstonCountyAdapter implements ICountyAdapter {
     }
     const limit = options?.limit ?? list.length;
 
-    return list.slice(0, limit).map((s) => ({
-      id: `parcel_${this.countyId}_${s.apn}`,
-      countyId: this.countyId,
-      organizationId: 'org_gieni_internal',
-      apn: s.apn,
-      address: {
+    return list.slice(0, limit).map((s) =>
+      buildParcelRecord({
+        countyId: this.countyId,
+        apn: s.apn,
         street: s.street,
         city: s.city,
         state: 'WA',
         zipCode: s.zip,
         county: 'Thurston',
-      },
-      legalDescription: s.legal,
-      assessedLandValue: s.landVal,
-      assessedImprovementValue: s.impVal,
-      totalAssessedValue: s.totalVal,
-      taxYear: 2026,
-      lastSaleDate: null,
-      lastSalePrice: null,
-      verifiedEvidenceIds: [`sr_thurston_at_${s.apn}`],
-      createdAt: daysAgo(s.days),
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    }));
+        legalDescription: s.legal,
+        assessedLandValue: s.landVal,
+        assessedImprovementValue: s.impVal,
+        totalAssessedValue: s.totalVal,
+        taxYear: 2026,
+        createdAt: daysAgo(s.days),
+        verifiedEvidenceIds: [`sr_thurston_at_${s.apn}`],
+      })
+    );
   }
+
 
   public async getRecordedDocuments(apnOrName: string): Promise<SourceRecord[]> {
     if (apnOrName.toLowerCase().includes('unindexed') || apnOrName.toLowerCase().includes('unlocated')) {

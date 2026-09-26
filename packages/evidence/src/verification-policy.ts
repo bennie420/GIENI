@@ -5,6 +5,7 @@ export interface VerificationPolicyContext {
   actorRole: string;
   knownExceptions?: Array<{ id: string; status: string; subjectId: string; type: string }>;
   verifiedArtifactHashes?: Set<string>;
+  requireVerifiedDocumentStore?: boolean;
 }
 
 export interface VerificationPolicyResult {
@@ -52,7 +53,7 @@ export class ClaimVerificationPolicy {
       // 3. Evidence SHA-256 Format and Verification Check
       for (let i = 0; i < claim.evidence.length; i++) {
         const ev = claim.evidence[i];
-        if (!ev.artifactSha256 || ev.artifactSha256.length !== 64) {
+        if (!ev.artifactSha256 || ev.artifactSha256.length !== 64 || !/^[0-9a-f]{64}$/i.test(ev.artifactSha256)) {
           violations.push(
             `Policy Violation: Evidence item ${i} has invalid or missing SHA-256 fingerprint.`
           );
@@ -62,6 +63,10 @@ export class ClaimVerificationPolicy {
         ) {
           violations.push(
             `Policy Violation: Evidence artifact SHA-256 '${ev.artifactSha256.slice(0, 8)}...' does not match authentic verified document store.`
+          );
+        } else if (context.requireVerifiedDocumentStore && !context.verifiedArtifactHashes) {
+          violations.push(
+            'Policy Violation: Verified document store check required but no verified artifact hashes provided.'
           );
         }
       }
