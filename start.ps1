@@ -88,15 +88,15 @@ function Test-PortOccupied ([int]$Port) {
     }
 }
 
-function Assert-PortAvailability ([int]$WebPort, [int]$WorkerPort, [bool]$WebOnly, [bool]$WorkersOnly) {
-    if (-not $WorkersOnly -and (Test-PortOccupied -Port $WebPort)) {
-        Write-Host " [!] Notice: Port $WebPort is currently in use." -ForegroundColor Yellow
+function Assert-PortAvailability ($Options) {
+    if (-not $Options.WorkersOnly -and (Test-PortOccupied -Port $Options.WebPort)) {
+        Write-Host " [!] Notice: Port $($Options.WebPort) is currently in use." -ForegroundColor Yellow
         Write-Host "     If it is an existing Next.js dev server, it will reload or prompt for port." -ForegroundColor Gray
     }
 
-    if (-not $WebOnly -and (Test-PortOccupied -Port $WorkerPort)) {
-        Write-Host " [!] Notice: Port $WorkerPort is currently occupied." -ForegroundColor Yellow
-        Write-Host "     To free port $WorkerPort, run: .\stop.ps1" -ForegroundColor Gray
+    if (-not $Options.WebOnly -and (Test-PortOccupied -Port $Options.WorkerPort)) {
+        Write-Host " [!] Notice: Port $($Options.WorkerPort) is currently occupied." -ForegroundColor Yellow
+        Write-Host "     To free port $($Options.WorkerPort), run: .\stop.ps1" -ForegroundColor Gray
     }
 }
 
@@ -135,28 +135,24 @@ function Invoke-PackageCompilation ([string]$Root, [bool]$WebOnly) {
     }
 }
 
-function Start-NpmWorkspaceProcess ([string]$Root, [string]$Title, [int]$Port, [string]$Workspace, [string]$Script) {
+function Start-NpmWorkspaceProcess ([string]$Workspace, [string]$Script, [int]$Port) {
+    $Title = "Gieni OS - $Workspace (Port $Port)"
     Write-Host " [*] Starting $Workspace on port $Port ..." -ForegroundColor Cyan
-    $Cmd = @"
-`$host.UI.RawUI.WindowTitle = '$Title';
-Set-Location '$Root';
-`$env:PORT = '$Port';
-npm run $Script --workspace=$Workspace
-"@
+    $Cmd = "`$host.UI.RawUI.WindowTitle = '$Title'; Set-Location '$ProjectRoot'; `$env:PORT = '$Port'; npm run $Script --workspace=$Workspace"
     Start-Process powershell -ArgumentList "-NoExit", "-Command", $Cmd
 }
 
-function Show-StartupSummary ([int]$WebPort, [int]$WorkerPort, [bool]$WebOnly, [bool]$WorkersOnly) {
+function Show-StartupSummary ($Options) {
     Write-Host ""
     Write-Host " [?] Gieni OS Services Dispatched!" -ForegroundColor Green
     Write-Host ""
     Write-Host " ---------------------------------------------------------------------- " -ForegroundColor DarkGray
-    if (-not $WorkersOnly) {
-        Write-Host "   • Web App (Operator Console): http://localhost:$WebPort" -ForegroundColor White
+    if (-not $Options.WorkersOnly) {
+        Write-Host "   • Web App (Operator Console): http://localhost:$($Options.WebPort)" -ForegroundColor White
     }
-    if (-not $WebOnly) {
-        Write-Host "   • Worker Service Health:      http://localhost:$WorkerPort/healthz" -ForegroundColor White
-        Write-Host "   • Worker Webhook Task URL:    http://localhost:$WorkerPort/tasks/deliver" -ForegroundColor White
+    if (-not $Options.WebOnly) {
+        Write-Host "   • Worker Service Health:      http://localhost:$($Options.WorkerPort)/healthz" -ForegroundColor White
+        Write-Host "   • Worker Webhook Task URL:    http://localhost:$($Options.WorkerPort)/tasks/deliver" -ForegroundColor White
     }
     Write-Host " ---------------------------------------------------------------------- " -ForegroundColor DarkGray
     Write-Host ""
@@ -175,7 +171,7 @@ function Start-GieniMonorepo ($Options) {
     }
 
     Test-NodeRuntime
-    Assert-PortAvailability -WebPort $Options.WebPort -WorkerPort $Options.WorkerPort -WebOnly $Options.WebOnly -WorkersOnly $Options.WorkersOnly
+    Assert-PortAvailability $Options
 
     if ($Options.Seed) {
         Invoke-DatabaseSeed -Root $Options.Root
@@ -185,23 +181,19 @@ function Start-GieniMonorepo ($Options) {
 
     if (-not $Options.WebOnly) {
         Start-NpmWorkspaceProcess `
-            -Root $Options.Root `
-            -Title "Gieni OS - Worker Service (Port $($Options.WorkerPort))" `
-            -Port $Options.WorkerPort `
             -Workspace "@gieni/workers" `
-            -Script "start"
+            -Script "start" `
+            -Port $Options.WorkerPort
     }
 
     if (-not $Options.WorkersOnly) {
         Start-NpmWorkspaceProcess `
-            -Root $Options.Root `
-            -Title "Gieni OS - Web Portal (Port $($Options.WebPort))" `
-            -Port $Options.WebPort `
             -Workspace "@gieni/web" `
-            -Script "dev"
+            -Script "dev" `
+            -Port $Options.WebPort
     }
 
-    Show-StartupSummary -WebPort $Options.WebPort -WorkerPort $Options.WorkerPort -WebOnly $Options.WebOnly -WorkersOnly $Options.WorkersOnly
+    Show-StartupSummary $Options
 
     if (-not $Options.NoBrowser -and (-not $Options.WorkersOnly)) {
         Open-WebBrowser -WebPort $Options.WebPort
