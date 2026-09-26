@@ -1,0 +1,2652 @@
+[
+  {
+    "caseId": "case_thurston_26-4-00148-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00148-34_fid",
+      "fullName": "Erik Lindgren",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00148-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00148-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803064_pv83qs",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.064Z",
+    "updatedAt": "2026-09-26T07:46:43.064Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00145-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00145-34_fid",
+      "fullName": "Robert Henderson",
+      "role": "EXECUTOR",
+      "appointmentDate": "2026-02-20T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00145-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00145-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803065_ct1lq3",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.065Z",
+    "updatedAt": "2026-09-26T07:46:43.065Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00142-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00142-34_fid",
+      "fullName": "Patricia Foster",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-02-18T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00142-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00142-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803066_0tfgll",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.066Z",
+    "updatedAt": "2026-09-26T07:46:43.066Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00139-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00139-34_fid",
+      "fullName": "Judith Kelly",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-02-15T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00139-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00139-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803066_vxik87",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.066Z",
+    "updatedAt": "2026-09-26T07:46:43.066Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00135-34",
+    "countyId": "county_thurston_wa",
+    "status": "NO_APPOINTMENT",
+    "tier": 4,
+    "fiduciary": null,
+    "verifiedClaimIds": [],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803067_r6t1do",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.067Z",
+    "updatedAt": "2026-09-26T07:46:43.067Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00131-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00131-34_fid",
+      "fullName": "Thomas Miller",
+      "role": "EXECUTOR",
+      "appointmentDate": "2026-02-10T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00131-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00131-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803068_8munek",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.068Z",
+    "updatedAt": "2026-09-26T07:46:43.068Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00127-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00127-34_fid",
+      "fullName": "Brian Wallace",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-02-08T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00127-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00127-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803069_jszvam",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.069Z",
+    "updatedAt": "2026-09-26T07:46:43.069Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00124-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00124-34_fid",
+      "fullName": "Gary Simmons",
+      "role": "EXECUTOR",
+      "appointmentDate": "2026-02-05T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00124-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00124-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803069_sgsdnp",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.069Z",
+    "updatedAt": "2026-09-26T07:46:43.069Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00122-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00122-34_fid",
+      "fullName": "Erik Lindgren",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-02-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00122-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00122-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803070_qnbhgk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.070Z",
+    "updatedAt": "2026-09-26T07:46:43.070Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00119-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00119-34_fid",
+      "fullName": "Evelyn Peterson",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-01-28T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00119-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00119-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803071_5cpykh",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.071Z",
+    "updatedAt": "2026-09-26T07:46:43.071Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00115-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00115-34_fid",
+      "fullName": "Dale Jensen",
+      "role": "EXECUTOR",
+      "appointmentDate": "2026-01-25T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00115-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00115-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803071_ud83uw",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.071Z",
+    "updatedAt": "2026-09-26T07:46:43.071Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00111-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00111-34_fid",
+      "fullName": "Susan Murphy",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-01-22T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00111-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00111-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803072_z8pmbj",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.072Z",
+    "updatedAt": "2026-09-26T07:46:43.072Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00108-34",
+    "countyId": "county_thurston_wa",
+    "status": "NO_APPOINTMENT",
+    "tier": 4,
+    "fiduciary": null,
+    "verifiedClaimIds": [],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803073_t67tb4",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.073Z",
+    "updatedAt": "2026-09-26T07:46:43.073Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00103-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00103-34_fid",
+      "fullName": "James Coleman",
+      "role": "EXECUTOR",
+      "appointmentDate": "2026-01-18T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00103-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00103-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803074_ml58ii",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.074Z",
+    "updatedAt": "2026-09-26T07:46:43.074Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00099-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00099-34_fid",
+      "fullName": "Carolyn Boyd",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-01-15T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00099-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00099-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803075_vtlqo7",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.075Z",
+    "updatedAt": "2026-09-26T07:46:43.075Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00095-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00095-34_fid",
+      "fullName": "Charles Adams",
+      "role": "EXECUTOR",
+      "appointmentDate": "2026-01-12T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00095-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00095-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803075_2dsio3",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.075Z",
+    "updatedAt": "2026-09-26T07:46:43.075Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00091-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00091-34_fid",
+      "fullName": "Laura Reynolds",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-01-10T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00091-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00091-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803076_tx2stp",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.076Z",
+    "updatedAt": "2026-09-26T07:46:43.076Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00089-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00089-34_fid",
+      "fullName": "Thomas Miller",
+      "role": "EXECUTOR",
+      "appointmentDate": "2026-01-08T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00089-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00089-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803077_mdhs31",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.077Z",
+    "updatedAt": "2026-09-26T07:46:43.077Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00087-34",
+    "countyId": "county_thurston_wa",
+    "status": "NO_APPOINTMENT",
+    "tier": 4,
+    "fiduciary": null,
+    "verifiedClaimIds": [],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803078_vq3ayl",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.078Z",
+    "updatedAt": "2026-09-26T07:46:43.078Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00082-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00082-34_fid",
+      "fullName": "Mark Hayes",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-01-05T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00082-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00082-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803079_s6fsz6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.079Z",
+    "updatedAt": "2026-09-26T07:46:43.079Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00078-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00078-34_fid",
+      "fullName": "Arthur Watson",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-01-02T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00078-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00078-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803079_l21nsy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.079Z",
+    "updatedAt": "2026-09-26T07:46:43.079Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00074-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00074-34_fid",
+      "fullName": "Dennis Russell",
+      "role": "EXECUTOR",
+      "appointmentDate": "2025-12-28T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00074-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00074-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803080_76mlqa",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.080Z",
+    "updatedAt": "2026-09-26T07:46:43.080Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00069-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00069-34_fid",
+      "fullName": "Gregory Powell",
+      "role": "EXECUTOR",
+      "appointmentDate": "2025-12-25T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00069-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00069-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803081_rshoiu",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.081Z",
+    "updatedAt": "2026-09-26T07:46:43.081Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00065-34",
+    "countyId": "county_thurston_wa",
+    "status": "NO_APPOINTMENT",
+    "tier": 4,
+    "fiduciary": null,
+    "verifiedClaimIds": [],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803081_o59maz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.082Z",
+    "updatedAt": "2026-09-26T07:46:43.082Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00061-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00061-34_fid",
+      "fullName": "Douglas Barnes",
+      "role": "EXECUTOR",
+      "appointmentDate": "2025-12-20T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00061-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00061-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803082_yberjy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.082Z",
+    "updatedAt": "2026-09-26T07:46:43.082Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00057-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00057-34_fid",
+      "fullName": "Keith Wood",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2025-12-18T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00057-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00057-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803083_mdho5q",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.083Z",
+    "updatedAt": "2026-09-26T07:46:43.083Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00052-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00052-34_fid",
+      "fullName": "Paul Fisher",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2025-12-15T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00052-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00052-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803084_ytqrye",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.084Z",
+    "updatedAt": "2026-09-26T07:46:43.084Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00048-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00048-34_fid",
+      "fullName": "Steven Jenkins",
+      "role": "EXECUTOR",
+      "appointmentDate": "2025-12-12T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00048-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00048-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803084_j38sr2",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.084Z",
+    "updatedAt": "2026-09-26T07:46:43.084Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00044-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00044-34_fid",
+      "fullName": "Diane Bailey",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2025-12-10T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00044-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00044-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803085_6shx1f",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.085Z",
+    "updatedAt": "2026-09-26T07:46:43.085Z"
+  },
+  {
+    "caseId": "case_thurston_26-4-00041-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_26-4-00041-34_fid",
+      "fullName": "Carolyn Boyd",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2025-12-08T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_26-4-00041-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_26-4-00041-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803086_f91eim",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.086Z",
+    "updatedAt": "2026-09-26T07:46:43.086Z"
+  },
+  {
+    "caseId": "case_thurston_25-4-00812-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_25-4-00812-34_fid",
+      "fullName": "Jeffrey Stewart",
+      "role": "EXECUTOR",
+      "appointmentDate": "2025-12-05T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_25-4-00812-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_25-4-00812-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803087_i9lstb",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.087Z",
+    "updatedAt": "2026-09-26T07:46:43.087Z"
+  },
+  {
+    "caseId": "case_thurston_25-4-00806-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_25-4-00806-34_fid",
+      "fullName": "Timothy Myers",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2025-12-02T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_25-4-00806-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_25-4-00806-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803090_2ebgyz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.090Z",
+    "updatedAt": "2026-09-26T07:46:43.090Z"
+  },
+  {
+    "caseId": "case_thurston_25-4-00799-34",
+    "countyId": "county_thurston_wa",
+    "status": "NO_APPOINTMENT",
+    "tier": 4,
+    "fiduciary": null,
+    "verifiedClaimIds": [],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803092_7ihkpj",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.092Z",
+    "updatedAt": "2026-09-26T07:46:43.092Z"
+  },
+  {
+    "caseId": "case_thurston_25-4-00793-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_25-4-00793-34_fid",
+      "fullName": "Kenneth Albright",
+      "role": "EXECUTOR",
+      "appointmentDate": "2025-11-28T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_25-4-00793-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_25-4-00793-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803093_rvkrbz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.093Z",
+    "updatedAt": "2026-09-26T07:46:43.093Z"
+  },
+  {
+    "caseId": "case_thurston_25-4-00788-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_25-4-00788-34_fid",
+      "fullName": "Henry Zimmerman",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2025-11-25T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_25-4-00788-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_25-4-00788-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803094_ow2yoi",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.094Z",
+    "updatedAt": "2026-09-26T07:46:43.094Z"
+  },
+  {
+    "caseId": "case_thurston_25-4-00781-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_25-4-00781-34_fid",
+      "fullName": "Kenneth Olson",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2025-11-20T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_25-4-00781-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_25-4-00781-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803095_8s3rbd",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.095Z",
+    "updatedAt": "2026-09-26T07:46:43.095Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106059-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106059-34_fid",
+      "fullName": "Eldon Milton Zeller",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106059-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106059-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803096_9n0b6w",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.096Z",
+    "updatedAt": "2026-09-26T07:46:43.096Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106113-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106113-34_fid",
+      "fullName": "Mary Elsie Campbell",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106113-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106113-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803097_nyeykw",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.097Z",
+    "updatedAt": "2026-09-26T07:46:43.097Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106386-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106386-34_fid",
+      "fullName": "Elizabeth P Magiba",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106386-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106386-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803098_jwgzyr",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.098Z",
+    "updatedAt": "2026-09-26T07:46:43.098Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106446-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106446-34_fid",
+      "fullName": "Kathleen Rivers",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106446-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106446-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803098_zhwt4p",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.098Z",
+    "updatedAt": "2026-09-26T07:46:43.098Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106493-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106493-34_fid",
+      "fullName": "Laura Thibault",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106493-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106493-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803099_zngip6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.099Z",
+    "updatedAt": "2026-09-26T07:46:43.099Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106540-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106540-34_fid",
+      "fullName": "Richard G Russell",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106540-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106540-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803100_zs1ha4",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.100Z",
+    "updatedAt": "2026-09-26T07:46:43.100Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106572-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106572-34_fid",
+      "fullName": "Dustin J Ryder",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106572-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106572-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803101_z2e8h3",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.101Z",
+    "updatedAt": "2026-09-26T07:46:43.101Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106575-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106575-34_fid",
+      "fullName": "Bentley L Krokson",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106575-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106575-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803102_0fquti",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.102Z",
+    "updatedAt": "2026-09-26T07:46:43.102Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106577-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106577-34_fid",
+      "fullName": "Deborah Diane Schenk",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106577-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106577-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803103_vbxrd7",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.103Z",
+    "updatedAt": "2026-09-26T07:46:43.103Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106580-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106580-34_fid",
+      "fullName": "Carolyn I Sears",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106580-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106580-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803104_k4ge0r",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.104Z",
+    "updatedAt": "2026-09-26T07:46:43.104Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106602-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106602-34_fid",
+      "fullName": "Edward Francis Jr Tract 12 Loper",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106602-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106602-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803105_dkcu30",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.105Z",
+    "updatedAt": "2026-09-26T07:46:43.105Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106676-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106676-34_fid",
+      "fullName": "Kristine Tollestrup",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106676-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106676-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803106_subb5r",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.106Z",
+    "updatedAt": "2026-09-26T07:46:43.106Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106806-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106806-34_fid",
+      "fullName": "Charles Robert Mckillip",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106806-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106806-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803106_tmqh6d",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.106Z",
+    "updatedAt": "2026-09-26T07:46:43.106Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106814-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106814-34_fid",
+      "fullName": "Lyndsey Dawn Leavitt",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106814-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106814-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803107_5f9igu",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.107Z",
+    "updatedAt": "2026-09-26T07:46:43.107Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106840-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106840-34_fid",
+      "fullName": "Rita F Casebeer",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106840-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106840-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803108_ds13z9",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.108Z",
+    "updatedAt": "2026-09-26T07:46:43.108Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106975-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106975-34_fid",
+      "fullName": "Nancy Pringle",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106975-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106975-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803109_0iye5t",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.109Z",
+    "updatedAt": "2026-09-26T07:46:43.109Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106974-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106974-34_fid",
+      "fullName": "Nancy Tract B Pringle",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106974-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106974-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803110_aym7uz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.110Z",
+    "updatedAt": "2026-09-26T07:46:43.110Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5106982-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5106982-34_fid",
+      "fullName": "Stefanie Davison",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5106982-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5106982-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803111_z3uly6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.111Z",
+    "updatedAt": "2026-09-26T07:46:43.111Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107043-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107043-34_fid",
+      "fullName": "Matthew A Oechsner",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107043-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107043-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803112_jxtfhz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.112Z",
+    "updatedAt": "2026-09-26T07:46:43.112Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107044-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107044-34_fid",
+      "fullName": "Kathleen K Oechsner",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107044-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107044-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803113_9ypnza",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.113Z",
+    "updatedAt": "2026-09-26T07:46:43.113Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107139-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107139-34_fid",
+      "fullName": "Paulette L Dragt",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107139-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107139-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803114_6r2ub7",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.114Z",
+    "updatedAt": "2026-09-26T07:46:43.114Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107177-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107177-34_fid",
+      "fullName": "Amy Rutledge",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107177-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107177-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803114_86snyz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.114Z",
+    "updatedAt": "2026-09-26T07:46:43.114Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107440-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107440-34_fid",
+      "fullName": "Gail K Randall",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107440-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107440-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803115_7ht2fn",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.115Z",
+    "updatedAt": "2026-09-26T07:46:43.115Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107457-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107457-34_fid",
+      "fullName": "Doreen L Tompkins",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107457-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107457-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803116_bey35z",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.116Z",
+    "updatedAt": "2026-09-26T07:46:43.116Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107495-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107495-34_fid",
+      "fullName": "Brandi Leiren",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107495-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107495-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803117_uesftz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.117Z",
+    "updatedAt": "2026-09-26T07:46:43.117Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107508-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107508-34_fid",
+      "fullName": "Jennifer Rose Minton",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107508-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107508-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803118_5b328z",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.118Z",
+    "updatedAt": "2026-09-26T07:46:43.118Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107507-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107507-34_fid",
+      "fullName": "Jennifer Rose Minton",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107507-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107507-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803119_x38ao8",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.119Z",
+    "updatedAt": "2026-09-26T07:46:43.119Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107526-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107526-34_fid",
+      "fullName": "Dale Edwards",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107526-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107526-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803120_1qfn0i",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.120Z",
+    "updatedAt": "2026-09-26T07:46:43.120Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107560-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107560-34_fid",
+      "fullName": "Monicalynn Munson",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107560-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107560-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803121_crbsk6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.121Z",
+    "updatedAt": "2026-09-26T07:46:43.121Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107612-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107612-34_fid",
+      "fullName": "Pamela K Isom",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107612-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107612-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803122_ojromh",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.122Z",
+    "updatedAt": "2026-09-26T07:46:43.122Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107667-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107667-34_fid",
+      "fullName": "Joycee Lee Cullens-Lyons",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107667-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107667-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803124_us1rpb",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.124Z",
+    "updatedAt": "2026-09-26T07:46:43.124Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107687-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107687-34_fid",
+      "fullName": "Kathleen Rivers",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107687-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107687-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803125_rqichl",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.125Z",
+    "updatedAt": "2026-09-26T07:46:43.125Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107776-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107776-34_fid",
+      "fullName": "Lilia M Gomez",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107776-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107776-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803126_374i37",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.126Z",
+    "updatedAt": "2026-09-26T07:46:43.126Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107777-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107777-34_fid",
+      "fullName": "Cristina Maria Rodriguez",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107777-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107777-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803127_3u9yh9",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.127Z",
+    "updatedAt": "2026-09-26T07:46:43.127Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107874-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107874-34_fid",
+      "fullName": "Corey D Shoblom-Davis",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107874-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107874-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803128_k4x44z",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.128Z",
+    "updatedAt": "2026-09-26T07:46:43.128Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107876-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107876-34_fid",
+      "fullName": "Sarah J Rawlings",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107876-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107876-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803129_b6wtbh",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.129Z",
+    "updatedAt": "2026-09-26T07:46:43.129Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107875-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107875-34_fid",
+      "fullName": "Sarah J Rawlings",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107875-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107875-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803130_fdqjck",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.130Z",
+    "updatedAt": "2026-09-26T07:46:43.130Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107915-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107915-34_fid",
+      "fullName": "Andrea Lee Selvidge",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107915-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107915-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803131_18g8eo",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.131Z",
+    "updatedAt": "2026-09-26T07:46:43.131Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107939-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107939-34_fid",
+      "fullName": "Gerald Michael Hanlon",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107939-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107939-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803132_rvdy7h",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.132Z",
+    "updatedAt": "2026-09-26T07:46:43.132Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107943-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107943-34_fid",
+      "fullName": "Stephen Iver Eliason",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107943-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107943-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803133_ej58ff",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.133Z",
+    "updatedAt": "2026-09-26T07:46:43.133Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5107992-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5107992-34_fid",
+      "fullName": "Brisa I Sabel",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5107992-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5107992-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803134_0wt8w5",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.134Z",
+    "updatedAt": "2026-09-26T07:46:43.134Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108045-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108045-34_fid",
+      "fullName": "Kayleigh N Faur",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108045-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108045-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803135_0idsqx",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.135Z",
+    "updatedAt": "2026-09-26T07:46:43.135Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108066-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108066-34_fid",
+      "fullName": "Sandra Lea Cruz",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108066-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108066-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803136_2i2xhn",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.136Z",
+    "updatedAt": "2026-09-26T07:46:43.136Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108108-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108108-34_fid",
+      "fullName": "Kelsey M Froehlich",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108108-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108108-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803137_d5ea1f",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.137Z",
+    "updatedAt": "2026-09-26T07:46:43.137Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108109-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108109-34_fid",
+      "fullName": "Erin O Rutherford",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108109-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108109-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803138_a64tsi",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.138Z",
+    "updatedAt": "2026-09-26T07:46:43.138Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108192-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108192-34_fid",
+      "fullName": "Marc Bourassa",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108192-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108192-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803139_cpn0lu",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.139Z",
+    "updatedAt": "2026-09-26T07:46:43.139Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108229-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108229-34_fid",
+      "fullName": "Kathryn Alexis Hamilton",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108229-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108229-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803140_eefzij",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.140Z",
+    "updatedAt": "2026-09-26T07:46:43.140Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108321-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108321-34_fid",
+      "fullName": "Troyton Oliver Tardiff",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108321-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108321-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803141_ujlq3m",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.141Z",
+    "updatedAt": "2026-09-26T07:46:43.141Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108410-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108410-34_fid",
+      "fullName": "Kailyn C Oconnell",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108410-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108410-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803142_vz4h3p",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.142Z",
+    "updatedAt": "2026-09-26T07:46:43.142Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108411-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108411-34_fid",
+      "fullName": "Evan A Davis",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108411-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108411-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803144_ve19zf",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.144Z",
+    "updatedAt": "2026-09-26T07:46:43.144Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108515-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108515-34_fid",
+      "fullName": "Lorilei E Baker",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108515-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108515-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803146_sktm93",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.146Z",
+    "updatedAt": "2026-09-26T07:46:43.146Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108593-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108593-34_fid",
+      "fullName": "Bruce D Carter",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108593-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108593-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803147_rfrlex",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.147Z",
+    "updatedAt": "2026-09-26T07:46:43.147Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108649-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108649-34_fid",
+      "fullName": "Lisa M Sorrell",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108649-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108649-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803148_lmwo2c",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.148Z",
+    "updatedAt": "2026-09-26T07:46:43.148Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108657-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108657-34_fid",
+      "fullName": "Jean Mena",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108657-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108657-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803149_o5fxvl",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.149Z",
+    "updatedAt": "2026-09-26T07:46:43.149Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108677-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108677-34_fid",
+      "fullName": "John Markham Madigan",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108677-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108677-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803150_6f0p41",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.150Z",
+    "updatedAt": "2026-09-26T07:46:43.150Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108685-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108685-34_fid",
+      "fullName": "Heer Patel",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108685-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108685-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803150_l20hfa",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.150Z",
+    "updatedAt": "2026-09-26T07:46:43.150Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108777-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108777-34_fid",
+      "fullName": "Lester L Couchman",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108777-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108777-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803152_flm5ao",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.152Z",
+    "updatedAt": "2026-09-26T07:46:43.152Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108919-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108919-34_fid",
+      "fullName": "Shelly Knight",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108919-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108919-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803152_023j9h",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.152Z",
+    "updatedAt": "2026-09-26T07:46:43.152Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108963-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108963-34_fid",
+      "fullName": "Yvette Sheble",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108963-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108963-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803153_hlzmxp",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.153Z",
+    "updatedAt": "2026-09-26T07:46:43.153Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108979-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108979-34_fid",
+      "fullName": "Beverly Anne Jackson",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108979-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108979-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803154_rygfig",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.154Z",
+    "updatedAt": "2026-09-26T07:46:43.154Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5108992-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5108992-34_fid",
+      "fullName": "Rachel A Hanes",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5108992-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5108992-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803155_791n31",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.155Z",
+    "updatedAt": "2026-09-26T07:46:43.155Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5109047-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5109047-34_fid",
+      "fullName": "Jeffrey M Mcbride",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5109047-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5109047-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803156_mkppu1",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.156Z",
+    "updatedAt": "2026-09-26T07:46:43.156Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5109048-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5109048-34_fid",
+      "fullName": "Brandon Earle Pinkham",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5109048-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5109048-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803157_pd1tgn",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.157Z",
+    "updatedAt": "2026-09-26T07:46:43.157Z"
+  },
+  {
+    "caseId": "case_thurston_NP-5109046-34",
+    "countyId": "county_thurston_wa",
+    "status": "CONFIRMED",
+    "tier": 1,
+    "fiduciary": {
+      "personId": "person_NP-5109046-34_fid",
+      "fullName": "Teri S Butler",
+      "role": "PERSONAL_REPRESENTATIVE",
+      "appointmentDate": "2026-03-01T00:00:00.000Z",
+      "lettersIssued": true,
+      "bondAmount": 0,
+      "verifiedEvidenceId": "ev_fid_NP-5109046-34"
+    },
+    "verifiedClaimIds": [
+      "claim_fid_NP-5109046-34"
+    ],
+    "evaluatedAt": "2026-09-26T07:46:42.273Z",
+    "evaluatorId": "system_authority_engine",
+    "ruleVersion": "v1.0.0-statutory",
+    "schemaVersion": 1,
+    "id": "rec_1790408803158_qfyiu5",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.158Z",
+    "updatedAt": "2026-09-26T07:46:43.158Z"
+  }
+]

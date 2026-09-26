@@ -1,0 +1,72 @@
+[
+  {
+    "countyId": "county_thurston_wa",
+    "opportunityId": "opp_26_4_00135_34",
+    "type": "AUTHORITY_UNRESOLVED",
+    "status": "PENDING_REVIEW",
+    "priority": "HIGH",
+    "description": "Docket 26-4-00135-34 lacks confirmed fiduciary letters. Personal representative unappointed.",
+    "schemaVersion": 1,
+    "id": "rec_1790408803454_c20o9k",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.454Z",
+    "updatedAt": "2026-09-26T07:46:43.454Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "opportunityId": "opp_26_4_00108_34",
+    "type": "AUTHORITY_UNRESOLVED",
+    "status": "PENDING_REVIEW",
+    "priority": "HIGH",
+    "description": "Docket 26-4-00108-34 lacks confirmed fiduciary letters. Personal representative unappointed.",
+    "schemaVersion": 1,
+    "id": "rec_1790408803455_8r3vfe",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.455Z",
+    "updatedAt": "2026-09-26T07:46:43.455Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "opportunityId": "opp_26_4_00087_34",
+    "type": "AUTHORITY_UNRESOLVED",
+    "status": "PENDING_REVIEW",
+    "priority": "HIGH",
+    "description": "Docket 26-4-00087-34 lacks confirmed fiduciary letters. Personal representative unappointed.",
+    "schemaVersion": 1,
+    "id": "rec_1790408803456_y93crk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.456Z",
+    "updatedAt": "2026-09-26T07:46:43.456Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "opportunityId": "opp_26_4_00065_34",
+    "type": "AUTHORITY_UNRESOLVED",
+    "status": "PENDING_REVIEW",
+    "priority": "HIGH",
+    "description": "Docket 26-4-00065-34 lacks confirmed fiduciary letters. Personal representative unappointed.",
+    "schemaVersion": 1,
+    "id": "rec_1790408803456_56rslb",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.456Z",
+    "updatedAt": "2026-09-26T07:46:43.456Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "opportunityId": "opp_25_4_00799_34",
+    "type": "AUTHORITY_UNRESOLVED",
+    "status": "PENDING_REVIEW",
+    "priority": "HIGH",
+    "description": "Docket 25-4-00799-34 lacks confirmed fiduciary letters. Personal representative unappointed.",
+    "schemaVersion": 1,
+    "id": "rec_1790408803457_lagcsq",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.457Z",
+    "updatedAt": "2026-09-26T07:46:43.457Z"
+  }
+]
