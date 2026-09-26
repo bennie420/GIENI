@@ -113,7 +113,7 @@ function Invoke-DatabaseSeed ([string]$Root) {
     }
 }
 
-function Build-DistributablePackages ([string]$Root, [bool]$WebOnly) {
+function Invoke-PackageCompilation ([string]$Root, [bool]$WebOnly) {
     $AdaptersDist = Join-Path $Root "packages\county-adapters\dist\index.js"
     if (-not (Test-Path $AdaptersDist)) {
         Write-Host " [*] Compiling @gieni/county-adapters bundle..." -ForegroundColor Yellow
@@ -135,26 +135,15 @@ function Build-DistributablePackages ([string]$Root, [bool]$WebOnly) {
     }
 }
 
-function Start-WorkerService ([string]$Root, [int]$WorkerPort) {
-    Write-Host " [*] Starting @gieni/workers HTTP Service on port $WorkerPort ..." -ForegroundColor Cyan
-    $WorkersCmd = @"
-`$host.UI.RawUI.WindowTitle = 'Gieni OS - Worker Service (Port $WorkerPort)';
+function Start-NpmWorkspaceProcess ([string]$Root, [string]$Title, [int]$Port, [string]$Workspace, [string]$Script) {
+    Write-Host " [*] Starting $Workspace on port $Port ..." -ForegroundColor Cyan
+    $Cmd = @"
+`$host.UI.RawUI.WindowTitle = '$Title';
 Set-Location '$Root';
-`$env:PORT = '$WorkerPort';
-npm run start --workspace=@gieni/workers
+`$env:PORT = '$Port';
+npm run $Script --workspace=$Workspace
 "@
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $WorkersCmd
-}
-
-function Start-WebPortal ([string]$Root, [int]$WebPort) {
-    Write-Host " [*] Starting @gieni/web Next.js Portal on port $WebPort ..." -ForegroundColor Cyan
-    $WebCmd = @"
-`$host.UI.RawUI.WindowTitle = 'Gieni OS - Web Portal (Port $WebPort)';
-Set-Location '$Root';
-`$env:PORT = '$WebPort';
-npm run dev --workspace=@gieni/web
-"@
-    Start-Process powershell -ArgumentList "-NoExit", "-Command", $WebCmd
+    Start-Process powershell -ArgumentList "-NoExit", "-Command", $Cmd
 }
 
 function Show-StartupSummary ([int]$WebPort, [int]$WorkerPort, [bool]$WebOnly, [bool]$WorkersOnly) {
@@ -180,53 +169,55 @@ function Open-WebBrowser ([int]$WebPort) {
     Start-Process "http://localhost:$WebPort"
 }
 
-function Start-GieniMonorepo {
-    param (
-        [string]$Root,
-        [int]$WebPort,
-        [int]$WorkerPort,
-        [bool]$Seed,
-        [bool]$Clean,
-        [bool]$WebOnly,
-        [bool]$WorkersOnly,
-        [bool]$NoBrowser
-    )
-
-    if ($Clean) {
-        Clear-WebCache -Root $Root
+function Start-GieniMonorepo ($Options) {
+    if ($Options.Clean) {
+        Clear-WebCache -Root $Options.Root
     }
 
     Test-NodeRuntime
-    Assert-PortAvailability -WebPort $WebPort -WorkerPort $WorkerPort -WebOnly $WebOnly -WorkersOnly $WorkersOnly
+    Assert-PortAvailability -WebPort $Options.WebPort -WorkerPort $Options.WorkerPort -WebOnly $Options.WebOnly -WorkersOnly $Options.WorkersOnly
 
-    if ($Seed) {
-        Invoke-DatabaseSeed -Root $Root
+    if ($Options.Seed) {
+        Invoke-DatabaseSeed -Root $Options.Root
     }
 
-    Build-DistributablePackages -Root $Root -WebOnly $WebOnly
+    Invoke-PackageCompilation -Root $Options.Root -WebOnly $Options.WebOnly
 
-    if (-not $WebOnly) {
-        Start-WorkerService -Root $Root -WorkerPort $WorkerPort
+    if (-not $Options.WebOnly) {
+        Start-NpmWorkspaceProcess `
+            -Root $Options.Root `
+            -Title "Gieni OS - Worker Service (Port $($Options.WorkerPort))" `
+            -Port $Options.WorkerPort `
+            -Workspace "@gieni/workers" `
+            -Script "start"
     }
 
-    if (-not $WorkersOnly) {
-        Start-WebPortal -Root $Root -WebPort $WebPort
+    if (-not $Options.WorkersOnly) {
+        Start-NpmWorkspaceProcess `
+            -Root $Options.Root `
+            -Title "Gieni OS - Web Portal (Port $($Options.WebPort))" `
+            -Port $Options.WebPort `
+            -Workspace "@gieni/web" `
+            -Script "dev"
     }
 
-    Show-StartupSummary -WebPort $WebPort -WorkerPort $WorkerPort -WebOnly $WebOnly -WorkersOnly $WorkersOnly
+    Show-StartupSummary -WebPort $Options.WebPort -WorkerPort $Options.WorkerPort -WebOnly $Options.WebOnly -WorkersOnly $Options.WorkersOnly
 
-    if (-not $NoBrowser -and (-not $WorkersOnly)) {
-        Open-WebBrowser -WebPort $WebPort
+    if (-not $Options.NoBrowser -and (-not $Options.WorkersOnly)) {
+        Open-WebBrowser -WebPort $Options.WebPort
     }
 }
 
-Start-GieniMonorepo `
-    -Root $ProjectRoot `
-    -WebPort $WebPort `
-    -WorkerPort $WorkerPort `
-    -Seed $Seed.IsPresent `
-    -Clean $Clean.IsPresent `
-    -WebOnly $WebOnly.IsPresent `
-    -WorkersOnly $WorkersOnly.IsPresent `
-    -NoBrowser $NoBrowser.IsPresent
+$LaunchConfig = [PSCustomObject]@{
+    Root        = $ProjectRoot
+    WebPort     = $WebPort
+    WorkerPort  = $WorkerPort
+    Seed        = $Seed.IsPresent
+    Clean       = $Clean.IsPresent
+    WebOnly     = $WebOnly.IsPresent
+    WorkersOnly = $WorkersOnly.IsPresent
+    NoBrowser   = $NoBrowser.IsPresent
+}
+
+Start-GieniMonorepo $LaunchConfig
 

@@ -879,6 +879,84 @@ export class MunicipalIngestionPipeline {
     return exceptions;
   }
 
+  private static scoreCaseOpportunity(params: {
+    probateCase: ProbateCase;
+    oppId: string;
+    parcel: PropertyParcel | null;
+    authority: AuthorityAssessment | null;
+    ownership: OwnershipAssessment | null;
+    tax: CountyTaxRecord | null;
+    countyId: string;
+    log: TelemetryLogger;
+  }): OpportunityScore {
+    const { probateCase: c, oppId, parcel: p, authority: auth, ownership: own, tax, countyId, log } = params;
+    const scoreId = `score_${oppId}`;
+    const score = calculateOpportunityScore(scoreId, {
+      organizationId: c.organizationId,
+      opportunityId: oppId,
+      countyId,
+      property: p,
+      authority: auth,
+      ownership: own,
+      filingDate: c.filingDate,
+      estimatedLiensOrMortgageAmount: tax?.delinquentAmount || 0,
+    });
+
+    log(
+      'OPPORTUNITY_SCORING',
+      'SUCCESS',
+      `Scored ${c.caseNumber}: Composite ${score.compositeScore}/100 [Band: ${score.priorityBand}] (Auth: ${score.breakdown.authorityComponent}, Equity: ${score.breakdown.equityComponent})`,
+      { scoreId, compositeScore: score.compositeScore, priorityBand: score.priorityBand }
+    );
+    return score;
+  }
+
+  private static assembleOpportunityEntity(params: {
+    probateCase: ProbateCase;
+    oppId: string;
+    parcel: PropertyParcel | null;
+    authority: AuthorityAssessment | null;
+    ownership: OwnershipAssessment | null;
+    score: OpportunityScore;
+    exceptions: InvestigationException[];
+    now: string;
+    countyId: string;
+    log: TelemetryLogger;
+  }): Opportunity {
+    const { probateCase: c, oppId, parcel: p, authority: auth, ownership: own, score, exceptions, now, countyId, log } = params;
+    const snapshot = buildOpportunitySnapshot({
+      caseNumber: c.caseNumber,
+      decedentName: c.decedentName,
+      filingDate: c.filingDate,
+      property: p,
+      authority: auth,
+      ownership: own,
+      score,
+      unresolvedExceptionsCount: exceptions.length,
+    });
+
+    const oppStatus: OpportunityLifecycleStatus = exceptions.length > 0 ? 'EXCEPTION' : 'READY_FOR_QC';
+    log(
+      'OPPORTUNITY_PROJECTED',
+      'SUCCESS',
+      `Projected Opportunity ${oppId} -> Status: ${oppStatus} | Assessed: $${(snapshot.assessedValue || 0).toLocaleString()} | Fiduciary: ${snapshot.fiduciaryName ?? 'None'}`,
+      { oppId, status: oppStatus, snapshot }
+    );
+
+    return {
+      id: oppId,
+      organizationId: c.organizationId,
+      countyId,
+      caseId: c.id,
+      parcelId: p?.id ?? null,
+      status: oppStatus,
+      currentSnapshot: snapshot,
+      createdAt: now,
+      updatedAt: now,
+      schemaVersion: 1,
+    };
+  }
+
   private static projectSingleOpportunity(params: {
     probateCase: ProbateCase;
     index: number;
@@ -899,74 +977,13 @@ export class MunicipalIngestionPipeline {
     const auth = authorities.find((a) => a.caseId === c.id) ?? null;
     const own = ownerships.find((o) => o.caseId === c.id) ?? null;
     const tax = p ? taxRecords.find((t) => t.apn === p.apn) ?? null : null;
-
     const oppId = `opp_${c.caseNumber.replace(/[^a-zA-Z0-9]/g, '_')}`;
-    const scoreId = `score_${oppId}`;
 
-    const score = calculateOpportunityScore(scoreId, {
-      organizationId: c.organizationId,
-      opportunityId: oppId,
-      countyId,
-      property: p,
-      authority: auth,
-      ownership: own,
-      filingDate: c.filingDate,
-      estimatedLiensOrMortgageAmount: tax?.delinquentAmount || 0,
-    });
+    const score = this.scoreCaseOpportunity({ probateCase: c, oppId, parcel: p, authority: auth, ownership: own, tax, countyId, log });
+    const exceptions = this.routeCaseExceptions({ probateCase: c, parcel: p, authority: auth, tax, oppId, countyId, timestamp: now, log });
+    const opportunity = this.assembleOpportunityEntity({ probateCase: c, oppId, parcel: p, authority: auth, ownership: own, score, exceptions, now, countyId, log });
 
-    log(
-      'OPPORTUNITY_SCORING',
-      'SUCCESS',
-      `Scored ${c.caseNumber}: Composite ${score.compositeScore}/100 [Band: ${score.priorityBand}] (Auth: ${score.breakdown.authorityComponent}, Equity: ${score.breakdown.equityComponent})`,
-      { scoreId, compositeScore: score.compositeScore, priorityBand: score.priorityBand }
-    );
-
-    const caseExceptions = this.routeCaseExceptions({
-      probateCase: c,
-      parcel: p,
-      authority: auth,
-      tax,
-      oppId,
-      countyId,
-      timestamp: now,
-      log,
-    });
-
-    const snapshot = buildOpportunitySnapshot({
-      caseNumber: c.caseNumber,
-      decedentName: c.decedentName,
-      filingDate: c.filingDate,
-      property: p,
-      authority: auth,
-      ownership: own,
-      score,
-      unresolvedExceptionsCount: caseExceptions.length,
-    });
-
-    const oppStatus: OpportunityLifecycleStatus =
-      caseExceptions.length > 0 ? 'EXCEPTION' : 'READY_FOR_QC';
-
-    log(
-      'OPPORTUNITY_PROJECTED',
-      'SUCCESS',
-      `Projected Opportunity ${oppId} -> Status: ${oppStatus} | Assessed: $${(snapshot.assessedValue || 0).toLocaleString()} | Fiduciary: ${snapshot.fiduciaryName ?? 'None'}`,
-      { oppId, status: oppStatus, snapshot }
-    );
-
-    const opportunity: Opportunity = {
-      id: oppId,
-      organizationId: c.organizationId,
-      countyId,
-      caseId: c.id,
-      parcelId: p?.id ?? null,
-      status: oppStatus,
-      currentSnapshot: snapshot,
-      createdAt: now,
-      updatedAt: now,
-      schemaVersion: 1,
-    };
-
-    return { score, opportunity, exceptions: caseExceptions };
+    return { score, opportunity, exceptions };
   }
 
   /**

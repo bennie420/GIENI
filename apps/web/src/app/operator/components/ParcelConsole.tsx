@@ -53,12 +53,17 @@ function ParcelTabBar({
   );
 }
 
+function calculateAssessedPortion(assessed: number | null, ratio: number): number | null {
+  if (assessed == null) return null;
+  return Math.round(assessed * ratio);
+}
+
 function resolveAssessorMetrics(parcel?: any) {
   const apn = parcel?.apn ?? 'UNINDEXED';
   const county = parcel?.address?.county ?? 'Travis County';
   const assessedValue: number | null = parcel?.totalAssessedValue ?? null;
-  const landValue = parcel?.assessedLandValue ?? (assessedValue != null ? Math.round(assessedValue * 0.4) : null);
-  const impValue = parcel?.assessedImprovementValue ?? (assessedValue != null ? Math.round(assessedValue * 0.6) : null);
+  const landValue = parcel?.assessedLandValue ?? calculateAssessedPortion(assessedValue, 0.4);
+  const impValue = parcel?.assessedImprovementValue ?? calculateAssessedPortion(assessedValue, 0.6);
   return { apn, county, assessedValue, landValue, impValue };
 }
 
@@ -72,6 +77,23 @@ function formatLandAndImprovement(land: number | null, imp: number | null): stri
   return `$${land.toLocaleString()} / $${imp.toLocaleString()}`;
 }
 
+function ParcelFieldRow({
+  label,
+  value,
+  highlightColor,
+}: {
+  label: string;
+  value: React.ReactNode;
+  highlightColor?: string;
+}) {
+  return (
+    <div>
+      <span style={{ color: 'var(--text-sub)' }}>{label}: </span>
+      {highlightColor ? <strong style={{ color: highlightColor }}>{value}</strong> : <span>{value}</span>}
+    </div>
+  );
+}
+
 function AssessorPanel({ parcel }: { parcel?: any }) {
   const metrics = resolveAssessorMetrics(parcel);
 
@@ -82,22 +104,17 @@ function AssessorPanel({ parcel }: { parcel?: any }) {
         <span className="hash-chip">{metrics.county}</span>
       </div>
       <div style={{ fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>APN: </span>
-          <strong>{metrics.apn}</strong>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Total Assessed: </span>
-          <strong style={{ color: '#137333' }}>{formatAssessedValue(metrics.assessedValue)}</strong>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Land / Improvement: </span>
-          <span>{formatLandAndImprovement(metrics.landValue, metrics.impValue)}</span>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Property Class: </span>
-          <span>Single Family Residence (A1)</span>
-        </div>
+        <ParcelFieldRow label="APN" value={<strong>{metrics.apn}</strong>} />
+        <ParcelFieldRow
+          label="Total Assessed"
+          value={formatAssessedValue(metrics.assessedValue)}
+          highlightColor="#137333"
+        />
+        <ParcelFieldRow
+          label="Land / Improvement"
+          value={formatLandAndImprovement(metrics.landValue, metrics.impValue)}
+        />
+        <ParcelFieldRow label="Property Class" value="Single Family Residence (A1)" />
       </div>
     </div>
   );
@@ -112,26 +129,22 @@ function EmptyRecorderNotice() {
 }
 
 function DeedInstrumentRow({ evt, isLast }: { evt: ChainEvent; isLast: boolean }) {
-  const docType = evt.documentType?.replace(/_/g, ' ') ?? 'DOCUMENT';
+  const docType = evt.documentType ? evt.documentType.replace(/_/g, ' ') : 'DOCUMENT';
   const recDate = evt.recordingDate || 'Undated';
   const instNum = evt.instrumentNumber || 'No instrument #';
+  const borderBottom = isLast ? 'none' : '1px dashed var(--border)';
 
   return (
-    <div
-      style={{
-        borderBottom: isLast ? 'none' : '1px dashed var(--border)',
-        paddingBottom: '4px',
-      }}
-    >
+    <div style={{ borderBottom, paddingBottom: '4px' }}>
       <div style={{ fontWeight: 600 }}>{docType}</div>
       <div style={{ color: 'var(--text-sub)', fontSize: '0.75rem' }}>
         {recDate} &bull; {instNum}
       </div>
-      {evt.grantee && (
+      {evt.grantee ? (
         <div style={{ fontSize: '0.75rem' }}>
           Grantee: <strong>{evt.grantee}</strong>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
@@ -161,11 +174,14 @@ function RecorderPanel({ ownership }: { ownership?: any }) {
   );
 }
 
+function resolveSitusAddress(address?: any): string {
+  if (!address) return 'NO_SITUS_ADDRESS';
+  const parts = [address.street, address.city, address.state, address.zipCode].filter(Boolean);
+  return parts.length > 0 ? parts.join(', ') : 'NO_SITUS_ADDRESS';
+}
+
 function GisPanel({ parcel }: { parcel?: any }) {
-  const address = parcel?.address;
-  const situs = address
-    ? `${address.street ?? ''}, ${address.city ?? ''}, ${address.state ?? ''} ${address.zipCode ?? ''}`.trim()
-    : 'NO_SITUS_ADDRESS';
+  const situs = resolveSitusAddress(parcel?.address);
   const legalDesc = parcel?.legalDescription ?? 'UNINDEXED LEGAL DESCRIPTION';
 
   return (
@@ -177,30 +193,23 @@ function GisPanel({ parcel }: { parcel?: any }) {
         </span>
       </div>
       <div style={{ fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Situs: </span>
-          <strong>{situs}</strong>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Legal: </span>
-          <span style={{ fontSize: '0.76rem' }}>{legalDesc}</span>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Jurisdiction: </span>
-          <span>City of Austin / AISD</span>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Coordinates: </span>
-          <span className="hash-chip">30.2241° N, 97.7712° W</span>
-        </div>
+        <ParcelFieldRow label="Situs" value={<strong>{situs}</strong>} />
+        <ParcelFieldRow label="Legal" value={<span style={{ fontSize: '0.76rem' }}>{legalDesc}</span>} />
+        <ParcelFieldRow label="Jurisdiction" value="City of Austin / AISD" />
+        <ParcelFieldRow label="Coordinates" value={<span className="hash-chip">30.2241° N, 97.7712° W</span>} />
       </div>
     </div>
   );
 }
 
+function formatEstimatedTax(assessedValue?: number | null): string {
+  if (assessedValue == null) return 'UNINDEXED';
+  const tax = (assessedValue * 0.0176).toFixed(2);
+  return `$${Number(tax).toLocaleString()} (2025 Tax Year)`;
+}
+
 function TaxPanel({ parcel }: { parcel?: any }) {
-  const assessedValue = parcel?.totalAssessedValue;
-  const estimatedTax = assessedValue ? (assessedValue * 0.0176).toFixed(2) : null;
+  const taxDisplay = formatEstimatedTax(parcel?.totalAssessedValue);
 
   return (
     <div style={{ padding: '14px', borderRadius: '8px', border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
@@ -211,23 +220,56 @@ function TaxPanel({ parcel }: { parcel?: any }) {
         </span>
       </div>
       <div style={{ fontSize: '0.82rem', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Delinquency Status: </span>
-          <strong style={{ color: '#137333' }}>CURRENT (None Owed)</strong>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Annual Tax Levy: </span>
-          <strong>{estimatedTax ? `$${Number(estimatedTax).toLocaleString()} (2025 Tax Year)` : 'UNINDEXED'}</strong>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Auction / Foreclosure: </span>
-          <span>NO AUCTIONS SCHEDULED</span>
-        </div>
-        <div>
-          <span style={{ color: 'var(--text-sub)' }}>Next Installment: </span>
-          <span>Paid in Full</span>
-        </div>
+        <ParcelFieldRow label="Delinquency Status" value="CURRENT (None Owed)" highlightColor="#137333" />
+        <ParcelFieldRow label="Annual Tax Levy" value={<strong>{taxDisplay}</strong>} />
+        <ParcelFieldRow label="Auction / Foreclosure" value="NO AUCTIONS SCHEDULED" />
+        <ParcelFieldRow label="Next Installment" value="Paid in Full" />
       </div>
+    </div>
+  );
+}
+
+function shouldDisplayPanel(activeTab: ParcelSubTab, targetPanel: ParcelSubTab): boolean {
+  return activeTab === 'ALL' || activeTab === targetPanel;
+}
+
+function ParcelConsoleHeader({
+  activeTab,
+  onSelectTab,
+}: {
+  activeTab: ParcelSubTab;
+  onSelectTab: (tab: ParcelSubTab) => void;
+}) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+      <div>
+        <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-accent)' }}>
+          Unified Parcel Research Console (Assessor &bull; Recorder &bull; GIS &bull; Tax)
+        </h3>
+        <p style={{ margin: '4px 0 0 0', fontSize: '0.84rem', color: 'var(--text-sub)' }}>
+          Consolidated multi-county property intelligence eliminating siloed portal context switching.
+        </p>
+      </div>
+      <ParcelTabBar activeTab={activeTab} onSelectTab={onSelectTab} />
+    </div>
+  );
+}
+
+function ParcelGrid({
+  activeTab,
+  parcel,
+  ownership,
+}: {
+  activeTab: ParcelSubTab;
+  parcel?: any;
+  ownership?: any;
+}) {
+  return (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
+      {shouldDisplayPanel(activeTab, 'ASSESSOR') && <AssessorPanel parcel={parcel} />}
+      {shouldDisplayPanel(activeTab, 'RECORDER') && <RecorderPanel ownership={ownership} />}
+      {shouldDisplayPanel(activeTab, 'GIS') && <GisPanel parcel={parcel} />}
+      {shouldDisplayPanel(activeTab, 'TAX') && <TaxPanel parcel={parcel} />}
     </div>
   );
 }
@@ -235,28 +277,10 @@ function TaxPanel({ parcel }: { parcel?: any }) {
 export default function ParcelConsole({ currentParcel, currentOwnership }: ParcelConsoleProps) {
   const [activeSubTab, setActiveSubTab] = useState<ParcelSubTab>('ALL');
 
-  const shouldShow = (panel: ParcelSubTab) => activeSubTab === 'ALL' || activeSubTab === panel;
-
   return (
     <div className="insight-card" style={{ marginTop: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
-        <div>
-          <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-accent)' }}>
-            Unified Parcel Research Console (Assessor &bull; Recorder &bull; GIS &bull; Tax)
-          </h3>
-          <p style={{ margin: '4px 0 0 0', fontSize: '0.84rem', color: 'var(--text-sub)' }}>
-            Consolidated multi-county property intelligence eliminating siloed portal context switching.
-          </p>
-        </div>
-        <ParcelTabBar activeTab={activeSubTab} onSelectTab={setActiveSubTab} />
-      </div>
-
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
-        {shouldShow('ASSESSOR') && <AssessorPanel parcel={currentParcel} />}
-        {shouldShow('RECORDER') && <RecorderPanel ownership={currentOwnership} />}
-        {shouldShow('GIS') && <GisPanel parcel={currentParcel} />}
-        {shouldShow('TAX') && <TaxPanel parcel={currentParcel} />}
-      </div>
+      <ParcelConsoleHeader activeTab={activeSubTab} onSelectTab={setActiveSubTab} />
+      <ParcelGrid activeTab={activeSubTab} parcel={currentParcel} ownership={currentOwnership} />
     </div>
   );
 }

@@ -22,6 +22,13 @@ interface TimelineStep {
   details: TimelineStepDetail[];
 }
 
+function safeString(val: unknown, fallback: string): string {
+  if (typeof val === 'string' && val.length > 0) {
+    return val;
+  }
+  return fallback;
+}
+
 function getBondDisplay(bondAmount?: number): string {
   if (typeof bondAmount === 'number' && bondAmount > 0) {
     return `$${bondAmount.toLocaleString()}`;
@@ -30,10 +37,10 @@ function getBondDisplay(bondAmount?: number): string {
 }
 
 function buildPetitionStep(probateCase?: any): TimelineStep {
-  const caseNumber = probateCase?.caseNumber ?? 'C-1-PB-26-000412';
-  const courtName = probateCase?.courtName ?? 'Travis County Probate Court No. 1';
-  const filingDate = probateCase?.filingDate ?? '2026-03-01';
-  const decedent = probateCase?.decedentName ?? 'Arthur James Jenkins';
+  const caseNumber = safeString(probateCase?.caseNumber, 'C-1-PB-26-000412');
+  const courtName = safeString(probateCase?.courtName, 'Travis County Probate Court No. 1');
+  const filingDate = safeString(probateCase?.filingDate, '2026-03-01');
+  const decedent = safeString(probateCase?.decedentName, 'Arthur James Jenkins');
 
   return {
     step: 1,
@@ -53,10 +60,11 @@ function buildPetitionStep(probateCase?: any): TimelineStep {
 function buildFiduciaryStep(authority?: any): TimelineStep {
   const fiduciary = authority?.fiduciary;
   const fiduciaryName = fiduciary?.fullName;
-  const fiduciaryRole = fiduciary?.role ?? 'EXECUTOR';
-  const appointmentDate = fiduciary?.appointmentDate ?? '2026-03-01';
-  const authorityStatus = authority?.status ?? 'CONFIRMED';
+  const fiduciaryRole = safeString(fiduciary?.role, 'EXECUTOR');
+  const appointmentDate = safeString(fiduciary?.appointmentDate, '2026-03-01');
+  const authorityStatus = safeString(authority?.status, 'CONFIRMED');
   const authorityTier = authority?.tier ?? 1;
+  const partyDisplay = safeString(fiduciaryName, 'None (Unappointed)');
 
   return {
     step: 2,
@@ -66,7 +74,7 @@ function buildFiduciaryStep(authority?: any): TimelineStep {
     status: fiduciaryName ? 'COMPLETED' : 'PENDING',
     badge: authorityStatus,
     details: [
-      { label: 'Designated Party', value: fiduciaryName ?? 'None (Unappointed)' },
+      { label: 'Designated Party', value: partyDisplay },
       { label: 'Role', value: fiduciaryRole },
       { label: 'Authority Tier', value: `Tier ${authorityTier} (Sole Decision Maker)` },
     ],
@@ -76,7 +84,8 @@ function buildFiduciaryStep(authority?: any): TimelineStep {
 function buildLettersStep(authority?: any): TimelineStep {
   const fiduciary = authority?.fiduciary;
   const lettersIssued = fiduciary?.lettersIssued ?? true;
-  const appointmentDate = fiduciary?.appointmentDate ?? '2026-03-01';
+  const appointmentDate = safeString(fiduciary?.appointmentDate, '2026-03-01');
+  const evidenceCitation = safeString(fiduciary?.verifiedEvidenceId, 'doc_travis_probate_001#p1');
 
   return {
     step: 3,
@@ -88,7 +97,7 @@ function buildLettersStep(authority?: any): TimelineStep {
     details: [
       { label: 'Letters Status', value: lettersIssued ? 'Active / Granted' : 'Pending' },
       { label: 'Bond Required', value: getBondDisplay(fiduciary?.bondAmount) },
-      { label: 'Evidence Citation', value: fiduciary?.verifiedEvidenceId ?? 'doc_travis_probate_001#p1' },
+      { label: 'Evidence Citation', value: evidenceCitation },
     ],
   };
 }
@@ -118,17 +127,75 @@ function buildTimelineSteps(probateCase?: any, authority?: any): TimelineStep[] 
   ];
 }
 
+function TimelineStepIcon({ step, isCompleted }: { step: number; isCompleted: boolean }) {
+  const background = isCompleted ? 'var(--accent)' : '#9e9e9e';
+  return (
+    <span
+      style={{
+        width: '24px',
+        height: '24px',
+        borderRadius: '50%',
+        background,
+        color: '#fff',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '0.75rem',
+        fontWeight: 'bold',
+      }}
+    >
+      {step}
+    </span>
+  );
+}
+
+function TimelineStepBadge({ badge, isCompleted }: { badge: string; isCompleted: boolean }) {
+  const background = isCompleted ? '#e6f4ea' : '#fff8e1';
+  const color = isCompleted ? '#137333' : '#b06000';
+  return (
+    <span
+      className="badge"
+      style={{
+        fontSize: '0.68rem',
+        background,
+        color,
+      }}
+    >
+      {badge}
+    </span>
+  );
+}
+
+function TimelineDetailRow({ detail }: { detail: TimelineStepDetail }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        fontSize: '0.75rem',
+        marginBottom: '3px',
+      }}
+    >
+      <span style={{ color: 'var(--text-sub)' }}>{detail.label}:</span>
+      <span style={{ fontWeight: 600, maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+        {detail.value}
+      </span>
+    </div>
+  );
+}
 
 function TimelineStepCard({ step }: { step: TimelineStep }) {
   const isCompleted = step.status === 'COMPLETED';
+  const background = isCompleted ? 'var(--bg-hover)' : 'var(--bg-card)';
+  const border = isCompleted ? '1px solid var(--accent)' : '1px solid var(--border)';
 
   return (
     <div
       style={{
         padding: '14px',
         borderRadius: '8px',
-        background: isCompleted ? 'var(--bg-hover)' : 'var(--bg-card)',
-        border: `1px solid ${isCompleted ? 'var(--accent)' : 'var(--border)'}`,
+        background,
+        border,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -136,32 +203,8 @@ function TimelineStepCard({ step }: { step: TimelineStep }) {
     >
       <div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-          <span
-            style={{
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              background: isCompleted ? 'var(--accent)' : '#9e9e9e',
-              color: '#fff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '0.75rem',
-              fontWeight: 'bold',
-            }}
-          >
-            {step.step}
-          </span>
-          <span
-            className="badge"
-            style={{
-              fontSize: '0.68rem',
-              background: isCompleted ? '#e6f4ea' : '#fff8e1',
-              color: isCompleted ? '#137333' : '#b06000',
-            }}
-          >
-            {step.badge}
-          </span>
+          <TimelineStepIcon step={step.step} isCompleted={isCompleted} />
+          <TimelineStepBadge badge={step.badge} isCompleted={isCompleted} />
         </div>
         <strong style={{ fontSize: '0.92rem', display: 'block', color: 'var(--text-title)' }}>
           {step.title}
@@ -173,21 +216,29 @@ function TimelineStepCard({ step }: { step: TimelineStep }) {
 
       <div style={{ marginTop: '12px', borderTop: '1px solid var(--border)', paddingTop: '8px' }}>
         {step.details.map((d, i) => (
-          <div
-            key={i}
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              fontSize: '0.75rem',
-              marginBottom: '3px',
-            }}
-          >
-            <span style={{ color: 'var(--text-sub)' }}>{d.label}:</span>
-            <span style={{ fontWeight: 600, maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-              {d.value}
-            </span>
-          </div>
+          <TimelineDetailRow key={i} detail={d} />
         ))}
+      </div>
+    </div>
+  );
+}
+
+function AuthorityTimelineHeader({ tier, status }: { tier: number; status: string }) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div>
+        <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-accent)' }}>
+          Probate Authority Milestone Timeline
+        </h3>
+        <p style={{ margin: '4px 0 0 0', fontSize: '0.84rem', color: 'var(--text-sub)' }}>
+          Sequential legal milestone verification from petition through letters and notice.
+        </p>
+      </div>
+      <div style={{ display: 'flex', gap: '8px' }}>
+        <span className="badge badge-a">Tier {tier} Authority</span>
+        <span className="badge" style={{ background: '#e8f0fe', color: 'var(--accent)' }}>
+          {status}
+        </span>
       </div>
     </div>
   );
@@ -195,28 +246,12 @@ function TimelineStepCard({ step }: { step: TimelineStep }) {
 
 export default function AuthorityTimeline({ probateCase, authority }: AuthorityTimelineProps) {
   const authorityTier = authority?.tier ?? 1;
-  const authorityStatus = authority?.status ?? 'CONFIRMED';
+  const authorityStatus = safeString(authority?.status, 'CONFIRMED');
   const steps = buildTimelineSteps(probateCase, authority);
 
   return (
     <div className="insight-card" style={{ marginTop: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-        <div>
-          <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--text-accent)' }}>
-            Probate Authority Milestone Timeline
-          </h3>
-          <p style={{ margin: '4px 0 0 0', fontSize: '0.84rem', color: 'var(--text-sub)' }}>
-            Sequential legal milestone verification from petition through letters and notice.
-          </p>
-        </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <span className="badge badge-a">Tier {authorityTier} Authority</span>
-          <span className="badge" style={{ background: '#e8f0fe', color: 'var(--accent)' }}>
-            {authorityStatus}
-          </span>
-        </div>
-      </div>
-
+      <AuthorityTimelineHeader tier={authorityTier} status={authorityStatus} />
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
         {steps.map((st) => (
           <TimelineStepCard key={st.step} step={st} />

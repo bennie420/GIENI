@@ -188,56 +188,58 @@ export class ThurstonCountyAdapter implements ICountyAdapter {
     }));
   }
 
-  public async getCaseDocuments(caseNumber: string): Promise<SourceRecord[]> {
-    const found = THURSTON_AUTHENTIC_CASES.find((s) => s.num === caseNumber);
-    if (!found) return [];
+  private buildThurstonLackOfProbateRecords(
+    caseNumber: string,
+    found: (typeof THURSTON_AUTHENTIC_CASES)[number]
+  ): SourceRecord[] {
+    const lopaSha = crypto.createHash('sha256').update(`LOPA_${found.num}_${found.dec}`).digest('hex');
+    const cpaSha = crypto.createHash('sha256').update(`CPA_${found.num}_${found.recordingDate}`).digest('hex');
+    const deedSha = crypto.createHash('sha256').update(`DEED_${found.num}_${found.apn}`).digest('hex');
 
-    const isLopa = caseNumber.includes('00041') || caseNumber.includes('NP-510');
-    if (isLopa) {
-      const lopaSha = crypto.createHash('sha256').update(`LOPA_${found.num}_${found.dec}`).digest('hex');
-      const cpaSha = crypto.createHash('sha256').update(`CPA_${found.num}_${found.recordingDate}`).digest('hex');
-      const deedSha = crypto.createHash('sha256').update(`DEED_${found.num}_${found.apn}`).digest('hex');
+    return [
+      buildCaseDocumentRecord({
+        id: `sr_thurston_${caseNumber}_lopa`,
+        countyId: this.countyId,
+        sourceType: 'RECORDER',
+        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=lopa`,
+        artifactSha256: lopaSha,
+        sourceSystem: 'Thurston County Auditor Recording Services',
+        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/lack_of_probate_affidavit.pdf`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: 'LACK_OF_PROBATE_AFFIDAVIT',
+      }),
+      buildCaseDocumentRecord({
+        id: `sr_thurston_${caseNumber}_cpa`,
+        countyId: this.countyId,
+        sourceType: 'RECORDER',
+        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=cpa`,
+        artifactSha256: cpaSha,
+        sourceSystem: 'Thurston County Auditor Recording Services',
+        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/community_property_agreement.pdf`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: 'COMMUNITY_PROPERTY_AGREEMENT',
+      }),
+      buildCaseDocumentRecord({
+        id: `sr_thurston_${caseNumber}_deed`,
+        countyId: this.countyId,
+        sourceType: 'RECORDER',
+        sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=deed`,
+        artifactSha256: deedSha,
+        sourceSystem: 'Thurston County Auditor Recording Services',
+        rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/vesting_warranty_deed.pdf`,
+        adapterVersion: this.adapterVersion,
+        caseNumber,
+        filingType: 'WARRANTY_DEED',
+      }),
+    ];
+  }
 
-      return [
-        buildCaseDocumentRecord({
-          id: `sr_thurston_${caseNumber}_lopa`,
-          countyId: this.countyId,
-          sourceType: 'RECORDER',
-          sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=lopa`,
-          artifactSha256: lopaSha,
-          sourceSystem: 'Thurston County Auditor Recording Services',
-          rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/lack_of_probate_affidavit.pdf`,
-          adapterVersion: this.adapterVersion,
-          caseNumber,
-          filingType: 'LACK_OF_PROBATE_AFFIDAVIT',
-        }),
-        buildCaseDocumentRecord({
-          id: `sr_thurston_${caseNumber}_cpa`,
-          countyId: this.countyId,
-          sourceType: 'RECORDER',
-          sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=cpa`,
-          artifactSha256: cpaSha,
-          sourceSystem: 'Thurston County Auditor Recording Services',
-          rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/community_property_agreement.pdf`,
-          adapterVersion: this.adapterVersion,
-          caseNumber,
-          filingType: 'COMMUNITY_PROPERTY_AGREEMENT',
-        }),
-        buildCaseDocumentRecord({
-          id: `sr_thurston_${caseNumber}_deed`,
-          countyId: this.countyId,
-          sourceType: 'RECORDER',
-          sourceUrl: `https://eagleweb.co.thurston.wa.us/thurstonrecorder/eagleweb/docSearch.jsp?case_num=${caseNumber}&doc=deed`,
-          artifactSha256: deedSha,
-          sourceSystem: 'Thurston County Auditor Recording Services',
-          rawPayloadLocation: `gs://gieni-evidence-thurston/cases/${caseNumber}/vesting_warranty_deed.pdf`,
-          adapterVersion: this.adapterVersion,
-          caseNumber,
-          filingType: 'WARRANTY_DEED',
-        }),
-      ];
-    }
-
+  private buildThurstonProbateCourtRecords(
+    caseNumber: string,
+    found: (typeof THURSTON_AUTHENTIC_CASES)[number]
+  ): SourceRecord[] {
     const sha1 = crypto.createHash('sha256').update(`THURSTON_PETITION_${found.num}_${found.dec}`).digest('hex');
     const sha2 = crypto.createHash('sha256').update(`THURSTON_ORDER_${found.num}_${found.recordingDate}`).digest('hex');
     const sha3 = crypto.createHash('sha256').update(`THURSTON_LETTERS_${found.num}_${found.apn}`).digest('hex');
@@ -264,6 +266,17 @@ export class ThurstonCountyAdapter implements ICountyAdapter {
         filingType: doc.filingType,
       })
     );
+  }
+
+  public async getCaseDocuments(caseNumber: string): Promise<SourceRecord[]> {
+    const found = THURSTON_AUTHENTIC_CASES.find((s) => s.num === caseNumber);
+    if (!found) return [];
+
+    const isLopa = caseNumber.includes('00041') || caseNumber.includes('NP-510');
+    if (isLopa) {
+      return this.buildThurstonLackOfProbateRecords(caseNumber, found);
+    }
+    return this.buildThurstonProbateCourtRecords(caseNumber, found);
   }
 
   public async getParcels(options?: ParcelQueryOptions): Promise<PropertyParcel[]> {
