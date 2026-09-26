@@ -123,7 +123,8 @@ export class InMemoryTenantScopedRepository<T extends BaseEntity>
   }
 
   protected assertValidScope(scope: TenantScope): void {
-    if (!scope || !scope.organizationId || scope.organizationId.trim() === '') {
+    const orgId = scope?.organizationId?.trim();
+    if (!orgId) {
       throw new Error(
         'Security Violation: Database queries must carry a valid non-empty organizationId'
       );

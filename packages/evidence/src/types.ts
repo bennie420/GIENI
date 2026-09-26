@@ -1,3 +1,19 @@
+export type FilingType =
+  | 'PETITION_FOR_PROBATE'
+  | 'ORDER_APPOINTING_PR'
+  | 'LETTERS_TESTAMENTARY'
+  | 'LETTERS_OF_ADMINISTRATION'
+  | 'INVENTORY_AND_APPRAISEMENT'
+  | 'ANNUAL_ACCOUNTING'
+  | 'NOTICE_TO_CREDITORS'
+  | 'DECREE_OF_DISTRIBUTION'
+  | 'DEED_OF_TRUST'
+  | 'WARRANTY_DEED'
+  | 'LACK_OF_PROBATE_AFFIDAVIT'
+  | 'TRANSFER_ON_DEATH_DEED'
+  | 'COMMUNITY_PROPERTY_AGREEMENT'
+  | 'DOCKET_SUMMARY';
+
 export type ClaimType = 'EXTRACTED' | 'MATCHED' | 'DERIVED' | 'HUMAN_VERIFIED';
 
 export type VerificationStatus = 'PROPOSED' | 'VERIFIED' | 'REJECTED' | 'SUPERSEDED';
@@ -21,6 +37,8 @@ export interface SourceDocument {
   sourceUrl?: string;
   retrievalTimestamp: string;
   termsNote?: string;
+  filingType?: FilingType;
+  caseNumber?: string;
   createdAt: string;
   updatedAt: string;
   schemaVersion: number;
@@ -90,4 +108,23 @@ export interface ClaimAuditEvent {
   schemaVersion: number;
 }
 
+export type SourceRecordType = 'COURT' | 'ASSESSOR' | 'RECORDER' | 'GIS' | 'TAX';
 
+export interface SourceRecord {
+  id: string;
+  organizationId: string;
+  countyId: string;
+  sourceType: SourceRecordType;
+  sourceUrl: string;
+  retrievalTimestamp: string;
+  artifactSha256: string;
+  sourceSystem: string;
+  rawPayloadLocation: string;
+  adapterVersion: string;
+  filingType?: FilingType;
+  caseNumber?: string;
+  metadata?: Record<string, unknown>;
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}

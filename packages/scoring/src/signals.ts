@@ -42,6 +42,78 @@ export interface AdaptiveSignalSummary {
   };
 }
 
+type DispositionCounts = Record<FeedbackDispositionSignal, number>;
+
+function countDispositions(feedbackRecords: FeedbackRecordInput[]): DispositionCounts {
+  const counts: DispositionCounts = {
+    CONTACTED: 0,
+    INVALID: 0,
+    APPOINTMENT_SET: 0,
+    DEAL_CLOSED: 0,
+    NOT_INTERESTED: 0,
+  };
+
+  for (const f of feedbackRecords) {
+    if (f.disposition in counts) {
+      counts[f.disposition] += 1;
+    }
+  }
+
+  return counts;
+}
+
+function calculateFastSignals(counts: DispositionCounts): FastSignalMetrics {
+  const fastTotal = counts.CONTACTED + counts.INVALID + counts.APPOINTMENT_SET;
+  const positiveContactRate = fastTotal > 0 ? (counts.CONTACTED + counts.APPOINTMENT_SET) / fastTotal : 0;
+  const invalidRate = fastTotal > 0 ? counts.INVALID / fastTotal : 0;
+
+  return {
+    totalDispositions: fastTotal,
+    contactedCount: counts.CONTACTED,
+    invalidContactCount: counts.INVALID,
+    appointmentCount: counts.APPOINTMENT_SET,
+    positiveContactRate: Math.round(positiveContactRate * 100) / 100,
+    invalidRate: Math.round(invalidRate * 100) / 100,
+  };
+}
+
+function calculateSlowSignals(counts: DispositionCounts): SlowSignalMetrics {
+  const slowTotal = counts.DEAL_CLOSED + counts.NOT_INTERESTED;
+  const closeRate = slowTotal > 0 ? counts.DEAL_CLOSED / slowTotal : 0;
+
+  return {
+    totalOutcomes: slowTotal,
+    dealClosedCount: counts.DEAL_CLOSED,
+    notInterestedCount: counts.NOT_INTERESTED,
+    closeRate: Math.round(closeRate * 100) / 100,
+  };
+}
+
+function shouldRecommendAdjustment(
+  fastSignals: FastSignalMetrics,
+  freshnessWeight: number
+): boolean {
+  if (fastSignals.totalDispositions < 10) return false;
+  if (fastSignals.invalidRate < 0.25) return false;
+  if (freshnessWeight < 0.1) return false;
+  return true;
+}
+
+function buildRecommendedAdjustment(
+  invalidRate: number,
+  currentWeights: CoefficientWeights
+): AdaptiveSignalSummary['recommendedAdjustment'] {
+  return {
+    rationale: `Elevated invalid contact rate (${Math.round(invalidRate * 100)}%). Recommend increasing Authority weight to prioritize verified letters and confirmed personal representatives.`,
+    suggestedWeights: {
+      authorityWeight: Math.round((currentWeights.authorityWeight + 0.05) * 100) / 100,
+      ownershipWeight: currentWeights.ownershipWeight,
+      equityWeight: currentWeights.equityWeight,
+      freshnessWeight: Math.round((currentWeights.freshnessWeight - 0.05) * 100) / 100,
+    },
+  };
+}
+
 /**
  * Aggregates commercial feedback into fast (daily) and slow (monthly) learning signals (Gieni OS Section 11 P3-2).
  */
@@ -51,73 +123,15 @@ export function aggregateAdaptiveSignals(params: {
   feedbackRecords: FeedbackRecordInput[];
   currentWeights: CoefficientWeights;
 }): AdaptiveSignalSummary {
-
   const { organizationId, countyId, feedbackRecords, currentWeights } = params;
 
-  let contacted = 0;
-  let invalid = 0;
-  let appointments = 0;
-  let dealsClosed = 0;
-  let notInterested = 0;
+  const counts = countDispositions(feedbackRecords);
+  const fastSignals = calculateFastSignals(counts);
+  const slowSignals = calculateSlowSignals(counts);
 
-  for (const f of feedbackRecords) {
-    switch (f.disposition) {
-      case 'CONTACTED':
-        contacted += 1;
-        break;
-      case 'INVALID':
-        invalid += 1;
-        break;
-      case 'APPOINTMENT_SET':
-        appointments += 1;
-        break;
-      case 'DEAL_CLOSED':
-        dealsClosed += 1;
-        break;
-      case 'NOT_INTERESTED':
-        notInterested += 1;
-        break;
-    }
-  }
-
-  const fastTotal = contacted + invalid + appointments;
-  const positiveContactRate = fastTotal > 0 ? (contacted + appointments) / fastTotal : 0;
-  const invalidRate = fastTotal > 0 ? invalid / fastTotal : 0;
-
-  const slowTotal = dealsClosed + notInterested;
-  const closeRate = slowTotal > 0 ? dealsClosed / slowTotal : 0;
-
-  const fastSignals: FastSignalMetrics = {
-    totalDispositions: fastTotal,
-    contactedCount: contacted,
-    invalidContactCount: invalid,
-    appointmentCount: appointments,
-    positiveContactRate: Math.round(positiveContactRate * 100) / 100,
-    invalidRate: Math.round(invalidRate * 100) / 100,
-  };
-
-  const slowSignals: SlowSignalMetrics = {
-    totalOutcomes: slowTotal,
-    dealClosedCount: dealsClosed,
-    notInterestedCount: notInterested,
-    closeRate: Math.round(closeRate * 100) / 100,
-  };
-
-  // Adaptive recommendation heuristic:
-  // If invalid fiduciary contact rate > 25%, recommend increasing Authority certainty weight by +0.05 and reducing Freshness by 0.05
-  let recommendedAdjustment: AdaptiveSignalSummary['recommendedAdjustment'];
-
-  if (fastTotal >= 10 && invalidRate >= 0.25 && currentWeights.freshnessWeight >= 0.1) {
-    recommendedAdjustment = {
-      rationale: `Elevated invalid contact rate (${Math.round(invalidRate * 100)}%). Recommend increasing Authority weight to prioritize verified letters and confirmed personal representatives.`,
-      suggestedWeights: {
-        authorityWeight: Math.round((currentWeights.authorityWeight + 0.05) * 100) / 100,
-        ownershipWeight: currentWeights.ownershipWeight,
-        equityWeight: currentWeights.equityWeight,
-        freshnessWeight: Math.round((currentWeights.freshnessWeight - 0.05) * 100) / 100,
-      },
-    };
-  }
+  const recommendedAdjustment = shouldRecommendAdjustment(fastSignals, currentWeights.freshnessWeight)
+    ? buildRecommendedAdjustment(fastSignals.invalidRate, currentWeights)
+    : undefined;
 
   return {
     countyId,

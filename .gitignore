@@ -39,3 +39,18 @@ Thumbs.db
 # Cache
 .turbo/
 .cache/
+
+# Security & Credentials
+pwcrack.py
+
+# Archives
+*.zip
+*.tar.gz
+
+# Sourcemaps
+*.map
+*.js.map
+*.d.ts.map
+
+# Local persistent data cache
+.data/

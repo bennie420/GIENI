@@ -1,0 +1,2413 @@
+[
+  {
+    "parcelId": "parcel_county_thurston_wa_12816320100",
+    "caseId": "case_thurston_26-4-00148-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Warren Douglas Lindgren"
+    ],
+    "deedRecordIds": [
+      "deed_12816320100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803159_dbeaez",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.159Z",
+    "updatedAt": "2026-09-26T07:46:43.159Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11822140300",
+    "caseId": "case_thurston_26-4-00145-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Eleanor Mae Henderson"
+    ],
+    "deedRecordIds": [
+      "deed_11822140300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803160_wasjw5",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.160Z",
+    "updatedAt": "2026-09-26T07:46:43.160Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_72400001200",
+    "caseId": "case_thurston_26-4-00142-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Richard Alan Foster"
+    ],
+    "deedRecordIds": [
+      "deed_72400001200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803161_vyke31",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.161Z",
+    "updatedAt": "2026-09-26T07:46:43.161Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_39900008500",
+    "caseId": "case_thurston_26-4-00139-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Raymond Dale Kelly",
+      "Judith Kelly"
+    ],
+    "deedRecordIds": [
+      "deed_39900008500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803161_a84lri",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.161Z",
+    "updatedAt": "2026-09-26T07:46:43.161Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_22724410200",
+    "caseId": "case_thurston_26-4-00135-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Dorothy Jean Campbell"
+    ],
+    "deedRecordIds": [
+      "deed_22724410200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803162_yw9ont",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.162Z",
+    "updatedAt": "2026-09-26T07:46:43.162Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_21715420100",
+    "caseId": "case_thurston_26-4-00131-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Evelyn Joyce Miller"
+    ],
+    "deedRecordIds": [
+      "deed_21715420100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803163_gmzpek",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.163Z",
+    "updatedAt": "2026-09-26T07:46:43.163Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_78200004100",
+    "caseId": "case_thurston_26-4-00127-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "George Kenneth Wallace"
+    ],
+    "deedRecordIds": [
+      "deed_78200004100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803164_mbmmhz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.164Z",
+    "updatedAt": "2026-09-26T07:46:43.164Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_58400018900",
+    "caseId": "case_thurston_26-4-00124-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Barbara Anne Simmons"
+    ],
+    "deedRecordIds": [
+      "deed_58400018900"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803165_l6a358",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.165Z",
+    "updatedAt": "2026-09-26T07:46:43.165Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_12816320100",
+    "caseId": "case_thurston_26-4-00122-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Warren Douglas Lindgren"
+    ],
+    "deedRecordIds": [
+      "deed_12816320100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803165_fz6jnk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.165Z",
+    "updatedAt": "2026-09-26T07:46:43.165Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_12711230400",
+    "caseId": "case_thurston_26-4-00119-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Walter James Peterson",
+      "Evelyn Peterson"
+    ],
+    "deedRecordIds": [
+      "deed_12711230400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803166_2q2dc4",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.166Z",
+    "updatedAt": "2026-09-26T07:46:43.166Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_13809310200",
+    "caseId": "case_thurston_26-4-00115-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Shirley Marie Jensen"
+    ],
+    "deedRecordIds": [
+      "deed_13809310200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803167_0v5et8",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.167Z",
+    "updatedAt": "2026-09-26T07:46:43.167Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_48100001700",
+    "caseId": "case_thurston_26-4-00111-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Charles Edward Murphy"
+    ],
+    "deedRecordIds": [
+      "deed_48100001700"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803167_g25rsl",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.167Z",
+    "updatedAt": "2026-09-26T07:46:43.167Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_81200002300",
+    "caseId": "case_thurston_26-4-00108-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Virginia Lee Ross"
+    ],
+    "deedRecordIds": [
+      "deed_81200002300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803168_ff5ehy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.168Z",
+    "updatedAt": "2026-09-26T07:46:43.168Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_69200005400",
+    "caseId": "case_thurston_26-4-00103-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Harold Robert Coleman"
+    ],
+    "deedRecordIds": [
+      "deed_69200005400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803169_a9e8f9",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.169Z",
+    "updatedAt": "2026-09-26T07:46:43.169Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_78200004100",
+    "caseId": "case_thurston_26-4-00099-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Frank Thomas Boyd",
+      "Carolyn Boyd"
+    ],
+    "deedRecordIds": [
+      "deed_78200004100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803170_5xs3at",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.170Z",
+    "updatedAt": "2026-09-26T07:46:43.170Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11804220500",
+    "caseId": "case_thurston_26-4-00095-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Martha Louise Adams"
+    ],
+    "deedRecordIds": [
+      "deed_11804220500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803170_48p1p3",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.170Z",
+    "updatedAt": "2026-09-26T07:46:43.170Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_22718340200",
+    "caseId": "case_thurston_26-4-00091-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Arthur William Reynolds"
+    ],
+    "deedRecordIds": [
+      "deed_22718340200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803171_xbd4ij",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.171Z",
+    "updatedAt": "2026-09-26T07:46:43.171Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_22724410200",
+    "caseId": "case_thurston_26-4-00089-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Evelyn Joyce Miller"
+    ],
+    "deedRecordIds": [
+      "deed_22724410200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803172_7brtpw",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.172Z",
+    "updatedAt": "2026-09-26T07:46:43.172Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11718310800",
+    "caseId": "case_thurston_26-4-00087-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Helen Marie Griffin"
+    ],
+    "deedRecordIds": [
+      "deed_11718310800"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803173_lx4uyb",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.173Z",
+    "updatedAt": "2026-09-26T07:46:43.173Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_12803410600",
+    "caseId": "case_thurston_26-4-00082-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Donald Bruce Hayes"
+    ],
+    "deedRecordIds": [
+      "deed_12803410600"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803174_0ypua3",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.174Z",
+    "updatedAt": "2026-09-26T07:46:43.174Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_75300009100",
+    "caseId": "case_thurston_26-4-00078-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Phyllis Ann Watson",
+      "Arthur Watson"
+    ],
+    "deedRecordIds": [
+      "deed_75300009100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803175_4y0lcy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.175Z",
+    "updatedAt": "2026-09-26T07:46:43.175Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11815120300",
+    "caseId": "case_thurston_26-4-00074-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Kenneth Roy Russell"
+    ],
+    "deedRecordIds": [
+      "deed_11815120300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803175_u0ixf8",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.175Z",
+    "updatedAt": "2026-09-26T07:46:43.175Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_13816420100",
+    "caseId": "case_thurston_26-4-00069-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Betty Lou Powell"
+    ],
+    "deedRecordIds": [
+      "deed_13816420100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803176_ekkdoq",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.176Z",
+    "updatedAt": "2026-09-26T07:46:43.176Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_71100003800",
+    "caseId": "case_thurston_26-4-00065-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Lawrence David Price"
+    ],
+    "deedRecordIds": [
+      "deed_71100003800"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803177_k82ba2",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.177Z",
+    "updatedAt": "2026-09-26T07:46:43.177Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_82100001500",
+    "caseId": "case_thurston_26-4-00061-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Catherine Sue Barnes"
+    ],
+    "deedRecordIds": [
+      "deed_82100001500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803178_pv26tz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.178Z",
+    "updatedAt": "2026-09-26T07:46:43.178Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_54300006200",
+    "caseId": "case_thurston_26-4-00057-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Albert Eugene Wood"
+    ],
+    "deedRecordIds": [
+      "deed_54300006200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803179_hm5m7u",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.179Z",
+    "updatedAt": "2026-09-26T07:46:43.179Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_21703210400",
+    "caseId": "case_thurston_26-4-00052-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Marilyn Kay Fisher",
+      "Paul Fisher"
+    ],
+    "deedRecordIds": [
+      "deed_21703210400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803179_akefjl",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.179Z",
+    "updatedAt": "2026-09-26T07:46:43.179Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11827430100",
+    "caseId": "case_thurston_26-4-00048-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Ronald Wayne Jenkins"
+    ],
+    "deedRecordIds": [
+      "deed_11827430100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803180_a7cxh8",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.180Z",
+    "updatedAt": "2026-09-26T07:46:43.180Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_39100007400",
+    "caseId": "case_thurston_26-4-00044-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Joyce Elaine Bailey"
+    ],
+    "deedRecordIds": [
+      "deed_39100007400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803181_kghfur",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.181Z",
+    "updatedAt": "2026-09-26T07:46:43.181Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_78200004100",
+    "caseId": "case_thurston_26-4-00041-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Franklin Thomas Boyd",
+      "Carolyn Boyd"
+    ],
+    "deedRecordIds": [
+      "deed_78200004100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803182_98ub8r",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.182Z",
+    "updatedAt": "2026-09-26T07:46:43.182Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11822140300",
+    "caseId": "case_thurston_25-4-00812-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Roger Allen Stewart"
+    ],
+    "deedRecordIds": [
+      "deed_11822140300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803182_hsfe9m",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.182Z",
+    "updatedAt": "2026-09-26T07:46:43.182Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_72400001200",
+    "caseId": "case_thurston_25-4-00806-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Carol Ann Myers"
+    ],
+    "deedRecordIds": [
+      "deed_72400001200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803183_jst59v",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.183Z",
+    "updatedAt": "2026-09-26T07:46:43.183Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_13816420100",
+    "caseId": "case_thurston_25-4-00799-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Edward Lee Long"
+    ],
+    "deedRecordIds": [
+      "deed_13816420100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803184_x12ox9",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.184Z",
+    "updatedAt": "2026-09-26T07:46:43.184Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_39900008500",
+    "caseId": "case_thurston_25-4-00793-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Margaret Rose Albright"
+    ],
+    "deedRecordIds": [
+      "deed_39900008500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803185_m4wpgk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.185Z",
+    "updatedAt": "2026-09-26T07:46:43.185Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11804220500",
+    "caseId": "case_thurston_25-4-00788-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Henry James Zimmerman"
+    ],
+    "deedRecordIds": [
+      "deed_11804220500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803185_ecfcad",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.185Z",
+    "updatedAt": "2026-09-26T07:46:43.185Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_58400018900",
+    "caseId": "case_thurston_25-4-00781-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Jean Marie Olson",
+      "Kenneth Olson"
+    ],
+    "deedRecordIds": [
+      "deed_58400018900"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803186_bmmwgq",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.186Z",
+    "updatedAt": "2026-09-26T07:46:43.186Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005106059",
+    "caseId": "case_thurston_NP-5106059-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Zeller Doris Jean"
+    ],
+    "deedRecordIds": [
+      "deed_11005106059"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803187_cdrkh1",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.187Z",
+    "updatedAt": "2026-09-26T07:46:43.187Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_73600301700",
+    "caseId": "case_thurston_NP-5106113-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Mary Elsie Campbell"
+    ],
+    "deedRecordIds": [
+      "deed_73600301700"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803187_ccc163",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.187Z",
+    "updatedAt": "2026-09-26T07:46:43.187Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_78970002500",
+    "caseId": "case_thurston_NP-5106386-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Romulo V Magiba"
+    ],
+    "deedRecordIds": [
+      "deed_78970002500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803188_jluc1x",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.188Z",
+    "updatedAt": "2026-09-26T07:46:43.188Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_56100200100",
+    "caseId": "case_thurston_NP-5106446-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Rivers Norman R"
+    ],
+    "deedRecordIds": [
+      "deed_56100200100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803189_aj9mpb",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.189Z",
+    "updatedAt": "2026-09-26T07:46:43.189Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_59750014200",
+    "caseId": "case_thurston_NP-5106493-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Paul R Thibault"
+    ],
+    "deedRecordIds": [
+      "deed_59750014200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803189_8cjlpk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.189Z",
+    "updatedAt": "2026-09-26T07:46:43.189Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005106540",
+    "caseId": "case_thurston_NP-5106540-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Patricia L Russell"
+    ],
+    "deedRecordIds": [
+      "deed_11005106540"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803190_fzgw6h",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.190Z",
+    "updatedAt": "2026-09-26T07:46:43.190Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005106572",
+    "caseId": "case_thurston_NP-5106572-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Charles M Ryder"
+    ],
+    "deedRecordIds": [
+      "deed_11005106572"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803191_r8h9pc",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.191Z",
+    "updatedAt": "2026-09-26T07:46:43.191Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_22732140201",
+    "caseId": "case_thurston_NP-5106575-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Charles M Ryder"
+    ],
+    "deedRecordIds": [
+      "deed_22732140201"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803192_wcwl8q",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.192Z",
+    "updatedAt": "2026-09-26T07:46:43.192Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_70370020400",
+    "caseId": "case_thurston_NP-5106577-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Carter-Gray Sally P"
+    ],
+    "deedRecordIds": [
+      "deed_70370020400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803193_0uii89",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.193Z",
+    "updatedAt": "2026-09-26T07:46:43.193Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_12929320800",
+    "caseId": "case_thurston_NP-5106580-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Joan C Martin"
+    ],
+    "deedRecordIds": [
+      "deed_12929320800"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803195_v1d2j1",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.195Z",
+    "updatedAt": "2026-09-26T07:46:43.195Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_12512130400",
+    "caseId": "case_thurston_NP-5106602-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Sherry K English"
+    ],
+    "deedRecordIds": [
+      "deed_12512130400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803196_s91rgo",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.196Z",
+    "updatedAt": "2026-09-26T07:46:43.196Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005106676",
+    "caseId": "case_thurston_NP-5106676-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Frost Floyd J Jr"
+    ],
+    "deedRecordIds": [
+      "deed_11005106676"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803197_p4qvmg",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.197Z",
+    "updatedAt": "2026-09-26T07:46:43.197Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005106806",
+    "caseId": "case_thurston_NP-5106806-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Charles Robert Mckillip",
+      "Charles Robert Mckillip"
+    ],
+    "deedRecordIds": [
+      "deed_11005106806"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803197_xduuwn",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.197Z",
+    "updatedAt": "2026-09-26T07:46:43.197Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_52930138300",
+    "caseId": "case_thurston_NP-5106814-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Dawn E Leavitt"
+    ],
+    "deedRecordIds": [
+      "deed_52930138300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803198_wnl74v",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.198Z",
+    "updatedAt": "2026-09-26T07:46:43.198Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_31340002200",
+    "caseId": "case_thurston_NP-5106840-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Bobby Wayne"
+    ],
+    "deedRecordIds": [
+      "deed_31340002200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803199_5hipjo",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.199Z",
+    "updatedAt": "2026-09-26T07:46:43.199Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_48360000200",
+    "caseId": "case_thurston_NP-5106975-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Thomas Honan"
+    ],
+    "deedRecordIds": [
+      "deed_48360000200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803199_bj4w4z",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.199Z",
+    "updatedAt": "2026-09-26T07:46:43.199Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_60305500200",
+    "caseId": "case_thurston_NP-5106974-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Thomas Honan"
+    ],
+    "deedRecordIds": [
+      "deed_60305500200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803200_ulgvs7",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.200Z",
+    "updatedAt": "2026-09-26T07:46:43.200Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_49040000600",
+    "caseId": "case_thurston_NP-5106982-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Nadine Hendrickson"
+    ],
+    "deedRecordIds": [
+      "deed_49040000600"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803201_t36m5h",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.201Z",
+    "updatedAt": "2026-09-26T07:46:43.201Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_63750001800",
+    "caseId": "case_thurston_NP-5107043-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Kathleen A Oechsner"
+    ],
+    "deedRecordIds": [
+      "deed_63750001800"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803202_hr5fy3",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.202Z",
+    "updatedAt": "2026-09-26T07:46:43.202Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_65750001800",
+    "caseId": "case_thurston_NP-5107044-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Matthew A Oechsner"
+    ],
+    "deedRecordIds": [
+      "deed_65750001800"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803203_jdr464",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.203Z",
+    "updatedAt": "2026-09-26T07:46:43.203Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_68250007200",
+    "caseId": "case_thurston_NP-5107139-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Earl Ynte Dragt"
+    ],
+    "deedRecordIds": [
+      "deed_68250007200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803203_xcd5mn",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.203Z",
+    "updatedAt": "2026-09-26T07:46:43.203Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107177",
+    "caseId": "case_thurston_NP-5107177-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "D David Rutledge"
+    ],
+    "deedRecordIds": [
+      "deed_11005107177"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803204_ko3n2d",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.204Z",
+    "updatedAt": "2026-09-26T07:46:43.204Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107440",
+    "caseId": "case_thurston_NP-5107440-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Gary L Smith"
+    ],
+    "deedRecordIds": [
+      "deed_11005107440"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803205_m3sb78",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.205Z",
+    "updatedAt": "2026-09-26T07:46:43.205Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_65160001300",
+    "caseId": "case_thurston_NP-5107457-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Tompkins Charles Frederick"
+    ],
+    "deedRecordIds": [
+      "deed_65160001300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803206_dl9q2e",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.206Z",
+    "updatedAt": "2026-09-26T07:46:43.206Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_61400101000",
+    "caseId": "case_thurston_NP-5107495-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "James E Trowbridge"
+    ],
+    "deedRecordIds": [
+      "deed_61400101000"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803207_i5s4ci",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.207Z",
+    "updatedAt": "2026-09-26T07:46:43.207Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_09160008009",
+    "caseId": "case_thurston_NP-5107508-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "James N Elder"
+    ],
+    "deedRecordIds": [
+      "deed_09160008009"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803208_0vybhk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.208Z",
+    "updatedAt": "2026-09-26T07:46:43.208Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_72405001000",
+    "caseId": "case_thurston_NP-5107507-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "James Norman Elder"
+    ],
+    "deedRecordIds": [
+      "deed_72405001000"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803209_gpf2we",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.209Z",
+    "updatedAt": "2026-09-26T07:46:43.209Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_78680004100",
+    "caseId": "case_thurston_NP-5107526-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Edwards Alaina Jean"
+    ],
+    "deedRecordIds": [
+      "deed_78680004100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803209_ppyp29",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.209Z",
+    "updatedAt": "2026-09-26T07:46:43.209Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_50550008300",
+    "caseId": "case_thurston_NP-5107560-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "George D Munson"
+    ],
+    "deedRecordIds": [
+      "deed_50550008300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803210_3sz6e7",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.210Z",
+    "updatedAt": "2026-09-26T07:46:43.210Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107612",
+    "caseId": "case_thurston_NP-5107612-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Grant A Isom"
+    ],
+    "deedRecordIds": [
+      "deed_11005107612"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803211_he5tg1",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.211Z",
+    "updatedAt": "2026-09-26T07:46:43.211Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_65132012400",
+    "caseId": "case_thurston_NP-5107667-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Raeann Edwards"
+    ],
+    "deedRecordIds": [
+      "deed_65132012400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803212_9oiy2u",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.212Z",
+    "updatedAt": "2026-09-26T07:46:43.212Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107687",
+    "caseId": "case_thurston_NP-5107687-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Rivers Norman R"
+    ],
+    "deedRecordIds": [
+      "deed_11005107687"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803213_kfsknz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.213Z",
+    "updatedAt": "2026-09-26T07:46:43.213Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107776",
+    "caseId": "case_thurston_NP-5107776-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "J Francisco Rodriguez"
+    ],
+    "deedRecordIds": [
+      "deed_11005107776"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803214_6ctc05",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.214Z",
+    "updatedAt": "2026-09-26T07:46:43.214Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107777",
+    "caseId": "case_thurston_NP-5107777-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Lilia M Gomez"
+    ],
+    "deedRecordIds": [
+      "deed_11005107777"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803215_q1ivvb",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.215Z",
+    "updatedAt": "2026-09-26T07:46:43.215Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107874",
+    "caseId": "case_thurston_NP-5107874-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Jim D Mccully"
+    ],
+    "deedRecordIds": [
+      "deed_11005107874"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803216_5qbxqx",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.216Z",
+    "updatedAt": "2026-09-26T07:46:43.216Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_33702801900",
+    "caseId": "case_thurston_NP-5107876-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Pamela L Moyer"
+    ],
+    "deedRecordIds": [
+      "deed_33702801900"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803217_d4e99v",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.217Z",
+    "updatedAt": "2026-09-26T07:46:43.217Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_33702901000",
+    "caseId": "case_thurston_NP-5107875-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Pamela L Moyer"
+    ],
+    "deedRecordIds": [
+      "deed_33702901000"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803218_omp8hj",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.218Z",
+    "updatedAt": "2026-09-26T07:46:43.218Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_52700000300",
+    "caseId": "case_thurston_NP-5107915-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Andrea Lee Selvidge"
+    ],
+    "deedRecordIds": [
+      "deed_52700000300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803219_ukhr97",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.219Z",
+    "updatedAt": "2026-09-26T07:46:43.219Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005107939",
+    "caseId": "case_thurston_NP-5107939-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Gerald Michael Hanlon",
+      "Gerald Michael Hanlon"
+    ],
+    "deedRecordIds": [
+      "deed_11005107939"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803220_jkb4b0",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.220Z",
+    "updatedAt": "2026-09-26T07:46:43.220Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11719110101",
+    "caseId": "case_thurston_NP-5107943-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Leo Eliason"
+    ],
+    "deedRecordIds": [
+      "deed_11719110101"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803221_my6s1u",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.221Z",
+    "updatedAt": "2026-09-26T07:46:43.221Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_83009700200",
+    "caseId": "case_thurston_NP-5107992-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "John R Sabel"
+    ],
+    "deedRecordIds": [
+      "deed_83009700200"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803222_emuejx",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.222Z",
+    "updatedAt": "2026-09-26T07:46:43.222Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_42520003100",
+    "caseId": "case_thurston_NP-5108045-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Jacques P Jr Faur"
+    ],
+    "deedRecordIds": [
+      "deed_42520003100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803223_nqdoqz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.223Z",
+    "updatedAt": "2026-09-26T07:46:43.223Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11733320401",
+    "caseId": "case_thurston_NP-5108066-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Jorge Xavier Cruz"
+    ],
+    "deedRecordIds": [
+      "deed_11733320401"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803224_15aiwy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.224Z",
+    "updatedAt": "2026-09-26T07:46:43.224Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_51050003900",
+    "caseId": "case_thurston_NP-5108108-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Wendy J Bolender"
+    ],
+    "deedRecordIds": [
+      "deed_51050003900"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803225_pd670x",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.225Z",
+    "updatedAt": "2026-09-26T07:46:43.225Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_81750282402",
+    "caseId": "case_thurston_NP-5108109-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Justin D Bennett"
+    ],
+    "deedRecordIds": [
+      "deed_81750282402"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803226_4jjf67",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.226Z",
+    "updatedAt": "2026-09-26T07:46:43.226Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_69960009500",
+    "caseId": "case_thurston_NP-5108192-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Michael D Ii Belston"
+    ],
+    "deedRecordIds": [
+      "deed_69960009500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803227_o2jcah",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.227Z",
+    "updatedAt": "2026-09-26T07:46:43.227Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_63460005500",
+    "caseId": "case_thurston_NP-5108229-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Barbara L Crump"
+    ],
+    "deedRecordIds": [
+      "deed_63460005500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803228_ftykiv",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.228Z",
+    "updatedAt": "2026-09-26T07:46:43.228Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_13629421300",
+    "caseId": "case_thurston_NP-5108321-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Tardiff Anthony Laurence"
+    ],
+    "deedRecordIds": [
+      "deed_13629421300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803229_iyao7d",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.229Z",
+    "updatedAt": "2026-09-26T07:46:43.229Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_51450013800",
+    "caseId": "case_thurston_NP-5108410-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Brenda Rae Egan"
+    ],
+    "deedRecordIds": [
+      "deed_51450013800"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803230_dhmkl5",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.230Z",
+    "updatedAt": "2026-09-26T07:46:43.230Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_52930002500",
+    "caseId": "case_thurston_NP-5108411-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Stella Wood"
+    ],
+    "deedRecordIds": [
+      "deed_52930002500"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803232_ttkvox",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.232Z",
+    "updatedAt": "2026-09-26T07:46:43.232Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005108515",
+    "caseId": "case_thurston_NP-5108515-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Jill B Severn"
+    ],
+    "deedRecordIds": [
+      "deed_11005108515"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803233_n3s59y",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.233Z",
+    "updatedAt": "2026-09-26T07:46:43.233Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_12636112300",
+    "caseId": "case_thurston_NP-5108593-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Carter Jennifer A"
+    ],
+    "deedRecordIds": [
+      "deed_12636112300"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803233_qny557",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.233Z",
+    "updatedAt": "2026-09-26T07:46:43.233Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_13609410400",
+    "caseId": "case_thurston_NP-5108649-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Daniel B Sorell"
+    ],
+    "deedRecordIds": [
+      "deed_13609410400"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803234_ffhzvp",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.234Z",
+    "updatedAt": "2026-09-26T07:46:43.234Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_70306400100",
+    "caseId": "case_thurston_NP-5108657-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Paul Cruz Mena"
+    ],
+    "deedRecordIds": [
+      "deed_70306400100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803235_c25o4h",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.235Z",
+    "updatedAt": "2026-09-26T07:46:43.235Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005108677",
+    "caseId": "case_thurston_NP-5108677-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Sue E Sykes"
+    ],
+    "deedRecordIds": [
+      "deed_11005108677"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803236_ogfoh2",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.236Z",
+    "updatedAt": "2026-09-26T07:46:43.236Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_81680002100",
+    "caseId": "case_thurston_NP-5108685-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Dipikaben Patel"
+    ],
+    "deedRecordIds": [
+      "deed_81680002100"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803237_0aq8vm",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.237Z",
+    "updatedAt": "2026-09-26T07:46:43.237Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005108777",
+    "caseId": "case_thurston_NP-5108777-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Wanda Lea Couchman"
+    ],
+    "deedRecordIds": [
+      "deed_11005108777"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803238_k5ropa",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.238Z",
+    "updatedAt": "2026-09-26T07:46:43.238Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005108919",
+    "caseId": "case_thurston_NP-5108919-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Eugene Tsuji"
+    ],
+    "deedRecordIds": [
+      "deed_11005108919"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803239_avjsae",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.239Z",
+    "updatedAt": "2026-09-26T07:46:43.239Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_67400001401",
+    "caseId": "case_thurston_NP-5108963-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Gerald B Sheble"
+    ],
+    "deedRecordIds": [
+      "deed_67400001401"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803241_t4gwdy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.241Z",
+    "updatedAt": "2026-09-26T07:46:43.241Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005108979",
+    "caseId": "case_thurston_NP-5108979-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Beverly Anne Jackson",
+      "Beverly Anne Jackson"
+    ],
+    "deedRecordIds": [
+      "deed_11005108979"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803242_gtn3h4",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.242Z",
+    "updatedAt": "2026-09-26T07:46:43.242Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_11005108992",
+    "caseId": "case_thurston_NP-5108992-34",
+    "countyId": "county_thurston_wa",
+    "status": "JOINT_TENANCY_WITH_SURVIVOR",
+    "ownerNames": [
+      "Rachel A Hanes",
+      "Rachel A Hanes"
+    ],
+    "deedRecordIds": [
+      "deed_11005108992"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Washington Community Property Agreement (RCW 26.16.120) with survivorship vesting",
+    "schemaVersion": 1,
+    "id": "rec_1790408803243_w2881f",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.243Z",
+    "updatedAt": "2026-09-26T07:46:43.243Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_13610130204",
+    "caseId": "case_thurston_NP-5109047-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Teri S Butler"
+    ],
+    "deedRecordIds": [
+      "deed_13610130204"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803244_ycc6nz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.244Z",
+    "updatedAt": "2026-09-26T07:46:43.244Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_79610004000",
+    "caseId": "case_thurston_NP-5109048-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "Darld D Brannan"
+    ],
+    "deedRecordIds": [
+      "deed_79610004000"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803245_vbmu1w",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.245Z",
+    "updatedAt": "2026-09-26T07:46:43.245Z"
+  },
+  {
+    "parcelId": "parcel_county_thurston_wa_13610130204",
+    "caseId": "case_thurston_NP-5109046-34",
+    "countyId": "county_thurston_wa",
+    "status": "DECEDENT_SOLE_OWNER",
+    "ownerNames": [
+      "David Craig Butler"
+    ],
+    "deedRecordIds": [
+      "deed_13610130204"
+    ],
+    "verifiedClaimIds": [],
+    "confidence": 0.95,
+    "ruleVersion": "v1.0.0-title-cadastre",
+    "evaluatedAt": "2026-09-26T07:46:42.274Z",
+    "evaluatorId": "system_ownership_engine",
+    "notes": "Sole record fee simple ownership confirmed via county cadastre deed registry",
+    "schemaVersion": 1,
+    "id": "rec_1790408803246_cqocy4",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.246Z",
+    "updatedAt": "2026-09-26T07:46:43.246Z"
+  }
+]

@@ -2,6 +2,110 @@ import { OpportunityScore, PriorityBand, ScoreComponentBreakdown, ScoringEngineI
 
 export const SCORING_RULE_VERSION = 'v1.0.0-deterministic';
 
+function computeAuthorityComponent(authority?: ScoringEngineInput['authority']): number {
+  if (!authority) return 0;
+  if (authority.status === 'DISPUTED') return 10;
+  if (authority.status !== 'CONFIRMED' || !authority.fiduciary) return 0;
+
+  const tierScores: Record<number, number> = {
+    1: 100,
+    2: 80,
+    3: 50,
+    4: 20,
+  };
+
+  return tierScores[authority.tier] ?? 0;
+}
+
+function computeOwnershipComponent(ownership?: ScoringEngineInput['ownership']): number {
+  if (!ownership) return 0;
+
+  switch (ownership.status) {
+    case 'DECEDENT_SOLE_OWNER':
+      return 100;
+    case 'TENANTS_IN_COMMON':
+      return 60;
+    case 'JOINT_TENANCY_WITH_SURVIVOR':
+      return 30;
+    case 'TRUST_HELD':
+      return 40;
+    case 'TRANSFERRED_PRIOR_TO_DEATH':
+    case 'UNRESOLVED':
+    default:
+      return 0;
+  }
+}
+
+function computeEquityComponent(
+  property?: ScoringEngineInput['property'],
+  estimatedLiens?: number
+): number {
+  if (!property || property.totalAssessedValue === null) {
+    return 0;
+  }
+
+  const value = property.totalAssessedValue;
+  const liens = estimatedLiens ?? 0;
+  const estimatedEquity = Math.max(0, value - liens);
+
+  if (estimatedEquity >= 500000) return 100;
+  if (estimatedEquity >= 300000) return 80;
+  if (estimatedEquity >= 150000) return 50;
+  if (estimatedEquity > 0) return 25;
+  return 0;
+}
+
+function computeFreshnessComponent(filingDate: string): number {
+  const filingTime = new Date(filingDate).getTime();
+  const daysOld = Math.max(0, Math.floor((Date.now() - filingTime) / (1000 * 60 * 60 * 24)));
+
+  if (daysOld <= 14) return 100;
+  if (daysOld <= 30) return 80;
+  if (daysOld <= 60) return 50;
+  return 20;
+}
+
+function computeRiskPenalty(input: ScoringEngineInput): number {
+  let penalty = 0;
+
+  if (!input.property) {
+    penalty += 30;
+  }
+  if (!input.authority || input.authority.status === 'UNRESOLVED') {
+    penalty += 20;
+  }
+  if (!input.ownership || input.ownership.status === 'UNRESOLVED') {
+    penalty += 15;
+  }
+
+  return penalty;
+}
+
+function isPriorityA(score: number, authority: number, ownership: number): boolean {
+  return score >= 80 && authority >= 70 && ownership >= 60;
+}
+
+function isPriorityB(score: number, authority: number): boolean {
+  return score >= 60 && authority >= 50;
+}
+
+function determinePriorityBand(
+  compositeScore: number,
+  authorityComponent: number,
+  ownershipComponent: number
+): PriorityBand {
+  if (isPriorityA(compositeScore, authorityComponent, ownershipComponent)) {
+    return 'PRIORITY_A';
+  }
+  if (isPriorityB(compositeScore, authorityComponent)) {
+    return 'PRIORITY_B';
+  }
+  if (compositeScore >= 35) {
+    return 'PRIORITY_C';
+  }
+  return 'DISQUALIFIED';
+}
+
 /**
  * Deterministically computes an opportunity score and priority band.
  * Contains ZERO randomized or synthetic mock values.
@@ -12,98 +116,11 @@ export function calculateOpportunityScore(
 ): OpportunityScore {
   const evaluatedAt = new Date().toISOString();
 
-  // 1. Authority Component (0 - 100)
-  let authorityComponent = 0;
-  if (input.authority && input.authority.status === 'CONFIRMED' && input.authority.fiduciary) {
-    switch (input.authority.tier) {
-      case 1:
-        authorityComponent = 100;
-        break;
-      case 2:
-        authorityComponent = 80;
-        break;
-      case 3:
-        authorityComponent = 50;
-        break;
-      case 4:
-        authorityComponent = 20;
-        break;
-    }
-  } else if (input.authority && input.authority.status === 'DISPUTED') {
-    authorityComponent = 10;
-  } else {
-    // Unresolved or unappointed - transparent 0
-    authorityComponent = 0;
-  }
-
-  // 2. Ownership Component (0 - 100)
-  let ownershipComponent = 0;
-  if (input.ownership) {
-    switch (input.ownership.status) {
-      case 'DECEDENT_SOLE_OWNER':
-        ownershipComponent = 100;
-        break;
-      case 'TENANTS_IN_COMMON':
-        ownershipComponent = 60;
-        break;
-      case 'JOINT_TENANCY_WITH_SURVIVOR':
-        ownershipComponent = 30;
-        break;
-      case 'TRUST_HELD':
-        ownershipComponent = 40;
-        break;
-      case 'TRANSFERRED_PRIOR_TO_DEATH':
-      case 'UNRESOLVED':
-      default:
-        ownershipComponent = 0;
-        break;
-    }
-  }
-
-  // 3. Equity Component (0 - 100)
-  let equityComponent = 0;
-  if (input.property && input.property.totalAssessedValue !== null) {
-    const value = input.property.totalAssessedValue;
-    const liens = input.estimatedLiensOrMortgageAmount ?? 0;
-    const estimatedEquity = Math.max(0, value - liens);
-
-    if (estimatedEquity >= 500000) {
-      equityComponent = 100;
-    } else if (estimatedEquity >= 300000) {
-      equityComponent = 80;
-    } else if (estimatedEquity >= 150000) {
-      equityComponent = 50;
-    } else if (estimatedEquity > 0) {
-      equityComponent = 25;
-    }
-  }
-
-  // 4. Freshness Component (0 - 100)
-  let freshnessComponent = 0;
-  const filingTime = new Date(input.filingDate).getTime();
-  const now = Date.now();
-  const daysOld = Math.max(0, Math.floor((now - filingTime) / (1000 * 60 * 60 * 24)));
-  if (daysOld <= 14) {
-    freshnessComponent = 100;
-  } else if (daysOld <= 30) {
-    freshnessComponent = 80;
-  } else if (daysOld <= 60) {
-    freshnessComponent = 50;
-  } else {
-    freshnessComponent = 20;
-  }
-
-  // 5. Risk Penalty (0 - 50)
-  let riskPenalty = 0;
-  if (!input.property) {
-    riskPenalty += 30;
-  }
-  if (!input.authority || input.authority.status === 'UNRESOLVED') {
-    riskPenalty += 20;
-  }
-  if (!input.ownership || input.ownership.status === 'UNRESOLVED') {
-    riskPenalty += 15;
-  }
+  const authorityComponent = computeAuthorityComponent(input.authority);
+  const ownershipComponent = computeOwnershipComponent(input.ownership);
+  const equityComponent = computeEquityComponent(input.property, input.estimatedLiensOrMortgageAmount);
+  const freshnessComponent = computeFreshnessComponent(input.filingDate);
+  const riskPenalty = computeRiskPenalty(input);
 
   // Composite Calculation: Weighted sum minus penalties
   // Weights: Authority (35%), Ownership (25%), Equity (25%), Freshness (15%)
@@ -114,18 +131,7 @@ export function calculateOpportunityScore(
     freshnessComponent * 0.15;
 
   const compositeScore = Math.max(0, Math.min(100, Math.round(rawWeightedScore - riskPenalty)));
-
-  // Priority Band
-  let priorityBand: PriorityBand = 'DISQUALIFIED';
-  if (compositeScore >= 80 && authorityComponent >= 70 && ownershipComponent >= 60) {
-    priorityBand = 'PRIORITY_A';
-  } else if (compositeScore >= 60 && authorityComponent >= 50) {
-    priorityBand = 'PRIORITY_B';
-  } else if (compositeScore >= 35) {
-    priorityBand = 'PRIORITY_C';
-  } else {
-    priorityBand = 'DISQUALIFIED';
-  }
+  const priorityBand = determinePriorityBand(compositeScore, authorityComponent, ownershipComponent);
 
   const breakdown: ScoreComponentBreakdown = {
     authorityComponent,

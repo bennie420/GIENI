@@ -294,3 +294,54 @@ Here is an analysis of the auditor's findings alongside a concrete remediation b
 - [x] **RV-003: Pilot Hardening Test Suite** (`tests/unit/pilot-hardening.test.js`):
   - 100% green test coverage across all hardening modules (55/55 tests passing).
 
+---
+
+## 13. County Intelligence & Evidence Acquisition Sprint (PRD v1.0)
+
+**Sprint Theme**: County Acquisition, Evidence Collection, and Research Infrastructure
+**Strategic Goal**: Connect directly to county systems, preserve authentic source evidence, detect layout drift, and feed the downstream Claim–Evidence Triad without manual research friction.
+
+### Epic 1 — County Adapter Framework (`packages/county-adapters`)
+- [x] **CA-001: County Adapter Interface** (`ICountyAdapter`):
+  - Standardized contract: `getCourtCases()`, `getCaseDocuments()`, `getParcels()`, `getRecordedDocuments()`, `getTaxRecords()`, `getHealthStatus()`, `detectLayoutDrift()`.
+  - Decouples downstream worker pipelines from county-specific scrapers.
+  - **Tests**: `tests/unit/county-adapters.test.js`
+- [x] **CA-002: Adapter Registry** (`CountyAdapterRegistry`):
+  - Configuration-driven dispatch mapping `{ stateCode, countyName, countyId }` to concrete adapter instances.
+  - **Tests**: `tests/unit/county-adapters.test.js`
+
+### Epic 2 — Evidence Acquisition Layer (`packages/evidence` & `packages/county-adapters`)
+- [x] **EA-001: SourceRecord Model**:
+  - Entity: `SourceRecord` with `id`, `countyId`, `sourceType: "COURT"|"ASSESSOR"|"RECORDER"|"GIS"|"TAX"`, `sourceUrl`, `retrievalTimestamp`, `artifactSha256`, `sourceSystem`, `rawPayloadLocation`.
+  - Every claim item originates directly from an immutable `SourceRecord`.
+  - **Tests**: `tests/unit/county-adapters.test.js`
+- [x] **EA-002: Immutable Preservation Pipeline**:
+  - Provenance recording enforcing SHA-256 fingerprinting, retrieval timestamp, adapter version, and raw payload storage pointers.
+  - **Tests**: `tests/unit/county-adapters.test.js`
+
+### Epic 3 — County Health Monitoring & Drift Detection
+- [x] **CH-001: Adapter Health Metrics** (`CountyAdapterHealth`):
+  - Metrics: success rate, failure rate, latency, documents found/missing, last successful scrape.
+  - **Tests**: `tests/unit/county-adapters.test.js`
+- [x] **CH-002: Document Layout Drift Detection** (`DocumentLayoutFingerprint`):
+  - Fingerprint based on header patterns, page structure, template hashes (`computeTemplateStructureHash`), and watermark detection to alert before parser failures occur (`evaluateDocumentLayoutDrift`).
+  - **Tests**: `tests/unit/county-adapters.test.js`
+
+### Epic 4 — Evidence Research Console (`apps/web/src/app/operator`)
+- [x] **RC-001: Evidence Viewer Component** (`apps/web/src/app/operator/components/ReviewTab.tsx`):
+  - Side-by-side presentation of Claim, Evidence excerpt, page number, and SHA-256 fingerprint.
+- [x] **RC-002: Authority Timeline Component** (`apps/web/src/app/operator/components/AuthorityTimeline.tsx`):
+  - Visual progression of probate milestones: Petition Filed $\rightarrow$ PR Appointed $\rightarrow$ Letters Issued $\rightarrow$ Inventory Filed.
+- [x] **RC-003: Unified Parcel Research Console** (`apps/web/src/app/operator/components/ParcelConsole.tsx`):
+  - Merged view combining Recorder, Assessor, GIS, and Tax records into one pane.
+- [x] **CH-Dashboard: County Health & Drift Tab** (`apps/web/src/app/operator/components/CountyHealthTab.tsx`):
+  - Operator tab monitoring live adapter telemetry, circuit states, latency, and drift status.
+
+### Epic 5 — County Launch Program (Wave 1 Production Adapters)
+- [x] **Wave 1 Adapters**:
+  - Travis County, TX (`TravisCountyAdapter`).
+  - Maricopa County, AZ (`MaricopaCountyAdapter`).
+- [x] **Launch Verification**:
+  - Unit & contract tests: `tests/unit/county-adapters.test.js` (7/7 tests passing).
+  - Monorepo full verification: `npm test` (62/62 tests passing), `npm run type-check` (15/15 packages clean), `npm run build` (Next.js & 14 TS workspaces clean).
+

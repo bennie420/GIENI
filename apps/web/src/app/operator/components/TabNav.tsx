@@ -56,6 +56,12 @@ export default function TabNav({
       >
         6. QC & Delivery
       </button>
+      <button
+        className={`tab-btn ${activeTab === 'counties' ? 'active' : ''}`}
+        onClick={() => setActiveTab('counties')}
+      >
+        7. County Health & Drift
+      </button>
     </nav>
   );
 }

@@ -1,5 +1,23 @@
 import { z } from 'zod';
 
+
+export const FilingTypeSchema = z.enum([
+  'PETITION_FOR_PROBATE',
+  'ORDER_APPOINTING_PR',
+  'LETTERS_TESTAMENTARY',
+  'LETTERS_OF_ADMINISTRATION',
+  'INVENTORY_AND_APPRAISEMENT',
+  'ANNUAL_ACCOUNTING',
+  'NOTICE_TO_CREDITORS',
+  'DECREE_OF_DISTRIBUTION',
+  'DEED_OF_TRUST',
+  'WARRANTY_DEED',
+  'LACK_OF_PROBATE_AFFIDAVIT',
+  'TRANSFER_ON_DEATH_DEED',
+  'COMMUNITY_PROPERTY_AGREEMENT',
+  'DOCKET_SUMMARY',
+]);
+
 export const ClaimTypeSchema = z.enum(['EXTRACTED', 'MATCHED', 'DERIVED', 'HUMAN_VERIFIED']);
 
 export const VerificationStatusSchema = z.enum(['PROPOSED', 'VERIFIED', 'REJECTED', 'SUPERSEDED']);
@@ -23,6 +41,8 @@ export const SourceDocumentSchema = z.object({
   sourceUrl: z.string().url().optional(),
   retrievalTimestamp: z.string().datetime(),
   termsNote: z.string().optional(),
+  filingType: FilingTypeSchema.optional(),
+  caseNumber: z.string().optional(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
@@ -93,4 +113,23 @@ export const ClaimAuditEventSchema = z.object({
   schemaVersion: z.number().int().min(1),
 });
 
+export const SourceRecordTypeSchema = z.enum(['COURT', 'ASSESSOR', 'RECORDER', 'GIS', 'TAX']);
 
+export const SourceRecordSchema = z.object({
+  id: z.string().min(1),
+  organizationId: z.string().min(1),
+  countyId: z.string().min(1),
+  sourceType: SourceRecordTypeSchema,
+  sourceUrl: z.string().url(),
+  retrievalTimestamp: z.string().datetime(),
+  artifactSha256: z.string().length(64),
+  sourceSystem: z.string().min(1),
+  rawPayloadLocation: z.string().min(1),
+  adapterVersion: z.string().min(1),
+  filingType: FilingTypeSchema.optional(),
+  caseNumber: z.string().optional(),
+  metadata: z.record(z.unknown()).optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
+});

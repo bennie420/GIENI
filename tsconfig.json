@@ -1,6 +1,7 @@
 {
   "files": [],
   "references": [
+    { "path": "packages/county-adapters" },
     { "path": "packages/evidence" },
     { "path": "packages/authority" },
     { "path": "packages/property" },

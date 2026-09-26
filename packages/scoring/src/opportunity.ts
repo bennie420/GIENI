@@ -45,6 +45,61 @@ export interface Opportunity extends BaseEntity {
   currentSnapshot: OpportunitySnapshot;
 }
 
+function formatPropertyAddress(property: PropertyParcel | null): string | null {
+  if (!property?.address) return null;
+  const { street, city, state, zipCode } = property.address;
+  return `${street}, ${city}, ${state} ${zipCode}`;
+}
+
+function computeEstimatedEquity(property: PropertyParcel | null): number | null {
+  const val = property?.totalAssessedValue;
+  if (val === null || val === undefined) return null;
+  return Math.max(0, val - 75000);
+}
+
+function extractPropertyFields(property: PropertyParcel | null) {
+  if (!property) {
+    return {
+      propertyAddress: null,
+      assessedValue: null,
+      estimatedEquity: null,
+    };
+  }
+  return {
+    propertyAddress: formatPropertyAddress(property),
+    assessedValue: property.totalAssessedValue,
+    estimatedEquity: computeEstimatedEquity(property),
+  };
+}
+
+function extractAuthorityFields(authority: AuthorityAssessment | null) {
+  if (!authority) {
+    return {
+      authorityStatus: null,
+      authorityTier: null,
+      fiduciaryName: null,
+    };
+  }
+  return {
+    authorityStatus: authority.status,
+    authorityTier: authority.tier,
+    fiduciaryName: authority.fiduciary ? authority.fiduciary.fullName : null,
+  };
+}
+
+function extractScoreFields(score: OpportunityScore | null) {
+  if (!score) {
+    return {
+      compositeScore: null,
+      priorityBand: null,
+    };
+  }
+  return {
+    compositeScore: score.compositeScore,
+    priorityBand: score.priorityBand,
+  };
+}
+
 /**
  * Deterministically rebuilds an Opportunity projection snapshot from canonical assessments.
  */
@@ -58,24 +113,24 @@ export function buildOpportunitySnapshot(params: {
   score: OpportunityScore | null;
   unresolvedExceptionsCount?: number;
 }): OpportunitySnapshot {
-  const propertyAddress = params.property?.address
-    ? `${params.property.address.street}, ${params.property.address.city}, ${params.property.address.state} ${params.property.address.zipCode}`
-    : null;
+  const prop = extractPropertyFields(params.property);
+  const auth = extractAuthorityFields(params.authority);
+  const score = extractScoreFields(params.score);
 
   return {
     caseNumber: params.caseNumber,
     decedentName: params.decedentName,
     filingDate: params.filingDate,
-    propertyAddress,
-    assessedValue: params.property?.totalAssessedValue ?? null,
-    estimatedEquity: params.property?.totalAssessedValue ? Math.max(0, params.property.totalAssessedValue - 75000) : null,
-    ownershipStatus: params.ownership?.status ?? null,
-    authorityStatus: params.authority?.status ?? null,
-    authorityTier: params.authority?.tier ?? null,
-    fiduciaryName: params.authority?.fiduciary?.fullName ?? null,
-    compositeScore: params.score?.compositeScore ?? null,
-    priorityBand: params.score?.priorityBand ?? null,
-    unresolvedExceptionsCount: params.unresolvedExceptionsCount ?? 0,
+    propertyAddress: prop.propertyAddress,
+    assessedValue: prop.assessedValue,
+    estimatedEquity: prop.estimatedEquity,
+    ownershipStatus: params.ownership ? params.ownership.status : null,
+    authorityStatus: auth.authorityStatus,
+    authorityTier: auth.authorityTier,
+    fiduciaryName: auth.fiduciaryName,
+    compositeScore: score.compositeScore,
+    priorityBand: score.priorityBand,
+    unresolvedExceptionsCount: params.unresolvedExceptionsCount || 0,
     lastProjectedAt: new Date().toISOString(),
   };
 }

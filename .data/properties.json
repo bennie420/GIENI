@@ -1,0 +1,2702 @@
+[
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "12816320100",
+    "address": {
+      "street": "3205 Capital Mall Dr SW",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT CAPITAL MALL ADDN LOT 8",
+    "assessedLandValue": 190000,
+    "assessedImprovementValue": 350000,
+    "totalAssessedValue": 540000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_12816320100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802972_82otlu",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.972Z",
+    "updatedAt": "2026-09-26T07:46:42.972Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11822140300",
+    "address": {
+      "street": "1204 Cleveland Ave SE",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "TUMWATER HILL DIV 2 LOT 14",
+    "assessedLandValue": 165000,
+    "assessedImprovementValue": 300000,
+    "totalAssessedValue": 465000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11822140300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802973_ui4f9v",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.973Z",
+    "updatedAt": "2026-09-26T07:46:42.973Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "72400001200",
+    "address": {
+      "street": "4510 6th Ave SE",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "HORIZON POINTE DIV 1 LOT 22",
+    "assessedLandValue": 180000,
+    "assessedImprovementValue": 335000,
+    "totalAssessedValue": 515000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_72400001200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802974_98qbvy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.974Z",
+    "updatedAt": "2026-09-26T07:46:42.974Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "39900008500",
+    "address": {
+      "street": "2814 Boston Harbor Rd NE",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "BOSTON HARBOR PLAT LOT 5 BLK 2",
+    "assessedLandValue": 290000,
+    "assessedImprovementValue": 490000,
+    "totalAssessedValue": 780000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_39900008500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802975_zlsp48",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.975Z",
+    "updatedAt": "2026-09-26T07:46:42.975Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "22724410200",
+    "address": {
+      "street": "1824 Yelm Ave W",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "YELM TERRACE LOT 14",
+    "assessedLandValue": 145000,
+    "assessedImprovementValue": 280000,
+    "totalAssessedValue": 425000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_22724410200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802976_nq4xxk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.976Z",
+    "updatedAt": "2026-09-26T07:46:42.976Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "21715420100",
+    "address": {
+      "street": "16540 Vail Rd SE",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "LAKE LAWRENCE DIV 3 LOT 9",
+    "assessedLandValue": 130000,
+    "assessedImprovementValue": 260000,
+    "totalAssessedValue": 390000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_21715420100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802977_dqyiqi",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.977Z",
+    "updatedAt": "2026-09-26T07:46:42.977Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "78200004100",
+    "address": {
+      "street": "710 4th Ave E",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "SYLVESTERS PLAT BLK 41 LOTS 3 & 4",
+    "assessedLandValue": 260000,
+    "assessedImprovementValue": 350000,
+    "totalAssessedValue": 610000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_78200004100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802977_uury2f",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.977Z",
+    "updatedAt": "2026-09-26T07:46:42.977Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "58400018900",
+    "address": {
+      "street": "5420 College St SE",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "LACEY HOMESITES NO 2 LOT 18",
+    "assessedLandValue": 175000,
+    "assessedImprovementValue": 320000,
+    "totalAssessedValue": 495000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_58400018900"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802978_zsjdqv",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.978Z",
+    "updatedAt": "2026-09-26T07:46:42.978Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "12816320100",
+    "address": {
+      "street": "3205 Capital Mall Dr SW",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "CAPITAL MALL ADDN LOT 8",
+    "assessedLandValue": 190000,
+    "assessedImprovementValue": 350000,
+    "totalAssessedValue": 540000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_12816320100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802979_rvkibo",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.979Z",
+    "updatedAt": "2026-09-26T07:46:42.979Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "12711230400",
+    "address": {
+      "street": "8930 Littlerock Rd SW",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "DESCHUTES RIVER WOODS LOT 41",
+    "assessedLandValue": 155000,
+    "assessedImprovementValue": 275000,
+    "totalAssessedValue": 430000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_12711230400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802980_bvwcr8",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.980Z",
+    "updatedAt": "2026-09-26T07:46:42.980Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "13809310200",
+    "address": {
+      "street": "10118 Hwy 12 SW",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "GRAND MOUND HOMES LOT 6",
+    "assessedLandValue": 125000,
+    "assessedImprovementValue": 235000,
+    "totalAssessedValue": 360000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_13809310200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802981_cp2ko6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.981Z",
+    "updatedAt": "2026-09-26T07:46:42.981Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "48100001700",
+    "address": {
+      "street": "1522 Olympia Ave NE",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "EASTSIDE ADDN BLK 8 LOT 12",
+    "assessedLandValue": 240000,
+    "assessedImprovementValue": 385000,
+    "totalAssessedValue": 625000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_48100001700"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802981_h43m2b",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.981Z",
+    "updatedAt": "2026-09-26T07:46:42.981Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "81200002300",
+    "address": {
+      "street": "412 Sussex Ave W",
+      "city": "Tenino",
+      "state": "WA",
+      "zipCode": "98589",
+      "county": "Thurston"
+    },
+    "legalDescription": "TOWN OF TENINO LOT 3 BLK 5",
+    "assessedLandValue": 135000,
+    "assessedImprovementValue": 240000,
+    "totalAssessedValue": 375000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_81200002300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802982_61k733",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.982Z",
+    "updatedAt": "2026-09-26T07:46:42.982Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "69200005400",
+    "address": {
+      "street": "6820 Marvin Rd NE",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98516",
+      "county": "Thurston"
+    },
+    "legalDescription": "HAWKS PRAIRIE SEC 12 LOT 3",
+    "assessedLandValue": 210000,
+    "assessedImprovementValue": 380000,
+    "totalAssessedValue": 590000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_69200005400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802983_drxnny",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.983Z",
+    "updatedAt": "2026-09-26T07:46:42.983Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "78200004100",
+    "address": {
+      "street": "710 4th Ave E",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "SYLVESTERS PLAT BLK 41 LOTS 3 & 4",
+    "assessedLandValue": 260000,
+    "assessedImprovementValue": 350000,
+    "totalAssessedValue": 610000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_78200004100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802984_mo3o3o",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.984Z",
+    "updatedAt": "2026-09-26T07:46:42.984Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11804220500",
+    "address": {
+      "street": "204 Deschutes Pkwy SW",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "DESCHUTES FALLS ADDN LOT 9",
+    "assessedLandValue": 220000,
+    "assessedImprovementValue": 315000,
+    "totalAssessedValue": 535000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11804220500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802985_fdrhsc",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.985Z",
+    "updatedAt": "2026-09-26T07:46:42.985Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "22718340200",
+    "address": {
+      "street": "10444 Tahoma Terra Dr SE",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "TAHOMA TERRA DIV 4 LOT 19",
+    "assessedLandValue": 150000,
+    "assessedImprovementValue": 290000,
+    "totalAssessedValue": 440000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_22718340200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802985_tkvjds",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.985Z",
+    "updatedAt": "2026-09-26T07:46:42.985Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "22724410200",
+    "address": {
+      "street": "1824 Yelm Ave W",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "SECTION 24 TOWNSHIP 17 LOT 14",
+    "assessedLandValue": 145000,
+    "assessedImprovementValue": 280000,
+    "totalAssessedValue": 425000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_22724410200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802986_bcbkfw",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.986Z",
+    "updatedAt": "2026-09-26T07:46:42.986Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11718310800",
+    "address": {
+      "street": "14330 Center St SE",
+      "city": "Rainier",
+      "state": "WA",
+      "zipCode": "98576",
+      "county": "Thurston"
+    },
+    "legalDescription": "RAINIER ACRES LOT 11",
+    "assessedLandValue": 120000,
+    "assessedImprovementValue": 225000,
+    "totalAssessedValue": 345000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11718310800"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802987_4i9wbu",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.987Z",
+    "updatedAt": "2026-09-26T07:46:42.987Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "12803410600",
+    "address": {
+      "street": "2200 Cooper Point Rd NW",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "COOPER POINT CREST LOT 7",
+    "assessedLandValue": 265000,
+    "assessedImprovementValue": 430000,
+    "totalAssessedValue": 695000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_12803410600"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802988_xs5ysy",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.988Z",
+    "updatedAt": "2026-09-26T07:46:42.988Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "75300009100",
+    "address": {
+      "street": "3912 Pacific Ave SE",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "TANGLEWILDE DIV 6 LOT 4",
+    "assessedLandValue": 170000,
+    "assessedImprovementValue": 310000,
+    "totalAssessedValue": 480000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_75300009100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802989_q9fw28",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.989Z",
+    "updatedAt": "2026-09-26T07:46:42.989Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11815120300",
+    "address": {
+      "street": "5824 Henderson Blvd SE",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "BLACK HILLS HOMESITES LOT 15",
+    "assessedLandValue": 210000,
+    "assessedImprovementValue": 350000,
+    "totalAssessedValue": 560000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11815120300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802990_kfoaxf",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.990Z",
+    "updatedAt": "2026-09-26T07:46:42.990Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "13816420100",
+    "address": {
+      "street": "18430 Albany St SW",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "ROCHESTER ADDN LOT 2 BLK 4",
+    "assessedLandValue": 120000,
+    "assessedImprovementValue": 230000,
+    "totalAssessedValue": 350000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_13816420100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802991_ve02ch",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.991Z",
+    "updatedAt": "2026-09-26T07:46:42.991Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "71100003800",
+    "address": {
+      "street": "815 Washington St SE",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "SOUTH CAPITOL HISTORIC ADDN LOT 5",
+    "assessedLandValue": 280000,
+    "assessedImprovementValue": 440000,
+    "totalAssessedValue": 720000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_71100003800"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802991_o2lbwh",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.991Z",
+    "updatedAt": "2026-09-26T07:46:42.991Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "82100001500",
+    "address": {
+      "street": "315 Hodgden St S",
+      "city": "Tenino",
+      "state": "WA",
+      "zipCode": "98589",
+      "county": "Thurston"
+    },
+    "legalDescription": "SUNNYSIDE ADDN TENINO LOT 8",
+    "assessedLandValue": 130000,
+    "assessedImprovementValue": 235000,
+    "totalAssessedValue": 365000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_82100001500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802992_2hglna",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.992Z",
+    "updatedAt": "2026-09-26T07:46:42.992Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "54300006200",
+    "address": {
+      "street": "5118 Ruddell Rd SE",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "RUDDELL PLAT NO 3 LOT 12",
+    "assessedLandValue": 165000,
+    "assessedImprovementValue": 305000,
+    "totalAssessedValue": 470000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_54300006200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802993_oc03wa",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.993Z",
+    "updatedAt": "2026-09-26T07:46:42.993Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "21703210400",
+    "address": {
+      "street": "17320 Bald Hill Rd SE",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "BALD HILL RANCHETTES LOT 2",
+    "assessedLandValue": 140000,
+    "assessedImprovementValue": 245000,
+    "totalAssessedValue": 385000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_21703210400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802994_a3zlnd",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.994Z",
+    "updatedAt": "2026-09-26T07:46:42.994Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11827430100",
+    "address": {
+      "street": "7312 Littlerock Rd SW",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "WEST PARK MANOR LOT 17",
+    "assessedLandValue": 170000,
+    "assessedImprovementValue": 285000,
+    "totalAssessedValue": 455000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11827430100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802995_pvs4vj",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.995Z",
+    "updatedAt": "2026-09-26T07:46:42.995Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "39100007400",
+    "address": {
+      "street": "3108 East Bay Dr NE",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "EAST BAY WATERFRONT ADDN LOT 3",
+    "assessedLandValue": 340000,
+    "assessedImprovementValue": 470000,
+    "totalAssessedValue": 810000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_39100007400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802996_wikcv9",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.996Z",
+    "updatedAt": "2026-09-26T07:46:42.996Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "78200004100",
+    "address": {
+      "street": "710 4th Ave E",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "SYLVESTERS PLAT OF OLYMPIA BLK 41",
+    "assessedLandValue": 260000,
+    "assessedImprovementValue": 350000,
+    "totalAssessedValue": 610000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_78200004100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802997_y1bi7w",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.997Z",
+    "updatedAt": "2026-09-26T07:46:42.997Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11822140300",
+    "address": {
+      "street": "1204 Cleveland Ave SE",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "TUMWATER HILL DIV 2 LOT 14",
+    "assessedLandValue": 165000,
+    "assessedImprovementValue": 300000,
+    "totalAssessedValue": 465000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11822140300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802998_1mn6cf",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.998Z",
+    "updatedAt": "2026-09-26T07:46:42.998Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "72400001200",
+    "address": {
+      "street": "4510 6th Ave SE",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "HORIZON POINTE DIV 1 LOT 22",
+    "assessedLandValue": 180000,
+    "assessedImprovementValue": 335000,
+    "totalAssessedValue": 515000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_72400001200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802998_gtvf4r",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.998Z",
+    "updatedAt": "2026-09-26T07:46:42.998Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "13816420100",
+    "address": {
+      "street": "18430 Albany St SW",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "ROCHESTER ADDN LOT 2 BLK 4",
+    "assessedLandValue": 120000,
+    "assessedImprovementValue": 230000,
+    "totalAssessedValue": 350000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_13816420100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408802999_5obi4i",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:42.999Z",
+    "updatedAt": "2026-09-26T07:46:42.999Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "39900008500",
+    "address": {
+      "street": "2814 Boston Harbor Rd NE",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "BOSTON HARBOR PLAT LOT 5 BLK 2",
+    "assessedLandValue": 290000,
+    "assessedImprovementValue": 490000,
+    "totalAssessedValue": 780000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_39900008500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803000_12y703",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.000Z",
+    "updatedAt": "2026-09-26T07:46:43.000Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11804220500",
+    "address": {
+      "street": "204 Deschutes Pkwy SW",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "DESCHUTES FALLS ADDN LOT 9",
+    "assessedLandValue": 220000,
+    "assessedImprovementValue": 315000,
+    "totalAssessedValue": 535000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11804220500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803001_916575",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.001Z",
+    "updatedAt": "2026-09-26T07:46:43.001Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "58400018900",
+    "address": {
+      "street": "5420 College St SE",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "LACEY HOMESITES NO 2 LOT 18",
+    "assessedLandValue": 175000,
+    "assessedImprovementValue": 320000,
+    "totalAssessedValue": 495000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_58400018900"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803002_3i9q8w",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.002Z",
+    "updatedAt": "2026-09-26T07:46:43.002Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005106059",
+    "address": {
+      "street": "3159 PLAT Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5106059",
+    "assessedLandValue": 132650,
+    "assessedImprovementValue": 246350,
+    "totalAssessedValue": 379000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005106059"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803003_ixfj8o",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.003Z",
+    "updatedAt": "2026-09-26T07:46:43.003Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "73600301700",
+    "address": {
+      "street": "3213 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: CAMPBELL, MARY ELSIE Grantee: CAMPBELL, MARY ELS...",
+    "assessedLandValue": 151550,
+    "assessedImprovementValue": 281450,
+    "totalAssessedValue": 433000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_73600301700"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803004_y1knjg",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.004Z",
+    "updatedAt": "2026-09-26T07:46:43.004Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "78970002500",
+    "address": {
+      "street": "3486 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: MAGIBA, ROMULO V Grantee: MAGIBA, ELIZABETH P Su...",
+    "assessedLandValue": 142100,
+    "assessedImprovementValue": 263900,
+    "totalAssessedValue": 406000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_78970002500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803004_l2reh8",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.004Z",
+    "updatedAt": "2026-09-26T07:46:43.004Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "56100200100",
+    "address": {
+      "street": "3546 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: RIVERS, NORMAN R, ESTATE OF Grantee: RIVERS, KAT...",
+    "assessedLandValue": 163100,
+    "assessedImprovementValue": 302900,
+    "totalAssessedValue": 466000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_56100200100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803005_v0qy4n",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.005Z",
+    "updatedAt": "2026-09-26T07:46:43.005Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "59750014200",
+    "address": {
+      "street": "3593 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98516",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: THIBAULT, PAUL R, THIBAULT, DONNA R Grantee: THI...",
+    "assessedLandValue": 179550,
+    "assessedImprovementValue": 333450,
+    "totalAssessedValue": 513000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_59750014200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803006_wcb4u7",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.006Z",
+    "updatedAt": "2026-09-26T07:46:43.006Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005106540",
+    "address": {
+      "street": "3640 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: RUSSELL, PATRICIA L Grantee: RUSSELL, RICHARD G ...",
+    "assessedLandValue": 196000,
+    "assessedImprovementValue": 364000,
+    "totalAssessedValue": 560000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005106540"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803007_ou5u4o",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.007Z",
+    "updatedAt": "2026-09-26T07:46:43.007Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005106572",
+    "address": {
+      "street": "3672 PLAT Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5106572",
+    "assessedLandValue": 207200,
+    "assessedImprovementValue": 384800,
+    "totalAssessedValue": 592000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005106572"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803009_sh354g",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.009Z",
+    "updatedAt": "2026-09-26T07:46:43.009Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "22732140201",
+    "address": {
+      "street": "3675 Grantor: Way",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: RYDER, CHARLES M Grantee: KROKSON, BENTLEY L Lot...",
+    "assessedLandValue": 208250,
+    "assessedImprovementValue": 386750,
+    "totalAssessedValue": 595000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_22732140201"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803010_1z3vtx",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.010Z",
+    "updatedAt": "2026-09-26T07:46:43.010Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "70370020400",
+    "address": {
+      "street": "3677 Grantor: Way",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: CARTER-GRAY, SALLY P, ESTATE OF Grantee: SCHENK,...",
+    "assessedLandValue": 208950,
+    "assessedImprovementValue": 388050,
+    "totalAssessedValue": 597000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_70370020400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803011_l2nelr",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.011Z",
+    "updatedAt": "2026-09-26T07:46:43.011Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "12929320800",
+    "address": {
+      "street": "3680 Grantor: Way",
+      "city": "Tenino",
+      "state": "WA",
+      "zipCode": "98589",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: MARTIN, JOAN C Grantee: SEARS, CAROLYN I, WATKIN...",
+    "assessedLandValue": 210000,
+    "assessedImprovementValue": 390000,
+    "totalAssessedValue": 600000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_12929320800"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803012_9qj0ju",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.012Z",
+    "updatedAt": "2026-09-26T07:46:43.012Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "12512130400",
+    "address": {
+      "street": "3702 PLAT Way",
+      "city": "Rainier",
+      "state": "WA",
+      "zipCode": "98576",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5106602",
+    "assessedLandValue": 112700,
+    "assessedImprovementValue": 209300,
+    "totalAssessedValue": 322000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_12512130400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803012_tp7ppc",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.012Z",
+    "updatedAt": "2026-09-26T07:46:43.012Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005106676",
+    "address": {
+      "street": "3776 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: FROST, FLOYD J JR, ESTATE OF Grantee: TOLLESTRUP...",
+    "assessedLandValue": 138600,
+    "assessedImprovementValue": 257400,
+    "totalAssessedValue": 396000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005106676"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803013_j6ovtr",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.013Z",
+    "updatedAt": "2026-09-26T07:46:43.013Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005106806",
+    "address": {
+      "street": "3906 PLAT Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5106806",
+    "assessedLandValue": 184100,
+    "assessedImprovementValue": 341900,
+    "totalAssessedValue": 526000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005106806"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803014_h8u84i",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.014Z",
+    "updatedAt": "2026-09-26T07:46:43.014Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "52930138300",
+    "address": {
+      "street": "3914 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: LEAVITT, DAWN E, CLAYTON, DOROTHEA M Grantee: LE...",
+    "assessedLandValue": 186900,
+    "assessedImprovementValue": 347100,
+    "totalAssessedValue": 534000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_52930138300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803015_rolllm",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.015Z",
+    "updatedAt": "2026-09-26T07:46:43.015Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "31340002200",
+    "address": {
+      "street": "3940 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: WAYNE, BOBBY Grantee: CASEBEER, RITA F Subdivisi...",
+    "assessedLandValue": 196000,
+    "assessedImprovementValue": 364000,
+    "totalAssessedValue": 560000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_31340002200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803016_nmohoi",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.016Z",
+    "updatedAt": "2026-09-26T07:46:43.016Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "48360000200",
+    "address": {
+      "street": "4075 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98516",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: HONAN, THOMAS Grantee: PRINGLE, NANCY Subdivisio...",
+    "assessedLandValue": 138250,
+    "assessedImprovementValue": 256750,
+    "totalAssessedValue": 395000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_48360000200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803017_sdzwt8",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.017Z",
+    "updatedAt": "2026-09-26T07:46:43.017Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "60305500200",
+    "address": {
+      "street": "4074 PLAT Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5106974",
+    "assessedLandValue": 137900,
+    "assessedImprovementValue": 256100,
+    "totalAssessedValue": 394000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_60305500200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803018_t83wfk",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.018Z",
+    "updatedAt": "2026-09-26T07:46:43.018Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "49040000600",
+    "address": {
+      "street": "4082 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: HENDRICKSON, NADINE, HENDRICKSON, PAUL Grantee: ...",
+    "assessedLandValue": 140700,
+    "assessedImprovementValue": 261300,
+    "totalAssessedValue": 402000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_49040000600"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803019_97cled",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.019Z",
+    "updatedAt": "2026-09-26T07:46:43.019Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "63750001800",
+    "address": {
+      "street": "4143 Grantor: Way",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: OECHSNER, KATHLEEN A Grantee: OECHSNER, MATTHEW ...",
+    "assessedLandValue": 162050,
+    "assessedImprovementValue": 300950,
+    "totalAssessedValue": 463000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_63750001800"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803020_juqrd2",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.020Z",
+    "updatedAt": "2026-09-26T07:46:43.020Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "65750001800",
+    "address": {
+      "street": "4144 Grantor: Way",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: OECHSNER, MATTHEW A Grantee: OECHSNER, KATHLEEN ...",
+    "assessedLandValue": 162400,
+    "assessedImprovementValue": 301600,
+    "totalAssessedValue": 464000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_65750001800"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803020_nzwpvp",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.020Z",
+    "updatedAt": "2026-09-26T07:46:43.020Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "68250007200",
+    "address": {
+      "street": "4239 Grantor: Way",
+      "city": "Tenino",
+      "state": "WA",
+      "zipCode": "98589",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: DRAGT, EARL YNTE Grantee: DRAGT, PAULETTE L Subd...",
+    "assessedLandValue": 195650,
+    "assessedImprovementValue": 363350,
+    "totalAssessedValue": 559000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_68250007200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803021_oqvwqn",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.021Z",
+    "updatedAt": "2026-09-26T07:46:43.021Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107177",
+    "address": {
+      "street": "4277 PLAT Way",
+      "city": "Rainier",
+      "state": "WA",
+      "zipCode": "98576",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5107177",
+    "assessedLandValue": 208950,
+    "assessedImprovementValue": 388050,
+    "totalAssessedValue": 597000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107177"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803023_mhdm0f",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.023Z",
+    "updatedAt": "2026-09-26T07:46:43.023Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107440",
+    "address": {
+      "street": "4540 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: SMITH, GARY L, SMITH, MARY L Grantee: RANDALL, G...",
+    "assessedLandValue": 196000,
+    "assessedImprovementValue": 364000,
+    "totalAssessedValue": 560000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107440"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803024_5utql9",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.024Z",
+    "updatedAt": "2026-09-26T07:46:43.024Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "65160001300",
+    "address": {
+      "street": "4557 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: TOMPKINS, CHARLES FREDERICK, ESTATE OF Grantee: ...",
+    "assessedLandValue": 201950,
+    "assessedImprovementValue": 375050,
+    "totalAssessedValue": 577000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_65160001300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803025_us1q5e",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.025Z",
+    "updatedAt": "2026-09-26T07:46:43.025Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "61400101000",
+    "address": {
+      "street": "4595 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: TROWBRIDGE, JAMES E Grantee: LEIREN, BRANDI Subd...",
+    "assessedLandValue": 215250,
+    "assessedImprovementValue": 399750,
+    "totalAssessedValue": 615000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_61400101000"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803025_lmfc4p",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.025Z",
+    "updatedAt": "2026-09-26T07:46:43.025Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "09160008009",
+    "address": {
+      "street": "4608 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: ELDER, JAMES N Grantee: MINTON, JENNIFER ROSE, M...",
+    "assessedLandValue": 114799,
+    "assessedImprovementValue": 213201,
+    "totalAssessedValue": 328000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_09160008009"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803026_c50c07",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.026Z",
+    "updatedAt": "2026-09-26T07:46:43.026Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "72405001000",
+    "address": {
+      "street": "4607 PLAT Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98516",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5107507",
+    "assessedLandValue": 114450,
+    "assessedImprovementValue": 212550,
+    "totalAssessedValue": 327000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_72405001000"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803027_ccezqg",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.027Z",
+    "updatedAt": "2026-09-26T07:46:43.027Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "78680004100",
+    "address": {
+      "street": "4626 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: EDWARDS, ALAINA JEAN, ESTATE OF Grantee: EDWARDS...",
+    "assessedLandValue": 121099,
+    "assessedImprovementValue": 224901,
+    "totalAssessedValue": 346000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_78680004100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803028_8vgc7b",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.028Z",
+    "updatedAt": "2026-09-26T07:46:43.028Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "50550008300",
+    "address": {
+      "street": "4660 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: MUNSON, GEORGE D, MUNSON, BRENDA KAY Grantee: MU...",
+    "assessedLandValue": 133000,
+    "assessedImprovementValue": 247000,
+    "totalAssessedValue": 380000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_50550008300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803029_kpehrt",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.029Z",
+    "updatedAt": "2026-09-26T07:46:43.029Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107612",
+    "address": {
+      "street": "4712 PLAT Way",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5107612",
+    "assessedLandValue": 151200,
+    "assessedImprovementValue": 280800,
+    "totalAssessedValue": 432000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107612"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803030_ff8hjz",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.030Z",
+    "updatedAt": "2026-09-26T07:46:43.030Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "65132012400",
+    "address": {
+      "street": "4767 Grantor: Way",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: EDWARDS, RAEANN Grantee: CULLENS-LYONS, JOYCEE L...",
+    "assessedLandValue": 170450,
+    "assessedImprovementValue": 316550,
+    "totalAssessedValue": 487000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_65132012400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803031_be4vue",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.031Z",
+    "updatedAt": "2026-09-26T07:46:43.031Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107687",
+    "address": {
+      "street": "4787 Grantor: Way",
+      "city": "Tenino",
+      "state": "WA",
+      "zipCode": "98589",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: RIVERS, NORMAN R, ESTATE OF Grantee: RIVERS, KAT...",
+    "assessedLandValue": 177450,
+    "assessedImprovementValue": 329550,
+    "totalAssessedValue": 507000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107687"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803032_i48z5p",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.032Z",
+    "updatedAt": "2026-09-26T07:46:43.032Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107776",
+    "address": {
+      "street": "4876 Grantor: Way",
+      "city": "Rainier",
+      "state": "WA",
+      "zipCode": "98576",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: RODRIGUEZ, J FRANCISCO Grantee: GOMEZ, LILIA M, ...",
+    "assessedLandValue": 208600,
+    "assessedImprovementValue": 387400,
+    "totalAssessedValue": 596000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107776"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803033_tcduy6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.033Z",
+    "updatedAt": "2026-09-26T07:46:43.033Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107777",
+    "address": {
+      "street": "4877 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: GOMEZ, LILIA M Grantee: RODRIGUEZ, CRISTINA MARI...",
+    "assessedLandValue": 208950,
+    "assessedImprovementValue": 388050,
+    "totalAssessedValue": 597000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107777"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803034_po52mf",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.034Z",
+    "updatedAt": "2026-09-26T07:46:43.034Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107874",
+    "address": {
+      "street": "4974 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: MCCULLY, JIM D, MCCULLY, SONJA M Grantee: SHOBLO...",
+    "assessedLandValue": 137900,
+    "assessedImprovementValue": 256100,
+    "totalAssessedValue": 394000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107874"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803035_ouhlgt",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.035Z",
+    "updatedAt": "2026-09-26T07:46:43.035Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "33702801900",
+    "address": {
+      "street": "4976 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: MOYER, PAMELA L, RAWLINGS, RICHARD C Grantee: RA...",
+    "assessedLandValue": 138600,
+    "assessedImprovementValue": 257400,
+    "totalAssessedValue": 396000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_33702801900"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803036_rc3btu",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.036Z",
+    "updatedAt": "2026-09-26T07:46:43.036Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "33702901000",
+    "address": {
+      "street": "4975 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: MOYER, PAMELA L, RAWLINGS, RICHARD C Grantee: RA...",
+    "assessedLandValue": 138250,
+    "assessedImprovementValue": 256750,
+    "totalAssessedValue": 395000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_33702901000"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803037_9oogpt",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.037Z",
+    "updatedAt": "2026-09-26T07:46:43.037Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "52700000300",
+    "address": {
+      "street": "5015 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98516",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: SELVIDGE, ANDREA LEE Grantee: SELVIDGE, ANDREA L...",
+    "assessedLandValue": 152250,
+    "assessedImprovementValue": 282750,
+    "totalAssessedValue": 435000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_52700000300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803038_olrqdx",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.038Z",
+    "updatedAt": "2026-09-26T07:46:43.038Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005107939",
+    "address": {
+      "street": "5039 PLAT Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5107939",
+    "assessedLandValue": 160650,
+    "assessedImprovementValue": 298350,
+    "totalAssessedValue": 459000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005107939"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803039_8mtgas",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.039Z",
+    "updatedAt": "2026-09-26T07:46:43.039Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11719110101",
+    "address": {
+      "street": "5043 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: ELIASON, LEO Grantee: ELIASON, STEPHEN IVER Lot ...",
+    "assessedLandValue": 162050,
+    "assessedImprovementValue": 300950,
+    "totalAssessedValue": 463000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11719110101"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803040_49ork6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.040Z",
+    "updatedAt": "2026-09-26T07:46:43.040Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "83009700200",
+    "address": {
+      "street": "5092 PLAT Way",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5107992",
+    "assessedLandValue": 179200,
+    "assessedImprovementValue": 332800,
+    "totalAssessedValue": 512000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_83009700200"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803041_jawzlt",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.041Z",
+    "updatedAt": "2026-09-26T07:46:43.041Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "42520003100",
+    "address": {
+      "street": "5145 Grantor: Way",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: FAUR, JACQUES P JR, FAUR, CRYSTAL L Grantee: FAU...",
+    "assessedLandValue": 197750,
+    "assessedImprovementValue": 367250,
+    "totalAssessedValue": 565000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_42520003100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803043_kwgwkm",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.043Z",
+    "updatedAt": "2026-09-26T07:46:43.043Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11733320401",
+    "address": {
+      "street": "5166 Grantor: Way",
+      "city": "Tenino",
+      "state": "WA",
+      "zipCode": "98589",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: CRUZ, JORGE XAVIER Grantee: CRUZ, SANDRA LEA Lot...",
+    "assessedLandValue": 205100,
+    "assessedImprovementValue": 380900,
+    "totalAssessedValue": 586000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11733320401"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803044_abhxht",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.044Z",
+    "updatedAt": "2026-09-26T07:46:43.044Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "51050003900",
+    "address": {
+      "street": "5208 Grantor: Way",
+      "city": "Rainier",
+      "state": "WA",
+      "zipCode": "98576",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: BOLENDER, WENDY J Grantee: FROEHLICH, KELSEY M, ...",
+    "assessedLandValue": 114799,
+    "assessedImprovementValue": 213201,
+    "totalAssessedValue": 328000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_51050003900"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803045_q4lad7",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.045Z",
+    "updatedAt": "2026-09-26T07:46:43.045Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "81750282402",
+    "address": {
+      "street": "5209 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: BENNETT, JUSTIN D Grantee: RUTHERFORD, ERIN O Su...",
+    "assessedLandValue": 115149,
+    "assessedImprovementValue": 213851,
+    "totalAssessedValue": 329000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_81750282402"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803046_ajkh67",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.046Z",
+    "updatedAt": "2026-09-26T07:46:43.046Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "69960009500",
+    "address": {
+      "street": "5292 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: BELSTON, MICHAEL D II Grantee: BOURASSA, MARC Su...",
+    "assessedLandValue": 144200,
+    "assessedImprovementValue": 267800,
+    "totalAssessedValue": 412000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_69960009500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803047_c5s41n",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.047Z",
+    "updatedAt": "2026-09-26T07:46:43.047Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "63460005500",
+    "address": {
+      "street": "5329 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: CRUMP, BARBARA L Grantee: HAMILTON, KATHRYN ALEX...",
+    "assessedLandValue": 157150,
+    "assessedImprovementValue": 291850,
+    "totalAssessedValue": 449000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_63460005500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803048_rktgst",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.048Z",
+    "updatedAt": "2026-09-26T07:46:43.048Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "13629421300",
+    "address": {
+      "street": "5421 PLAT Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5108321",
+    "assessedLandValue": 189350,
+    "assessedImprovementValue": 351650,
+    "totalAssessedValue": 541000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_13629421300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803049_rva9e9",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.049Z",
+    "updatedAt": "2026-09-26T07:46:43.049Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "51450013800",
+    "address": {
+      "street": "5510 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98516",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: EGAN, BRENDA RAE Grantee: OCONNELL, KAILYN C Sub...",
+    "assessedLandValue": 115499,
+    "assessedImprovementValue": 214501,
+    "totalAssessedValue": 330000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_51450013800"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803049_86jt72",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.049Z",
+    "updatedAt": "2026-09-26T07:46:43.049Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "52930002500",
+    "address": {
+      "street": "5511 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: WOOD, STELLA Grantee: DAVIS, EVAN A, DAVIS, VALE...",
+    "assessedLandValue": 115849,
+    "assessedImprovementValue": 215151,
+    "totalAssessedValue": 331000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_52930002500"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803050_gsfmml",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.050Z",
+    "updatedAt": "2026-09-26T07:46:43.050Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005108515",
+    "address": {
+      "street": "5615 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: SEVERN, JILL B Grantee: BAKER, LORILEI E Subdivi...",
+    "assessedLandValue": 152250,
+    "assessedImprovementValue": 282750,
+    "totalAssessedValue": 435000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005108515"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803051_ua7awf",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.051Z",
+    "updatedAt": "2026-09-26T07:46:43.051Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "12636112300",
+    "address": {
+      "street": "5693 Grantor: Way",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: CARTER, JENNIFER A, ESTATE OF Grantee: CARTER, B...",
+    "assessedLandValue": 179550,
+    "assessedImprovementValue": 333450,
+    "totalAssessedValue": 513000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_12636112300"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803052_cxczml",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.052Z",
+    "updatedAt": "2026-09-26T07:46:43.052Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "13609410400",
+    "address": {
+      "street": "5749 Grantor: Way",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: SORELL, DANIEL B, SORRELL, DANIEL B Grantee: SOR...",
+    "assessedLandValue": 199150,
+    "assessedImprovementValue": 369850,
+    "totalAssessedValue": 569000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_13609410400"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803053_n6pljv",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.053Z",
+    "updatedAt": "2026-09-26T07:46:43.053Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "70306400100",
+    "address": {
+      "street": "5757 Grantor: Way",
+      "city": "Tenino",
+      "state": "WA",
+      "zipCode": "98589",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: MENA, PAUL CRUZ, CRUZ MENA, PAUL Grantee: MENA, ...",
+    "assessedLandValue": 201950,
+    "assessedImprovementValue": 375050,
+    "totalAssessedValue": 577000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_70306400100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803054_2p1w8y",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.054Z",
+    "updatedAt": "2026-09-26T07:46:43.054Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005108677",
+    "address": {
+      "street": "5777 PLAT Way",
+      "city": "Rainier",
+      "state": "WA",
+      "zipCode": "98576",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5108677",
+    "assessedLandValue": 208950,
+    "assessedImprovementValue": 388050,
+    "totalAssessedValue": 597000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005108677"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803055_ux4h64",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.055Z",
+    "updatedAt": "2026-09-26T07:46:43.055Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "81680002100",
+    "address": {
+      "street": "5785 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: PATEL, DIPIKABEN Grantee: PATEL, HEER, PATEL, DH...",
+    "assessedLandValue": 211750,
+    "assessedImprovementValue": 393250,
+    "totalAssessedValue": 605000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_81680002100"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803056_gx51qh",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.056Z",
+    "updatedAt": "2026-09-26T07:46:43.056Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005108777",
+    "address": {
+      "street": "5877 PLAT Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98502",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5108777",
+    "assessedLandValue": 138950,
+    "assessedImprovementValue": 258050,
+    "totalAssessedValue": 397000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005108777"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803057_1hbf9m",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.057Z",
+    "updatedAt": "2026-09-26T07:46:43.057Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005108919",
+    "address": {
+      "street": "6019 Grantor: Way",
+      "city": "Olympia",
+      "state": "WA",
+      "zipCode": "98506",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: TSUJI, EUGENE Grantee: KNIGHT, SHELLY Subdivisio...",
+    "assessedLandValue": 188650,
+    "assessedImprovementValue": 350350,
+    "totalAssessedValue": 539000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005108919"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803058_kyal5i",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.058Z",
+    "updatedAt": "2026-09-26T07:46:43.058Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "67400001401",
+    "address": {
+      "street": "6063 Grantor: Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98503",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: SHEBLE, GERALD B Grantee: SHEBLE, YVETTE Lot 4 P...",
+    "assessedLandValue": 204050,
+    "assessedImprovementValue": 378950,
+    "totalAssessedValue": 583000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_67400001401"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803059_jkqdqs",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.059Z",
+    "updatedAt": "2026-09-26T07:46:43.059Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005108979",
+    "address": {
+      "street": "6079 PLAT Way",
+      "city": "Lacey",
+      "state": "WA",
+      "zipCode": "98516",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5108979",
+    "assessedLandValue": 209650,
+    "assessedImprovementValue": 389350,
+    "totalAssessedValue": 599000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005108979"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803060_fbi2fp",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.060Z",
+    "updatedAt": "2026-09-26T07:46:43.060Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "11005108992",
+    "address": {
+      "street": "6092 PLAT Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98501",
+      "county": "Thurston"
+    },
+    "legalDescription": "PLAT THURSTON AUDITOR FILE 5108992",
+    "assessedLandValue": 214200,
+    "assessedImprovementValue": 397800,
+    "totalAssessedValue": 612000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_11005108992"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803061_tlcgad",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.061Z",
+    "updatedAt": "2026-09-26T07:46:43.061Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "13610130204",
+    "address": {
+      "street": "6147 Grantor: Way",
+      "city": "Tumwater",
+      "state": "WA",
+      "zipCode": "98512",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: BUTLER, TERI S Grantee: MCBRIDE, JEFFREY M, MCBR...",
+    "assessedLandValue": 128449,
+    "assessedImprovementValue": 238551,
+    "totalAssessedValue": 367000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_13610130204"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803062_d6dfs6",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.062Z",
+    "updatedAt": "2026-09-26T07:46:43.062Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "79610004000",
+    "address": {
+      "street": "6148 Grantor: Way",
+      "city": "Yelm",
+      "state": "WA",
+      "zipCode": "98597",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: BRANNAN, DARLD D Grantee: PINKHAM, BRANDON EARLE...",
+    "assessedLandValue": 128799,
+    "assessedImprovementValue": 239201,
+    "totalAssessedValue": 368000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_79610004000"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803063_vwp2yu",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.063Z",
+    "updatedAt": "2026-09-26T07:46:43.063Z"
+  },
+  {
+    "countyId": "county_thurston_wa",
+    "apn": "13610130204",
+    "address": {
+      "street": "6146 Grantor: Way",
+      "city": "Rochester",
+      "state": "WA",
+      "zipCode": "98579",
+      "county": "Thurston"
+    },
+    "legalDescription": "Grantor: BUTLER, DAVID CRAIG Grantee: BUTLER, TERI S Lot ...",
+    "assessedLandValue": 128099,
+    "assessedImprovementValue": 237901,
+    "totalAssessedValue": 366000,
+    "taxYear": 2026,
+    "lastSaleDate": null,
+    "lastSalePrice": null,
+    "verifiedEvidenceIds": [
+      "sr_thurston_at_13610130204"
+    ],
+    "schemaVersion": 1,
+    "id": "rec_1790408803064_xozxjb",
+    "organizationId": "org_gieni_internal",
+    "clientId": null,
+    "createdAt": "2026-09-26T07:46:43.064Z",
+    "updatedAt": "2026-09-26T07:46:43.064Z"
+  }
+]
