@@ -20,6 +20,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@gieni/county-adapters": ["../../packages/county-adapters/src/index", "../../packages/county-adapters/src"],
+      "@gieni/county-adapters/*": ["../../packages/county-adapters/src/*"],
       "@gieni/database": ["../../packages/database/src"],
       "@gieni/database/*": ["../../packages/database/src/*"],
       "@gieni/authz": ["../../packages/authz/src"],

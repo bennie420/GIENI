@@ -1,6 +1,7 @@
 import { Collection, Db, Filter, Document, FindCursor } from 'mongodb';
 import { BaseEntity, TenantScope } from './types.js';
 import { ITenantScopedRepository, RepositoryFindOptions, InMemoryTenantScopedRepository } from './repository.js';
+import { getFileTenantScopedRepository } from './file-repository.js';
 
 /**
  * MongoDB Atlas Tenant-Scoped Repository.
@@ -219,5 +220,5 @@ export function getTenantScopedRepository<T extends BaseEntity>(
   if (db) {
     return new MongoTenantScopedRepository<T>(db.collection(collectionName), collectionName);
   }
-  return new InMemoryTenantScopedRepository<T>();
+  return getFileTenantScopedRepository<T>(collectionName);
 }

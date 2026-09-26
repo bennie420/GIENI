@@ -2,7 +2,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { withSentryConfig } from '@sentry/nextjs/config';
 
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -11,6 +10,7 @@ const nextConfig = {
   reactStrictMode: true,
   outputFileTracingRoot: path.join(__dirname, '../../'),
   transpilePackages: [
+    '@gieni/county-adapters',
     '@gieni/database',
     '@gieni/authz',
     '@gieni/evidence',
@@ -26,6 +26,10 @@ const nextConfig = {
     config.resolve.extensionAlias = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
     };
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@gieni/county-adapters': path.resolve(__dirname, '../../packages/county-adapters/src/index.ts'),
+    };
     return config;
   },
 };
@@ -38,4 +42,3 @@ export default withSentryConfig(nextConfig, {
   widenClientFileUpload: true,
   tunnelRoute: '/monitoring',
 });
-

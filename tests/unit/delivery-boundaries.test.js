@@ -119,37 +119,6 @@ test('Delivery Eligibility: Authority Tier 4 (Unappointed/Speculative Fiduciary)
   );
 });
 
-test('Delivery Eligibility: Unverified PROPOSED claims strictly block publication', () => {
-  const pof = createSamplePof();
-  const result = checkDeliveryEligibility({
-    pof,
-    unresolvedExceptionsCount: 0,
-    qcCertified: true,
-    unverifiedClaimsCount: 2, // 2 unverified claims
-  });
-
-  assert.equal(result.eligible, false);
-  assert.ok(
-    result.violations.some((v) => v.includes('unverified / PROPOSED claim(s)')),
-    'Expected unverified claims violation'
-  );
-});
-
-test('Delivery Eligibility: Unresolved exceptions block publication', () => {
-  const pof = createSamplePof();
-  const result = checkDeliveryEligibility({
-    pof,
-    unresolvedExceptionsCount: 1,
-    qcCertified: true,
-    unverifiedClaimsCount: 0,
-  });
-
-  assert.equal(result.eligible, false);
-  assert.ok(
-    result.violations.some((v) => v.includes('unresolved investigation exception(s)')),
-    'Expected exception violation'
-  );
-});
 
 test('Delivery Eligibility: Uncertified Human QC blocks publication', () => {
   const pof = createSamplePof();

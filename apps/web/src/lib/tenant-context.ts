@@ -14,16 +14,23 @@ export class UnauthorizedError extends Error {
   }
 }
 
-/**
- * Derives an authenticated TenantScope strictly from the active Clerk session context (Gieni OS SH-001 & SH-002).
- * Dynamically resolves licensed counties via LicenseService without hardcoded arrays.
- * Guarantees zero synthetic tenant identities in production request lifecycles.
- */
-export async function getSessionTenantScope(options?: {
+export interface SessionTenantOptions {
   requiredRole?: ClerkRole;
   targetCountyId?: string;
   isOperator?: boolean;
-}): Promise<TenantScope> {
+}
+
+interface ValidatedClerkSession {
+  userId: string;
+  orgId: string;
+  orgRole?: string;
+  orgSlug?: string;
+}
+
+/**
+ * Retrieves and validates the active Clerk authentication session.
+ */
+async function getValidatedClerkSession(): Promise<ValidatedClerkSession> {
   let session;
   try {
     session = await auth();
@@ -33,7 +40,7 @@ export async function getSessionTenantScope(options?: {
     );
   }
 
-  if (!session || !session.userId) {
+  if (!session?.userId) {
     throw new UnauthorizedError('Security Violation: Unauthorized - No valid Clerk session active');
   }
 
@@ -43,34 +50,80 @@ export async function getSessionTenantScope(options?: {
     );
   }
 
-  const role =
-    (session.orgRole as ClerkRole) ||
-    (options?.isOperator ? 'org:operator_admin' : 'org:client_user');
+  return {
+    userId: session.userId,
+    orgId: session.orgId,
+    orgRole: session.orgRole,
+    orgSlug: session.orgSlug,
+  };
+}
 
-  if (
-    options?.requiredRole &&
-    role !== options.requiredRole &&
-    role !== 'org:operator_admin'
-  ) {
+/**
+ * Resolves the user's role from session metadata or operator flag defaults.
+ */
+function resolveUserRole(sessionRole?: string, isOperator?: boolean): ClerkRole {
+  if (sessionRole) {
+    return sessionRole as ClerkRole;
+  }
+  return isOperator ? 'org:operator_admin' : 'org:client_user';
+}
+
+/**
+ * Validates that the active role satisfies any required role constraints.
+ */
+function assertAuthorizedRole(role: ClerkRole, requiredRole?: ClerkRole): void {
+  if (!requiredRole || role === 'org:operator_admin' || role === requiredRole) {
+    return;
+  }
+  throw new UnauthorizedError(
+    `Security Violation: Role '${role}' lacks permission for this tenant operation`
+  );
+}
+
+/**
+ * Validates that non-operator organizations possess at least one licensed county.
+ */
+function assertActiveCountyLicenses(role: ClerkRole, orgId: string, licensedCounties: string[]): void {
+  if (role === 'org:operator_admin') {
+    return;
+  }
+  if (licensedCounties.length === 0) {
     throw new UnauthorizedError(
-      `Security Violation: Role '${role}' lacks permission for this tenant operation`
+      `Security Violation: Organization '${orgId}' has zero active licensed counties`
     );
   }
+}
 
-  // Dynamic county licensing resolution from authoritative LicenseService (SH-001)
+/**
+ * Derives the tenant client identifier for client-tier users.
+ */
+function resolveClientId(role: ClerkRole, orgSlug?: string, orgId?: string): string | undefined {
+  if (role !== 'org:client_user') {
+    return undefined;
+  }
+  return orgSlug || orgId;
+}
+
+/**
+ * Derives an authenticated TenantScope strictly from the active Clerk session context (Gieni OS SH-001 & SH-002).
+ * Dynamically resolves licensed counties via LicenseService without hardcoded arrays.
+ * Guarantees zero synthetic tenant identities in production request lifecycles.
+ */
+export async function getSessionTenantScope(options?: SessionTenantOptions): Promise<TenantScope> {
+  const session = await getValidatedClerkSession();
+  const role = resolveUserRole(session.orgRole, options?.isOperator);
+
+  assertAuthorizedRole(role, options?.requiredRole);
+
   const dynamicCounties = await defaultLicenseService.getLicensedCountiesForOrg(session.orgId);
-  if (role !== 'org:operator_admin' && dynamicCounties.length === 0) {
-    throw new UnauthorizedError(
-      `Security Violation: Organization '${session.orgId}' has zero active licensed counties`
-    );
-  }
+  assertActiveCountyLicenses(role, session.orgId, dynamicCounties);
 
   const authContext: AuthenticatedTenantContext = {
     clerkUserId: session.userId,
     clerkOrgId: session.orgId,
     role,
     licensedCountyIds: dynamicCounties,
-    clientId: role === 'org:client_user' ? session.orgSlug || session.orgId : undefined,
+    clientId: resolveClientId(role, session.orgSlug, session.orgId),
   };
 
   return resolveTenantScope(authContext, options?.targetCountyId);

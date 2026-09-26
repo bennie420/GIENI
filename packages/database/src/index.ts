@@ -4,3 +4,4 @@ export * from './repository.js';
 export * from './mongo-repository.js';
 export * from './client.js';
 export * from './retention.js';
+export * from './file-repository.js';

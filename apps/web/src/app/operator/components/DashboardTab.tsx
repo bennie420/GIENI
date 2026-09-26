@@ -6,14 +6,96 @@ import { OperatorData } from '../types';
 interface DashboardTabProps {
   data: OperatorData;
   pendingExceptionsCount: number;
+  onOpenScraperModal?: () => void;
 }
 
-export default function DashboardTab({ data, pendingExceptionsCount }: DashboardTabProps) {
+export default function DashboardTab({
+  data,
+  pendingExceptionsCount,
+  onOpenScraperModal,
+}: DashboardTabProps) {
   const verifiedClaimsCount = data.claims.filter((c) => c.verificationStatus === 'VERIFIED').length;
   const proposedClaimsCount = data.claims.filter((c) => c.verificationStatus === 'PROPOSED').length;
 
   return (
     <div>
+      {/* Real-time Municipal Scraper Quick-Action Banner */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #090d16 0%, #172033 100%)',
+          border: '1px solid #1e293b',
+          borderRadius: '10px',
+          padding: '16px 20px',
+          marginBottom: '20px',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '36px',
+              height: '36px',
+              borderRadius: '8px',
+              background: '#312e81',
+              color: '#a5b4fc',
+              fontSize: '1.1rem',
+            }}
+          >
+            &#9881;
+          </span>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <strong style={{ color: '#f8fafc', fontSize: '0.95rem' }}>
+                Municipal Intake Harvester
+              </strong>
+              <span
+                style={{
+                  background: '#064e3b',
+                  color: '#34d399',
+                  fontSize: '0.7rem',
+                  fontWeight: 600,
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                }}
+              >
+                READY
+              </span>
+            </div>
+            <p style={{ margin: '3px 0 0 0', fontSize: '0.8rem', color: '#94a3b8' }}>
+              Travis County (TX) & Maricopa County (AZ) adapters calibrated. {data.documents.length} filings preserved in cloud evidence vault.
+            </p>
+          </div>
+        </div>
+
+        {onOpenScraperModal && (
+          <button
+            type="button"
+            onClick={onOpenScraperModal}
+            style={{
+              background: '#4f46e5',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '6px',
+              padding: '8px 16px',
+              fontSize: '0.85rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <span>&#9654;</span>
+            <span>Launch Municipal Scraper</span>
+          </button>
+        )}
+      </div>
+
       <div className="insights-container">
         <div className="insight-card">
           <h4>Active Probate Cases</h4>

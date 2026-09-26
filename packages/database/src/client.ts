@@ -19,6 +19,8 @@ export function getMongoUri(): string {
 export function createMongoClient(uri?: string): MongoClient {
   const connectionUri = uri || getMongoUri();
   return new MongoClient(connectionUri, {
+    serverSelectionTimeoutMS: process.env.NODE_ENV === 'development' ? 3000 : 10000,
+    connectTimeoutMS: process.env.NODE_ENV === 'development' ? 3000 : 10000,
     serverApi: {
       version: ServerApiVersion.v1,
       strict: true,

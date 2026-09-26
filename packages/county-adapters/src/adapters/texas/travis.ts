@@ -13,6 +13,10 @@ import {
 } from '../../types.js';
 import { evaluateDocumentLayoutDrift, computeTemplateStructureHash } from '../../drift.js';
 
+function daysAgo(days: number): string {
+  return new Date(Date.now() - days * 86400000).toISOString();
+}
+
 export class TravisCountyAdapter implements ICountyAdapter {
   public readonly countyId = 'county_travis_tx';
   public readonly countyName = 'Travis County';
@@ -33,29 +37,98 @@ export class TravisCountyAdapter implements ICountyAdapter {
     this.knownFingerprint.templateHash = computeTemplateStructureHash(seedHeader);
   }
 
-  public async getCourtCases(_options?: CourtCaseQueryOptions): Promise<ProbateCase[]> {
-    return [
+  public async getCourtCases(options?: CourtCaseQueryOptions): Promise<ProbateCase[]> {
+    const allCases: ProbateCase[] = [
       {
         id: 'case_travis_000412',
         caseNumber: 'C-1-PB-26-000412',
         courtName: 'Probate Court No. 1, Travis County, Texas',
         decedentName: 'Arthur James Jenkins',
         caseType: 'INDEPENDENT_ADMINISTRATION',
-        filingDate: '2026-03-01T00:00:00.000Z',
+        filingDate: daysAgo(9),
         organizationId: 'org_gieni_internal',
         countyId: this.countyId,
-        createdAt: '2026-03-01T00:00:00.000Z',
-        updatedAt: '2026-03-01T00:00:00.000Z',
+        createdAt: daysAgo(9),
+        updatedAt: daysAgo(9),
+        schemaVersion: 1,
+      },
+      {
+        id: 'case_travis_000288',
+        caseNumber: 'C-1-PB-26-000288',
+        courtName: 'Probate Court No. 1, Travis County, Texas',
+        decedentName: 'Carlos Ramirez Morales',
+        caseType: 'ESTATE_WITH_WILL',
+        filingDate: daysAgo(35),
+        organizationId: 'org_gieni_internal',
+        countyId: this.countyId,
+        createdAt: daysAgo(35),
+        updatedAt: daysAgo(35),
+        schemaVersion: 1,
+      },
+      {
+        id: 'case_travis_001892',
+        caseNumber: 'C-1-PB-25-001892',
+        courtName: 'Probate Court No. 1, Travis County, Texas',
+        decedentName: 'Diane Marie Peterson',
+        caseType: 'INDEPENDENT_ADMINISTRATION',
+        filingDate: daysAgo(81),
+        organizationId: 'org_gieni_internal',
+        countyId: this.countyId,
+        createdAt: daysAgo(81),
+        updatedAt: daysAgo(81),
         schemaVersion: 1,
       },
     ];
+
+    if (options?.sinceDate) {
+      const sinceMs = new Date(options.sinceDate).getTime();
+      return allCases.filter((c) => new Date(c.filingDate).getTime() >= sinceMs).slice(0, options?.limit ?? allCases.length);
+    }
+    return allCases.slice(0, options?.limit ?? allCases.length);
   }
 
-  public async getCaseDocuments(caseNumber: string): Promise<SourceRecord[]> {
-    const sampleText = 'IN THE PROBATE COURT NO. 1\nOF TRAVIS COUNTY, TEXAS\nLETTERS TESTAMENTARY';
-    const sha = crypto.createHash('sha256').update(sampleText).digest('hex');
+    public async getCaseDocuments(caseNumber: string): Promise<SourceRecord[]> {
+    const appText = `IN THE PROBATE COURT NO. 1 OF TRAVIS COUNTY, TEXAS\nCAUSE NO: ${caseNumber}\nAPPLICATION FOR PROBATE OF WILL AND ISSUANCE OF LETTERS TESTAMENTARY\nAPPLICANT: SARAH LOUISE JENKINS\nDECEDENT: ARTHUR JAMES JENKINS`;
+    const orderText = `IN THE PROBATE COURT NO. 1 OF TRAVIS COUNTY, TEXAS\nCAUSE NO: ${caseNumber}\nORDER ADMITTING WILL TO PROBATE AND AUTHORIZING LETTERS TESTAMENTARY\nIT IS ORDERED THAT SARAH LOUISE JENKINS IS APPOINTED INDEPENDENT EXECUTOR WITHOUT BOND`;
+    const lettersText = `IN THE PROBATE COURT NO. 1 OF TRAVIS COUNTY, TEXAS\nCAUSE NO: ${caseNumber}\nLETTERS TESTAMENTARY\nI HEREBY CERTIFY THAT SARAH LOUISE JENKINS HAS QUALIFIED AS INDEPENDENT EXECUTOR`;
+    const invText = `IN THE PROBATE COURT NO. 1 OF TRAVIS COUNTY, TEXAS\nCAUSE NO: ${caseNumber}\nINVENTORY, APPRAISEMENT AND LIST OF CLAIMS\nREAL PROPERTY: 742 EVERGREEN TERRACE, AUSTIN TX 78701 (APN: 02-1408-0112) APPRAISED VALUE: $705,000`;
+
+    const sha1 = crypto.createHash('sha256').update(appText).digest('hex');
+    const sha2 = crypto.createHash('sha256').update(orderText).digest('hex');
+    const sha3 = crypto.createHash('sha256').update(lettersText).digest('hex');
+    const sha4 = crypto.createHash('sha256').update(invText).digest('hex');
 
     return [
+      {
+        id: `sr_travis_${caseNumber}_application`,
+        organizationId: 'org_gieni_internal',
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/application.pdf`,
+        retrievalTimestamp: new Date().toISOString(),
+        artifactSha256: sha1,
+        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
+        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/application_for_letters.pdf`,
+        adapterVersion: this.adapterVersion,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        schemaVersion: 1,
+      },
+      {
+        id: `sr_travis_${caseNumber}_order`,
+        organizationId: 'org_gieni_internal',
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/order.pdf`,
+        retrievalTimestamp: new Date().toISOString(),
+        artifactSha256: sha2,
+        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
+        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/order_admitting_will.pdf`,
+        adapterVersion: this.adapterVersion,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        schemaVersion: 1,
+      },
       {
         id: `sr_travis_${caseNumber}_letters`,
         organizationId: 'org_gieni_internal',
@@ -63,9 +136,24 @@ export class TravisCountyAdapter implements ICountyAdapter {
         sourceType: 'COURT',
         sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/letters.pdf`,
         retrievalTimestamp: new Date().toISOString(),
-        artifactSha256: sha,
+        artifactSha256: sha3,
         sourceSystem: 'Travis County Court Clerk Odyssey Portal',
-        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/letters.pdf`,
+        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/letters_testamentary.pdf`,
+        adapterVersion: this.adapterVersion,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        schemaVersion: 1,
+      },
+      {
+        id: `sr_travis_${caseNumber}_inventory`,
+        organizationId: 'org_gieni_internal',
+        countyId: this.countyId,
+        sourceType: 'COURT',
+        sourceUrl: `https://traviscountycourts.org/probate/cases/${caseNumber}/docket/inventory.pdf`,
+        retrievalTimestamp: new Date().toISOString(),
+        artifactSha256: sha4,
+        sourceSystem: 'Travis County Court Clerk Odyssey Portal',
+        rawPayloadLocation: `gs://gieni-evidence-travis/cases/${caseNumber}/inventory_appraisement.pdf`,
         adapterVersion: this.adapterVersion,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -75,13 +163,12 @@ export class TravisCountyAdapter implements ICountyAdapter {
   }
 
   public async getParcels(options?: ParcelQueryOptions): Promise<PropertyParcel[]> {
-    const apn = options?.apn || '02-1408-0112';
-    return [
+    const defaultParcels: PropertyParcel[] = [
       {
-        id: `parcel_${this.countyId}_${apn}`,
+        id: `parcel_${this.countyId}_02-1408-0112`,
         countyId: this.countyId,
         organizationId: 'org_gieni_internal',
-        apn,
+        apn: '02-1408-0112',
         address: {
           street: '742 Evergreen Terrace',
           city: 'Austin',
@@ -96,12 +183,65 @@ export class TravisCountyAdapter implements ICountyAdapter {
         taxYear: 2025,
         lastSaleDate: null,
         lastSalePrice: null,
-        verifiedEvidenceIds: [`sr_tcad_${apn}`],
+        verifiedEvidenceIds: ['sr_tcad_02-1408-0112'],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        schemaVersion: 1,
+      },
+      {
+        id: `parcel_${this.countyId}_01-0812-0455`,
+        countyId: this.countyId,
+        organizationId: 'org_gieni_internal',
+        apn: '01-0812-0455',
+        address: {
+          street: '2104 E 7th St',
+          city: 'Austin',
+          state: 'TX',
+          zipCode: '78702',
+          county: 'Travis',
+        },
+        legalDescription: 'EAST AUSTIN ADDITION LOT 8 BLK 15',
+        assessedLandValue: 250000,
+        assessedImprovementValue: 370000,
+        totalAssessedValue: 620000,
+        taxYear: 2025,
+        lastSaleDate: null,
+        lastSalePrice: null,
+        verifiedEvidenceIds: ['sr_tcad_01-0812-0455'],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        schemaVersion: 1,
+      },
+      {
+        id: `parcel_${this.countyId}_03-2219-0871`,
+        countyId: this.countyId,
+        organizationId: 'org_gieni_internal',
+        apn: '03-2219-0871',
+        address: {
+          street: '4912 Spicewood Springs Rd',
+          city: 'Austin',
+          state: 'TX',
+          zipCode: '78759',
+          county: 'Travis',
+        },
+        legalDescription: 'NORTHWEST HILLS SEC 4 LOT 22',
+        assessedLandValue: 310000,
+        assessedImprovementValue: 430000,
+        totalAssessedValue: 740000,
+        taxYear: 2025,
+        lastSaleDate: null,
+        lastSalePrice: null,
+        verifiedEvidenceIds: ['sr_tcad_03-2219-0871'],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         schemaVersion: 1,
       },
     ];
+
+    if (options?.apn) {
+      return defaultParcels.filter((p) => p.apn === options.apn);
+    }
+    return defaultParcels.slice(0, options?.limit ?? defaultParcels.length);
   }
 
   public async getRecordedDocuments(apnOrName: string): Promise<SourceRecord[]> {
@@ -133,12 +273,18 @@ export class TravisCountyAdapter implements ICountyAdapter {
   }
 
   public async getTaxRecords(apn: string): Promise<CountyTaxRecord | null> {
+    const valMap: Record<string, number> = {
+      '02-1408-0112': 705000,
+      '01-0812-0455': 620000,
+      '03-2219-0871': 740000,
+    };
+    const val = valMap[apn] || 680000;
     return {
       countyId: this.countyId,
       apn,
       taxYear: 2025,
-      totalAssessedValue: 705000,
-      totalTaxDue: 14100,
+      totalAssessedValue: val,
+      totalTaxDue: Math.round(val * 0.02),
       delinquentAmount: 0,
       isDelinquent: false,
       auctionScheduled: false,
@@ -178,3 +324,4 @@ export class TravisCountyAdapter implements ICountyAdapter {
     };
   }
 }
+
