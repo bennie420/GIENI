@@ -5,8 +5,8 @@ import {
   SCORING_RULE_VERSION,
 } from '../../packages/scoring/dist/index.js';
 
-test('Scoring: produces deterministic score and priority band without synthetic mocks', () => {
-  const property = {
+function createPropertyScoringFixture() {
+  return {
     id: 'parcel_101',
     organizationId: 'org_gieni_ops',
     countyId: 'county_travis_tx',
@@ -30,8 +30,10 @@ test('Scoring: produces deterministic score and priority band without synthetic 
     updatedAt: new Date().toISOString(),
     schemaVersion: 1,
   };
+}
 
-  const authority = {
+function createAuthorityScoringFixture() {
+  return {
     id: 'auth_101',
     organizationId: 'org_gieni_ops',
     caseId: 'case_2026_01',
@@ -53,8 +55,10 @@ test('Scoring: produces deterministic score and priority band without synthetic 
     ruleVersion: 'v1.0.0',
     schemaVersion: 1,
   };
+}
 
-  const ownership = {
+function createOwnershipScoringFixture() {
+  return {
     id: 'own_101',
     organizationId: 'org_gieni_ops',
     parcelId: 'parcel_101',
@@ -70,6 +74,18 @@ test('Scoring: produces deterministic score and priority band without synthetic 
     evaluatorId: 'qc_admin',
     schemaVersion: 1,
   };
+}
+
+function createScoringTestFixtures() {
+  return {
+    property: createPropertyScoringFixture(),
+    authority: createAuthorityScoringFixture(),
+    ownership: createOwnershipScoringFixture(),
+  };
+}
+
+test('Scoring: produces deterministic score and priority band without synthetic mocks', () => {
+  const { property, authority, ownership } = createScoringTestFixtures();
 
   const scoreResult = calculateOpportunityScore('score_101', {
     organizationId: 'org_gieni_ops',
@@ -78,7 +94,7 @@ test('Scoring: produces deterministic score and priority band without synthetic 
     property,
     authority,
     ownership,
-    filingDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), // 5 days old
+    filingDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
     estimatedLiensOrMortgageAmount: 50000,
   });
 

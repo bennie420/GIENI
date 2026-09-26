@@ -42,52 +42,57 @@ for (const envPath of possibleEnvPaths) {
   }
 }
 
-export async function runOneCountyVerticalSlice() {
-  console.log('===============================================================');
-  console.log('  GIENI OS: ONE-COUNTY VERTICAL SLICE SEEDER (TRAVIS COUNTY, TX)');
-  console.log('===============================================================');
+interface SeedRepositories {
+  docRepo: ReturnType<typeof getTenantScopedRepository<SourceDocument & { countyId: string }>>;
+  caseRepo: ReturnType<typeof getTenantScopedRepository<ProbateCase>>;
+  claimRepo: ReturnType<typeof getTenantScopedRepository<Claim>>;
+  parcelRepo: ReturnType<typeof getTenantScopedRepository<PropertyParcel>>;
+  authRepo: ReturnType<typeof getTenantScopedRepository<AuthorityAssessment>>;
+  ownRepo: ReturnType<typeof getTenantScopedRepository<OwnershipAssessment>>;
+  scoreRepo: ReturnType<typeof getTenantScopedRepository<OpportunityScore>>;
+  oppRepo: ReturnType<typeof getTenantScopedRepository<Opportunity>>;
+  excRepo: ReturnType<typeof getTenantScopedRepository<InvestigationException>>;
+  qcRepo: ReturnType<typeof getTenantScopedRepository<QCReview>>;
+  pofRepo: ReturnType<typeof getTenantScopedRepository<ProbateOpportunityFile>>;
+}
 
-  let db = undefined;
-  if (process.env.MONGODB_URI) {
-    try {
-      console.log('Connecting to MongoDB Atlas cluster...');
-      const pingOk = await pingMongoDeployment();
-      if (pingOk) {
-        db = await getMongoDb();
-        console.log(`Connected successfully to MongoDB Atlas database: "${db.databaseName}"`);
-      }
-    } catch (connErr) {
-      console.warn('MongoDB Atlas connection failed, falling back to in-memory repositories:', connErr);
-    }
-  } else {
+async function connectToMongoIfAvailable() {
+  if (!process.env.MONGODB_URI) {
     console.log('No MONGODB_URI found. Running with in-memory repositories.');
+    return undefined;
   }
 
-  // 1. Establish tenant scopes
-  const operatorScope: TenantScope = {
-    organizationId: 'org_gieni_internal',
-    countyId: 'county_travis_tx',
-  };
-  const clientScope: TenantScope = {
-    organizationId: 'org_gieni_internal',
-    clientId: 'client_austin_capital_partners',
-    countyId: 'county_travis_tx',
-  };
+  try {
+    console.log('Connecting to MongoDB Atlas cluster...');
+    const pingOk = await pingMongoDeployment();
+    if (pingOk) {
+      const db = await getMongoDb();
+      console.log(`Connected successfully to MongoDB Atlas database: "${db.databaseName}"`);
+      return db;
+    }
+  } catch (connErr) {
+    console.warn('MongoDB Atlas connection failed, falling back to in-memory repositories:', connErr);
+  }
+  return undefined;
+}
 
-  // 2. Repositories (MongoDB Atlas or In-Memory)
-  const docRepo = getTenantScopedRepository<SourceDocument & { countyId: string }>('sourceDocuments', db);
-  const caseRepo = getTenantScopedRepository<ProbateCase>('probateCases', db);
-  const claimRepo = getTenantScopedRepository<Claim>('claims', db);
-  const parcelRepo = getTenantScopedRepository<PropertyParcel>('properties', db);
-  const authRepo = getTenantScopedRepository<AuthorityAssessment>('authorityAssessments', db);
-  const ownRepo = getTenantScopedRepository<OwnershipAssessment>('ownershipAssessments', db);
-  const scoreRepo = getTenantScopedRepository<OpportunityScore>('opportunityScores', db);
-  const oppRepo = getTenantScopedRepository<Opportunity>('opportunities', db);
-  const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
-  const qcRepo = getTenantScopedRepository<QCReview>('qcReviews', db);
-  const pofRepo = getTenantScopedRepository<ProbateOpportunityFile>('deliveries', db);
+function initSeedRepositories(db: any): SeedRepositories {
+  return {
+    docRepo: getTenantScopedRepository<SourceDocument & { countyId: string }>('sourceDocuments', db),
+    caseRepo: getTenantScopedRepository<ProbateCase>('probateCases', db),
+    claimRepo: getTenantScopedRepository<Claim>('claims', db),
+    parcelRepo: getTenantScopedRepository<PropertyParcel>('properties', db),
+    authRepo: getTenantScopedRepository<AuthorityAssessment>('authorityAssessments', db),
+    ownRepo: getTenantScopedRepository<OwnershipAssessment>('ownershipAssessments', db),
+    scoreRepo: getTenantScopedRepository<OpportunityScore>('opportunityScores', db),
+    oppRepo: getTenantScopedRepository<Opportunity>('opportunities', db),
+    excRepo: getTenantScopedRepository<InvestigationException>('exceptions', db),
+    qcRepo: getTenantScopedRepository<QCReview>('qcReviews', db),
+    pofRepo: getTenantScopedRepository<ProbateOpportunityFile>('deliveries', db),
+  };
+}
 
-  // 3. Ingest primary source document fixture & compute real SHA-256
+async function seedPrimaryDocument(docRepo: SeedRepositories['docRepo'], scope: TenantScope) {
   const fixturePath = path.resolve(
     __dirname,
     '../../../tests/evidence-fixtures/travis-county/letters_testamentary.txt'
@@ -99,7 +104,7 @@ export async function runOneCountyVerticalSlice() {
   console.log(`      File: letters_testamentary.txt`);
   console.log(`      Computed Authentic SHA-256: ${docHash}`);
 
-  const sourceDoc = await docRepo.create(operatorScope, {
+  const sourceDoc = await docRepo.create(scope, {
     countyId: 'county_travis_tx',
     filename: 'Cause_C-1-PB-26-000412_Letters_Testamentary.pdf',
     mimeType: 'application/pdf',
@@ -111,9 +116,12 @@ export async function runOneCountyVerticalSlice() {
     schemaVersion: 1,
   });
 
-  // 4. Ingest Probate Case
+  return { sourceDoc, docHash };
+}
+
+async function seedProbateCase(caseRepo: SeedRepositories['caseRepo'], scope: TenantScope) {
   console.log(`\n[2/7] Ingesting Probate Court Filing...`);
-  const probateCase = await caseRepo.create(operatorScope, {
+  const probateCase = await caseRepo.create(scope, {
     countyId: 'county_travis_tx',
     caseNumber: 'C-1-PB-26-000412',
     decedentName: 'Arthur James Jenkins',
@@ -125,13 +133,21 @@ export async function runOneCountyVerticalSlice() {
   });
   console.log(`      Case Number: ${probateCase.caseNumber}`);
   console.log(`      Decedent: ${probateCase.decedentName}`);
+  return probateCase;
+}
 
-  // 5. Store Proposed Extraction Claim with ClaimEvidence
+async function seedClaimAndEvidence(
+  claimRepo: SeedRepositories['claimRepo'],
+  scope: TenantScope,
+  sourceDocId: string,
+  probateCaseId: string,
+  docHash: string
+) {
   console.log(`\n[3/7] Storing Gemini Extraction Proposal as Claim (Status: PROPOSED)...`);
   const evidenceRecord: ClaimEvidence = {
     id: `ev_${Date.now()}`,
     claimId: 'claim_fiduciary_001',
-    sourceDocumentId: sourceDoc.id,
+    sourceDocumentId: sourceDocId,
     pageNumber: 1,
     excerpt: '...granted LETTERS TESTAMENTARY upon said estate unto: SARAH LOUISE JENKINS...',
     sourceLocator: 'p1_para3_line1-4',
@@ -139,10 +155,10 @@ export async function runOneCountyVerticalSlice() {
     createdAt: new Date().toISOString(),
   };
 
-  const proposedClaim = await claimRepo.create(operatorScope, {
+  const proposedClaim = await claimRepo.create(scope, {
     countyId: 'county_travis_tx',
     subjectType: 'AUTHORITY',
-    subjectId: probateCase.id,
+    subjectId: probateCaseId,
     fieldPath: 'authority.fiduciary',
     proposedValue: {
       fullName: 'Sarah Louise Jenkins',
@@ -162,16 +178,11 @@ export async function runOneCountyVerticalSlice() {
   console.log(`      Proposed Claim ID: ${proposedClaim.id}`);
   console.log(`      Status: ${proposedClaim.verificationStatus} (Not fact until verified)`);
 
-  // 6. Transition Claim to VERIFIED after review
-  console.log(`\n[4/7] Reconciling Assessor Parcel & Ownership...`);
-  const verifiedClaim = await claimRepo.update(operatorScope, proposedClaim.id, {
-    verificationStatus: 'VERIFIED',
-    verifiedBy: 'qc_operator_researcher',
-    verifiedAt: new Date().toISOString(),
-  });
+  return { proposedClaim, evidenceRecord };
+}
 
-  // Seed Assessor Parcel
-  const parcel = await parcelRepo.create(operatorScope, {
+async function seedParcelRecord(parcelRepo: SeedRepositories['parcelRepo'], scope: TenantScope, sourceDocId: string) {
+  const parcel = await parcelRepo.create(scope, {
     countyId: 'county_travis_tx',
     apn: '02-1408-0112',
     legalDescription: 'LOT 4 BLK B HIGHLAND PARK SEC 2',
@@ -188,28 +199,43 @@ export async function runOneCountyVerticalSlice() {
     taxYear: 2025,
     lastSaleDate: '2018-06-15T00:00:00.000Z',
     lastSalePrice: 460000,
-    verifiedEvidenceIds: [sourceDoc.id],
+    verifiedEvidenceIds: [sourceDocId],
     schemaVersion: 1,
   });
   console.log(`      Parcel APN: ${parcel.apn} (Assessed: $${parcel.totalAssessedValue?.toLocaleString()})`);
+  return parcel;
+}
 
-  // Create Ownership Assessment
-  const ownership = await ownRepo.create(operatorScope, {
+async function seedOwnershipRecord(
+  ownRepo: SeedRepositories['ownRepo'],
+  scope: TenantScope,
+  parcelId: string,
+  probateCaseId: string,
+  proposedClaimId: string
+) {
+  return ownRepo.create(scope, {
     countyId: 'county_travis_tx',
-    parcelId: parcel.id,
-    caseId: probateCase.id,
+    parcelId,
+    caseId: probateCaseId,
     status: 'DECEDENT_SOLE_OWNER',
     ownerNames: ['Arthur James Jenkins'],
     deedRecordIds: ['inst_2018091428'],
-    verifiedClaimIds: [proposedClaim.id],
+    verifiedClaimIds: [proposedClaimId],
     confidence: 1.0,
     ruleVersion: 'v1.0.0',
     evaluatedAt: new Date().toISOString(),
     evaluatorId: 'qc_operator_researcher',
     schemaVersion: 1,
   });
+}
 
-  // Create Authority Assessment
+async function seedAuthorityRecord(
+  authRepo: SeedRepositories['authRepo'],
+  scope: TenantScope,
+  probateCaseId: string,
+  proposedClaimId: string,
+  evidenceRecordId: string
+) {
   const fiduciary: FiduciaryAppointment = {
     personId: 'person_sarah_jenkins_01',
     fullName: 'Sarah Louise Jenkins',
@@ -217,26 +243,56 @@ export async function runOneCountyVerticalSlice() {
     appointmentDate: '2026-03-02T00:00:00.000Z',
     lettersIssued: true,
     bondAmount: null,
-    verifiedEvidenceId: evidenceRecord.id,
+    verifiedEvidenceId: evidenceRecordId,
   };
 
-  const authority = await authRepo.create(operatorScope, {
+  return authRepo.create(scope, {
     countyId: 'county_travis_tx',
-    caseId: probateCase.id,
+    caseId: probateCaseId,
     status: 'CONFIRMED',
     tier: 1,
     fiduciary,
-    verifiedClaimIds: [proposedClaim.id],
+    verifiedClaimIds: [proposedClaimId],
     evaluatedAt: new Date().toISOString(),
     evaluatorId: 'qc_operator_researcher',
     ruleVersion: 'v1.0.0',
     schemaVersion: 1,
   });
+}
 
-  // 7. Deterministic Scoring
+async function seedPropertyAndAssessments(
+  repos: SeedRepositories,
+  scope: TenantScope,
+  sourceDocId: string,
+  probateCaseId: string,
+  proposedClaimId: string,
+  evidenceRecordId: string
+) {
+  console.log(`\n[4/7] Reconciling Assessor Parcel & Ownership...`);
+  await repos.claimRepo.update(scope, proposedClaimId, {
+    verificationStatus: 'VERIFIED',
+    verifiedBy: 'qc_operator_researcher',
+    verifiedAt: new Date().toISOString(),
+  });
+
+  const parcel = await seedParcelRecord(repos.parcelRepo, scope, sourceDocId);
+  const ownership = await seedOwnershipRecord(repos.ownRepo, scope, parcel.id, probateCaseId, proposedClaimId);
+  const authority = await seedAuthorityRecord(repos.authRepo, scope, probateCaseId, proposedClaimId, evidenceRecordId);
+
+  return { parcel, ownership, authority };
+}
+
+async function seedScoringRecord(
+  scoreRepo: SeedRepositories['scoreRepo'],
+  scope: TenantScope,
+  probateCase: ProbateCase,
+  parcel: PropertyParcel,
+  authority: AuthorityAssessment,
+  ownership: OwnershipAssessment
+) {
   console.log(`\n[5/7] Computing Deterministic Opportunity Score...`);
   const scoreResult = calculateOpportunityScore(`score_${Date.now()}`, {
-    organizationId: operatorScope.organizationId,
+    organizationId: scope.organizationId,
     opportunityId: probateCase.id,
     countyId: 'county_travis_tx',
     property: parcel,
@@ -246,7 +302,7 @@ export async function runOneCountyVerticalSlice() {
     estimatedLiensOrMortgageAmount: 75000,
   });
 
-  await scoreRepo.create(operatorScope, {
+  await scoreRepo.create(scope, {
     opportunityId: probateCase.id,
     countyId: 'county_travis_tx',
     equityScore: scoreResult.equityScore,
@@ -264,28 +320,30 @@ export async function runOneCountyVerticalSlice() {
   console.log(`      Composite Score: ${scoreResult.compositeScore}/100`);
   console.log(`      Priority Band: ${scoreResult.priorityBand}`);
 
-  // 8. Deliberate Exception & Resolution (as specified in PLAN.MS Section 8)
+  return scoreResult;
+}
+
+async function seedExceptionAndQc(repos: SeedRepositories, scope: TenantScope, caseId: string) {
   console.log(`\n[6/7] Forcing Ambiguity Exception & Resolving via Human Review Gate...`);
-  const exception = await excRepo.create(operatorScope, {
+  const exception = await repos.excRepo.create(scope, {
     countyId: 'county_travis_tx',
-    opportunityId: probateCase.id,
+    opportunityId: caseId,
     type: 'TITLE_CONFLICT',
     status: 'PENDING_REVIEW',
     description: 'TCAD lists owner as "JENKINS ARTHUR J" while probate caption reads "Arthur James Jenkins". Confirmed middle name identity match.',
     schemaVersion: 1,
   });
 
-  const resolvedException = await excRepo.update(operatorScope, exception.id, {
+  const resolved = await repos.excRepo.update(scope, exception.id, {
     status: 'RESOLVED',
     resolutionNote: 'Reviewed middle name on death certificate attachment; identity affirmed.',
     resolvedAt: new Date().toISOString(),
   });
-  console.log(`      Exception ${resolvedException?.id} resolved: ${resolvedException?.status}`);
+  console.log(`      Exception ${resolved?.id} resolved: ${resolved?.status}`);
 
-  // QC Gate Review
-  const qcReview = await qcRepo.create(operatorScope, {
+  const qcReview = await repos.qcRepo.create(scope, {
     countyId: 'county_travis_tx',
-    opportunityId: probateCase.id,
+    opportunityId: caseId,
     reviewerId: 'user_qc_lead_01',
     decision: 'APPROVED_FOR_DELIVERY',
     gates: [
@@ -298,8 +356,17 @@ export async function runOneCountyVerticalSlice() {
     schemaVersion: 1,
   });
   console.log(`      QC Decision: ${qcReview.decision}`);
+}
 
-  // Project Opportunity with denormalized currentSnapshot (fast dashboard projection)
+async function seedOpportunityRecord(
+  oppRepo: SeedRepositories['oppRepo'],
+  scope: TenantScope,
+  probateCase: ProbateCase,
+  parcel: PropertyParcel,
+  authority: AuthorityAssessment,
+  ownership: OwnershipAssessment,
+  scoreResult: OpportunityScore
+) {
   const currentSnapshot = buildOpportunitySnapshot({
     caseNumber: probateCase.caseNumber,
     decedentName: probateCase.decedentName,
@@ -311,7 +378,7 @@ export async function runOneCountyVerticalSlice() {
     unresolvedExceptionsCount: 0,
   });
 
-  const opportunity = await oppRepo.create(operatorScope, {
+  const opportunity = await oppRepo.create(scope, {
     countyId: 'county_travis_tx',
     caseId: probateCase.id,
     parcelId: parcel.id,
@@ -320,10 +387,34 @@ export async function runOneCountyVerticalSlice() {
     schemaVersion: 1,
   });
   console.log(`      Operational Opportunity Projection created: ${opportunity.id} (Status: ${opportunity.status})`);
+  return opportunity;
+}
 
-  // 9. Publish Probate Opportunity File (POF)
-  console.log(`\n[7/7] Publishing Probate Opportunity File (POF) to Client Organization...`);
-  const pof = await pofRepo.create(clientScope, {
+async function seedScoringAndExceptions(
+  repos: SeedRepositories,
+  scope: TenantScope,
+  probateCase: ProbateCase,
+  parcel: PropertyParcel,
+  authority: AuthorityAssessment,
+  ownership: OwnershipAssessment
+) {
+  const scoreResult = await seedScoringRecord(repos.scoreRepo, scope, probateCase, parcel, authority, ownership);
+  await seedExceptionAndQc(repos, scope, probateCase.id);
+  await seedOpportunityRecord(repos.oppRepo, scope, probateCase, parcel, authority, ownership, scoreResult);
+  return scoreResult;
+}
+
+function buildPofPayload(
+  clientScope: TenantScope,
+  probateCase: ProbateCase,
+  parcel: PropertyParcel,
+  authority: AuthorityAssessment,
+  ownership: OwnershipAssessment,
+  scoreResult: OpportunityScore,
+  sourceDoc: SourceDocument,
+  evidenceRecord: ClaimEvidence
+) {
+  return {
     countyId: 'county_travis_tx',
     caseNumber: probateCase.caseNumber,
     decedentName: probateCase.decedentName,
@@ -366,7 +457,23 @@ export async function runOneCountyVerticalSlice() {
     disclaimer: LEGAL_DISCLAIMER,
     publishedAt: new Date().toISOString(),
     schemaVersion: 1,
-  });
+  };
+}
+
+async function publishPofDelivery(
+  pofRepo: SeedRepositories['pofRepo'],
+  clientScope: TenantScope,
+  probateCase: ProbateCase,
+  parcel: PropertyParcel,
+  authority: AuthorityAssessment,
+  ownership: OwnershipAssessment,
+  scoreResult: OpportunityScore,
+  sourceDoc: SourceDocument,
+  evidenceRecord: ClaimEvidence
+) {
+  console.log(`\n[7/7] Publishing Probate Opportunity File (POF) to Client Organization...`);
+  const payload = buildPofPayload(clientScope, probateCase, parcel, authority, ownership, scoreResult, sourceDoc, evidenceRecord);
+  const pof = await pofRepo.create(clientScope, payload);
 
   console.log(`\n===============================================================`);
   console.log(`  PROBATE OPPORTUNITY FILE PUBLISHED SUCCESSFULLY`);
@@ -377,6 +484,68 @@ export async function runOneCountyVerticalSlice() {
   console.log(`  Priority:       ${pof.scoring.priorityBand} (Score: ${pof.scoring.compositeScore}/100)`);
   console.log(`  Disclaimer:     "${pof.disclaimer}"`);
   console.log(`===============================================================\n`);
+
+  return pof;
+}
+
+export async function runOneCountyVerticalSlice() {
+  console.log('===============================================================');
+  console.log('  GIENI OS: ONE-COUNTY VERTICAL SLICE SEEDER (TRAVIS COUNTY, TX)');
+  console.log('===============================================================');
+
+  const db = await connectToMongoIfAvailable();
+
+  const operatorScope: TenantScope = {
+    organizationId: 'org_gieni_internal',
+    countyId: 'county_travis_tx',
+  };
+  const clientScope: TenantScope = {
+    organizationId: 'org_gieni_internal',
+    clientId: 'client_austin_capital_partners',
+    countyId: 'county_travis_tx',
+  };
+
+  const repos = initSeedRepositories(db);
+
+  const { sourceDoc, docHash } = await seedPrimaryDocument(repos.docRepo, operatorScope);
+  const probateCase = await seedProbateCase(repos.caseRepo, operatorScope);
+  const { proposedClaim, evidenceRecord } = await seedClaimAndEvidence(
+    repos.claimRepo,
+    operatorScope,
+    sourceDoc.id,
+    probateCase.id,
+    docHash
+  );
+
+  const { parcel, ownership, authority } = await seedPropertyAndAssessments(
+    repos,
+    operatorScope,
+    sourceDoc.id,
+    probateCase.id,
+    proposedClaim.id,
+    evidenceRecord.id
+  );
+
+  const scoreResult = await seedScoringAndExceptions(
+    repos,
+    operatorScope,
+    probateCase,
+    parcel,
+    authority,
+    ownership
+  );
+
+  const pof = await publishPofDelivery(
+    repos.pofRepo,
+    clientScope,
+    probateCase,
+    parcel,
+    authority,
+    ownership,
+    scoreResult,
+    sourceDoc,
+    evidenceRecord
+  );
 
   await closeMongoClient();
   return { sourceDoc, probateCase, pof, scoreResult };

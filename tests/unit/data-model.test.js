@@ -59,7 +59,7 @@ test('Data Model: Every record envelope carries _id, organizationId, clientId?, 
   assert.equal(parsed.schemaVersion, 1);
 });
 
-test('Data Model: Tenancy collections (organizations, clients, counties) validate with Zod', () => {
+test('Data Model: Organization and Client tenancy collections validate with Zod', () => {
   const org = OrganizationEntitySchema.parse({
     id: 'org_001',
     organizationId: 'org_internal_operator',
@@ -88,7 +88,9 @@ test('Data Model: Tenancy collections (organizations, clients, counties) validat
     schemaVersion: 1,
   });
   assert.equal(client.status, 'ACTIVE');
+});
 
+test('Data Model: County jurisdiction collection validates with Zod', () => {
   const county = CountyJurisdictionSchema.parse({
     id: 'county_maricopa_az',
     organizationId: 'org_internal_operator',
@@ -107,7 +109,7 @@ test('Data Model: Tenancy collections (organizations, clients, counties) validat
   assert.equal(county.fipsCode, '04013');
 });
 
-test('Data Model: Identity & graph collections (probateCases, estates, people, organizationsExternal, relationships) validate with Zod', () => {
+test('Data Model: ProbateCase records validate with Zod', () => {
   const pcase = ProbateCaseSchema.parse({
     id: 'case_001',
     organizationId: 'org_internal_operator',
@@ -122,7 +124,9 @@ test('Data Model: Identity & graph collections (probateCases, estates, people, o
     schemaVersion: 1,
   });
   assert.equal(pcase.caseNumber, 'PB2024-001928');
+});
 
+test('Data Model: Estate records validate with Zod', () => {
   const estate = EstateRecordSchema.parse({
     id: 'estate_001',
     organizationId: 'org_internal_operator',
@@ -136,7 +140,9 @@ test('Data Model: Identity & graph collections (probateCases, estates, people, o
     schemaVersion: 1,
   });
   assert.equal(estate.status, 'OPEN');
+});
 
+test('Data Model: Person records validate with Zod', () => {
   const person = PersonRecordSchema.parse({
     id: 'person_001',
     organizationId: 'org_internal_operator',
@@ -152,7 +158,9 @@ test('Data Model: Identity & graph collections (probateCases, estates, people, o
     schemaVersion: 1,
   });
   assert.equal(person.isFiduciary, true);
+});
 
+test('Data Model: External Organization and Relationship records validate with Zod', () => {
   const orgExt = OrganizationExternalSchema.parse({
     id: 'org_ext_001',
     organizationId: 'org_internal_operator',
@@ -183,10 +191,8 @@ test('Data Model: Identity & graph collections (probateCases, estates, people, o
   assert.equal(rel.predicate, 'FIDUCIARY_FOR');
 });
 
-test('Data Model: Claim–Evidence Triad requires atomic claim, immutable source document, and exact proof', () => {
-  const sha256 = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
-
-  const doc = SourceDocumentSchema.parse({
+function createSourceDocFixture(sha256) {
+  return SourceDocumentSchema.parse({
     id: 'doc_pet_001',
     organizationId: 'org_internal_operator',
     countyId: 'maricopa_az',
@@ -199,9 +205,10 @@ test('Data Model: Claim–Evidence Triad requires atomic claim, immutable source
     updatedAt: new Date().toISOString(),
     schemaVersion: 1,
   });
-  assert.equal(doc.artifactSha256, sha256);
+}
 
-  const evidence = ClaimEvidenceSchema.parse({
+function createClaimEvidenceFixture(sha256) {
+  return ClaimEvidenceSchema.parse({
     id: 'ev_001',
     claimId: 'claim_001',
     sourceDocumentId: 'doc_pet_001',
@@ -211,6 +218,14 @@ test('Data Model: Claim–Evidence Triad requires atomic claim, immutable source
     artifactSha256: sha256,
     createdAt: new Date().toISOString(),
   });
+}
+
+test('Data Model: Claim–Evidence Triad requires atomic claim, immutable source document, and exact proof', () => {
+  const sha256 = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
+  const doc = createSourceDocFixture(sha256);
+  assert.equal(doc.artifactSha256, sha256);
+
+  const evidence = createClaimEvidenceFixture(sha256);
   assert.equal(evidence.pageNumber, 2);
 
   const claim = ClaimSchema.parse({
@@ -236,8 +251,8 @@ test('Data Model: Claim–Evidence Triad requires atomic claim, immutable source
   assert.equal(claim.verificationStatus, 'PROPOSED');
 });
 
-test('Data Model: Embed vs Reference rules are preserved with Opportunity projection rebuild', () => {
-  const property = {
+function createPropertyFixture() {
+  return {
     id: 'prop_001',
     organizationId: 'org_internal_operator',
     countyId: 'maricopa_az',
@@ -261,71 +276,96 @@ test('Data Model: Embed vs Reference rules are preserved with Opportunity projec
     updatedAt: new Date().toISOString(),
     schemaVersion: 1,
   };
+}
+
+function createAuthorityFixture() {
+  return {
+    id: 'auth_001',
+    organizationId: 'org_internal_operator',
+    caseId: 'case_001',
+    countyId: 'maricopa_az',
+    status: 'CONFIRMED',
+    tier: 1,
+    fiduciary: {
+      personId: 'person_001',
+      fullName: 'Robert Sterling',
+      role: 'EXECUTOR',
+      appointmentDate: '2024-03-20T10:00:00.000Z',
+      lettersIssued: true,
+      bondAmount: null,
+      verifiedEvidenceId: 'ev_001',
+    },
+    verifiedClaimIds: ['claim_001'],
+    evaluatedAt: new Date().toISOString(),
+    evaluatorId: 'system',
+    ruleVersion: 'v1.0.0-deterministic',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    schemaVersion: 1,
+  };
+}
+
+function createOwnershipFixture() {
+  return {
+    id: 'own_001',
+    organizationId: 'org_internal_operator',
+    parcelId: 'prop_001',
+    caseId: 'case_001',
+    countyId: 'maricopa_az',
+    status: 'DECEDENT_SOLE_OWNER',
+    ownerNames: ['Eleanor Vance'],
+    deedRecordIds: ['deed_001'],
+    verifiedClaimIds: ['claim_002'],
+    confidence: 1.0,
+    ruleVersion: 'v1.0.0-deterministic',
+    evaluatedAt: new Date().toISOString(),
+    evaluatorId: 'system',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    schemaVersion: 1,
+  };
+}
+
+function createScoreFixture() {
+  return {
+    id: 'score_001',
+    organizationId: 'org_internal_operator',
+    countyId: 'maricopa_az',
+    opportunityId: 'opp_001',
+    ruleVersion: 'v1.0.0-deterministic',
+    equityScore: 75,
+    authorityScore: 100,
+    readinessScore: 80,
+    compositeScore: 88,
+    priorityBand: 'A',
+    reasons: ['Substantial assessed equity', 'Letters testamentary confirmed'],
+    computedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    schemaVersion: 1,
+  };
+}
+
+function createOpportunityProjectionTestFixtures() {
+  return {
+    property: createPropertyFixture(),
+    authority: createAuthorityFixture(),
+    ownership: createOwnershipFixture(),
+    score: createScoreFixture(),
+  };
+}
+
+test('Data Model: Embed vs Reference rules are preserved with Opportunity projection rebuild', () => {
+  const { property, authority, ownership, score } = createOpportunityProjectionTestFixtures();
 
   const snapshot = buildOpportunitySnapshot({
     caseNumber: 'PB2024-001928',
     decedentName: 'Eleanor Vance',
     filingDate: '2024-03-15T09:00:00.000Z',
-    property: property,
-    authority: {
-      id: 'auth_001',
-      organizationId: 'org_internal_operator',
-      caseId: 'case_001',
-      countyId: 'maricopa_az',
-      status: 'CONFIRMED',
-      tier: 1,
-      fiduciary: {
-        personId: 'person_001',
-        fullName: 'Robert Sterling',
-        role: 'EXECUTOR',
-        appointmentDate: '2024-03-20T10:00:00.000Z',
-        lettersIssued: true,
-        bondAmount: null,
-        verifiedEvidenceId: 'ev_001',
-      },
-      verifiedClaimIds: ['claim_001'],
-      evaluatedAt: new Date().toISOString(),
-      evaluatorId: 'system',
-      ruleVersion: 'v1.0.0-deterministic',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
-    ownership: {
-      id: 'own_001',
-      organizationId: 'org_internal_operator',
-      parcelId: 'prop_001',
-      caseId: 'case_001',
-      countyId: 'maricopa_az',
-      status: 'DECEDENT_SOLE_OWNER',
-      ownerNames: ['Eleanor Vance'],
-      deedRecordIds: ['deed_001'],
-      verifiedClaimIds: ['claim_002'],
-      confidence: 1.0,
-      ruleVersion: 'v1.0.0-deterministic',
-      evaluatedAt: new Date().toISOString(),
-      evaluatorId: 'system',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
-    score: {
-      id: 'score_001',
-      organizationId: 'org_internal_operator',
-      countyId: 'maricopa_az',
-      opportunityId: 'opp_001',
-      ruleVersion: 'v1.0.0-deterministic',
-      equityScore: 75,
-      authorityScore: 100,
-      readinessScore: 80,
-      compositeScore: 88,
-      priorityBand: 'A',
-      reasons: ['Substantial assessed equity', 'Letters testamentary confirmed'],
-      computedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
+    property,
+    authority,
+    ownership,
+    score,
     unresolvedExceptionsCount: 0,
   });
 

@@ -7,26 +7,122 @@ interface PofCardProps {
   onLogFeedback: (pofId: string) => void;
 }
 
-export function PofCard({ pof, onViewEvidence, onLogFeedback }: PofCardProps) {
-  const isPriorityA = pof.scoring?.priorityBand === 'PRIORITY_A';
+function getScoreDisplay(scoring?: ProbateOpportunityFile['scoring']) {
+  const isPriorityA = scoring?.priorityBand === 'PRIORITY_A';
   const badgeClass = isPriorityA ? 'badge-a' : 'badge-b';
-  const priorityText = pof.scoring?.priorityBand ?? 'UNSCORED';
-  const scoreText = pof.scoring?.compositeScore !== undefined ? `${pof.scoring.compositeScore}/100` : 'N/A';
+  const priorityText = scoring?.priorityBand ?? 'UNSCORED';
+  const scoreText = scoring?.compositeScore !== undefined ? `${scoring.compositeScore}/100` : 'N/A';
+  return { badgeClass, priorityText, scoreText };
+}
 
-  const address = pof.property?.addressText || (pof.property?.recordsLocated === false ? 'No records located' : 'Unindexed Address');
-  const assessedText = pof.property?.assessedValue != null ? `$${pof.property.assessedValue.toLocaleString()} Assessed` : 'Value Pending';
-  const equityText = pof.property?.estimatedEquity != null ? `$${pof.property.estimatedEquity.toLocaleString()} Est. Equity` : 'Equity Pending';
+function getPropertyDisplay(property?: ProbateOpportunityFile['property']) {
+  let address = 'Unindexed Address';
+  if (property?.addressText) {
+    address = property.addressText;
+  } else if (property?.recordsLocated === false) {
+    address = 'No records located';
+  }
 
-  const fiduciaryText = pof.authority?.fiduciaryName
-    ? `${pof.authority.fiduciaryName} (${pof.authority.fiduciaryRole})`
+  const assessedText = property?.assessedValue != null
+    ? `$${property.assessedValue.toLocaleString()} Assessed`
+    : 'Value Pending';
+
+  const equityText = property?.estimatedEquity != null
+    ? `$${property.estimatedEquity.toLocaleString()} Est. Equity`
+    : 'Equity Pending';
+
+  return { address, assessedText, equityText };
+}
+
+function getAuthorityDisplay(authority?: ProbateOpportunityFile['authority']) {
+  const hasFiduciary = Boolean(authority?.fiduciaryName);
+  const fiduciaryText = hasFiduciary
+    ? `${authority?.fiduciaryName} (${authority?.fiduciaryRole})`
     : 'Unappointed / Null';
+  const lettersText = authority?.lettersIssued
+    ? '✓ Letters Testamentary Issued'
+    : 'Letters Pending';
 
-  const ownersText = pof.ownership?.verifiedOwners?.length
-    ? pof.ownership.verifiedOwners.join(', ')
-    : (pof.decedentName || 'Unindexed');
+  return { hasFiduciary, fiduciaryText, lettersText };
+}
 
+function getOwnersDisplay(ownership?: ProbateOpportunityFile['ownership'], fallbackName?: string) {
+  if (ownership?.verifiedOwners && ownership.verifiedOwners.length > 0) {
+    return ownership.verifiedOwners.join(', ');
+  }
+  return fallbackName || 'Unindexed';
+}
+
+function getPublishedDate(publishedAt?: string): string {
+  if (!publishedAt) return 'Unpublished';
+  return new Date(publishedAt).toLocaleDateString();
+}
+
+function PofFactsGrid({ pof }: { pof: ProbateOpportunityFile }) {
+  const { address, assessedText, equityText } = getPropertyDisplay(pof.property);
+  const { hasFiduciary, fiduciaryText, lettersText } = getAuthorityDisplay(pof.authority);
+  const ownersText = getOwnersDisplay(pof.ownership, pof.decedentName);
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+        gap: '16px',
+        fontSize: '0.9rem',
+      }}
+    >
+      <div>
+        <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
+          ESTATE DECEDENT
+        </span>
+        <strong style={{ fontSize: '1.05rem' }}>{pof.decedentName}</strong>
+      </div>
+
+      <div>
+        <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
+          ASSESSED PROPERTY & VALUATION
+        </span>
+        <strong>{address}</strong>
+        <div style={{ color: '#137333', fontWeight: 600, fontSize: '0.85rem' }}>
+          {assessedText} &bull; {equityText}
+        </div>
+      </div>
+
+      <div>
+        <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
+          APPOINTED DECISION MAKER
+        </span>
+        <strong>
+          {hasFiduciary ? (
+            fiduciaryText
+          ) : (
+            <em style={{ color: 'var(--text-sub)' }}>Unappointed / Null</em>
+          )}
+        </strong>
+        <div style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>
+          {lettersText}
+        </div>
+      </div>
+
+      <div>
+        <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
+          TITLE & OWNERSHIP
+        </span>
+        <strong>{pof.ownership?.status ?? 'DECEDENT_SOLE_OWNER'}</strong>
+        <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>
+          Verified Owners: {ownersText}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function PofCard({ pof, onViewEvidence, onLogFeedback }: PofCardProps) {
+  const { badgeClass, priorityText, scoreText } = getScoreDisplay(pof.scoring);
   const evidenceCount = pof.evidence?.length ?? 0;
-  const publishedDate = pof.publishedAt ? new Date(pof.publishedAt).toLocaleDateString() : 'Unpublished';
+  const publishedDate = getPublishedDate(pof.publishedAt);
+  const recommendedAction = pof.recommendedAction ?? 'Engage Executor directly. Title is clear and letters are issued.';
 
   return (
     <div
@@ -57,57 +153,7 @@ export function PofCard({ pof, onViewEvidence, onLogFeedback }: PofCardProps) {
       </div>
 
       {/* Facts Grid */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-          gap: '16px',
-          fontSize: '0.9rem',
-        }}
-      >
-        <div>
-          <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
-            ESTATE DECEDENT
-          </span>
-          <strong style={{ fontSize: '1.05rem' }}>{pof.decedentName}</strong>
-        </div>
-
-        <div>
-          <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
-            ASSESSED PROPERTY & VALUATION
-          </span>
-          <strong>{address}</strong>
-          <div style={{ color: '#137333', fontWeight: 600, fontSize: '0.85rem' }}>
-            {assessedText} &bull; {equityText}
-          </div>
-        </div>
-
-        <div>
-          <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
-            APPOINTED DECISION MAKER
-          </span>
-          <strong>
-            {pof.authority?.fiduciaryName ? (
-              fiduciaryText
-            ) : (
-              <em style={{ color: 'var(--text-sub)' }}>Unappointed / Null</em>
-            )}
-          </strong>
-          <div style={{ fontSize: '0.8rem', color: 'var(--accent)' }}>
-            {pof.authority?.lettersIssued ? '✓ Letters Testamentary Issued' : 'Letters Pending'}
-          </div>
-        </div>
-
-        <div>
-          <span style={{ color: 'var(--text-sub)', display: 'block', fontSize: '0.8rem' }}>
-            TITLE & OWNERSHIP
-          </span>
-          <strong>{pof.ownership?.status ?? 'DECEDENT_SOLE_OWNER'}</strong>
-          <div style={{ fontSize: '0.8rem', color: 'var(--text-sub)' }}>
-            Verified Owners: {ownersText}
-          </div>
-        </div>
-      </div>
+      <PofFactsGrid pof={pof} />
 
       {/* Recommended Action */}
       <div
@@ -119,7 +165,7 @@ export function PofCard({ pof, onViewEvidence, onLogFeedback }: PofCardProps) {
         }}
       >
         <strong style={{ color: 'var(--accent)' }}>Recommended Action: </strong>
-        {pof.recommendedAction ?? 'Engage Executor directly. Title is clear and letters are issued.'}
+        {recommendedAction}
       </div>
 
       {/* Actions Footer */}

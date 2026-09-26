@@ -6,15 +6,7 @@ import { ProbateOpportunityFileSchema, LEGAL_DISCLAIMER } from '../../packages/d
 import { WorkflowExecutionEngine } from '../../packages/workflow/dist/index.js';
 import { InMemoryTenantScopedRepository } from '../../packages/database/dist/index.js';
 
-test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () => {
-  // Context setup
-  const scope = {
-    organizationId: 'org_internal_operator',
-    clientId: 'client_desert_ridge',
-    countyId: 'maricopa_az',
-  };
-
-  // Stage 1 & 2: Ingest representative probate PDF & compute SHA-256
+async function executeIngestionAndWorkflow(scope) {
   const courtText = `
     IN THE SUPERIOR COURT OF ARIZONA, IN AND FOR THE COUNTY OF MARICOPA
     ESTATE OF ELEANOR VANCE, DECEASED
@@ -38,7 +30,6 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
     schemaVersion: 1,
   };
 
-  // Stage 3: Workflow task stage execution with idempotency
   const runRepo = new InMemoryTenantScopedRepository();
   const auditRepo = new InMemoryTenantScopedRepository();
   const engine = new WorkflowExecutionEngine(runRepo, auditRepo);
@@ -52,9 +43,10 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
   });
   assert.equal(stageRun.run.status, 'COMPLETED');
 
+  return { mockRawPdf, sourceDoc };
+}
 
-
-  // Stages 4, 5, 6: Document AI OCR + Gemini proposals + deterministic validation
+async function executeIntelligencePipeline(scope, mockRawPdf) {
   const docRepo = new InMemoryTenantScopedRepository();
   const claimRepo = new InMemoryTenantScopedRepository();
   const exceptionRepo = new InMemoryTenantScopedRepository();
@@ -77,15 +69,15 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
 
   assert.ok(pipelineResult.sourceDoc.artifactSha256);
   assert.ok(pipelineResult.claims.length > 0);
-  // Verify all AI claims are strictly PROPOSED
   for (const claim of pipelineResult.claims) {
     assert.equal(claim.verificationStatus, 'PROPOSED');
     assert.ok(claim.evidence.length > 0);
   }
 
+  return pipelineResult;
+}
 
-
-  // Stages 7 & 8: Property matching and Ownership Intelligence
+function buildVerticalSliceAssessments(scope) {
   const parcel = {
     id: 'prop_slice_001',
     organizationId: scope.organizationId,
@@ -130,7 +122,6 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
     schemaVersion: 1,
   };
 
-  // Stage 9: Authority Resolution
   const authority = {
     id: 'auth_slice_001',
     organizationId: scope.organizationId,
@@ -156,7 +147,12 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
     schemaVersion: 1,
   };
 
-  // Stage 10: Opportunity Scoring (Deterministic)
+  return { parcel, ownership, authority };
+}
+
+function verifyScoringAndSnapshot(scope, assessments) {
+  const { parcel, authority, ownership } = assessments;
+
   const score = calculateOpportunityScore('score_slice_001', {
     organizationId: scope.organizationId,
     countyId: scope.countyId,
@@ -169,8 +165,6 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
   assert.ok(score.compositeScore > 0);
   assert.ok(score.priorityBand);
 
-
-  // Projection snapshot rebuild (Embed vs Reference rule)
   const snapshot = buildOpportunitySnapshot({
     caseNumber: 'PB2024-001928',
     decedentName: 'Eleanor Vance',
@@ -183,8 +177,12 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
   });
   assert.equal(snapshot.compositeScore, score.compositeScore);
 
+  return score;
+}
 
-  // Stage 11: QC Human Review Gate passes
+function verifyQcAndDelivery(scope, assessments, score, sourceDoc) {
+  const { parcel, ownership, authority } = assessments;
+
   const qcReview = {
     id: 'qc_slice_001',
     organizationId: scope.organizationId,
@@ -205,7 +203,6 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
   };
   assert.equal(qcReview.decision, 'APPROVED_FOR_DELIVERY');
 
-  // Stage 12: Client Delivery Publication (Probate Opportunity File)
   const pof = ProbateOpportunityFileSchema.parse({
     id: 'pof_slice_001',
     organizationId: scope.organizationId,
@@ -255,11 +252,8 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
     schemaVersion: 1,
   });
 
-  // Verify mandatory legal disclaimer is attached
   assert.equal(pof.disclaimer, 'research finding—not legal opinion or title guarantee');
 
-
-  // Stage 13: Client Feedback disposition
   const feedback = {
     id: 'fb_slice_001',
     organizationId: scope.organizationId,
@@ -274,4 +268,18 @@ test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () =>
     schemaVersion: 1,
   };
   assert.equal(feedback.disposition, 'APPOINTMENT_SET');
+}
+
+test('Integration: One-County Vertical Slice (Stages 1 through 13)', async () => {
+  const scope = {
+    organizationId: 'org_internal_operator',
+    clientId: 'client_desert_ridge',
+    countyId: 'maricopa_az',
+  };
+
+  const { mockRawPdf, sourceDoc } = await executeIngestionAndWorkflow(scope);
+  await executeIntelligencePipeline(scope, mockRawPdf);
+  const assessments = buildVerticalSliceAssessments(scope);
+  const score = verifyScoringAndSnapshot(scope, assessments);
+  verifyQcAndDelivery(scope, assessments, score, sourceDoc);
 });

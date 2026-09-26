@@ -3,15 +3,11 @@ import assert from 'node:assert/strict';
 import { InMemoryTenantScopedRepository } from '../../packages/database/dist/index.js';
 import { maskPii, assertClaimEligibleForDelivery } from '../../packages/authz/dist/index.js';
 
-test('Security Boundaries: Negative cross-tenant isolation across all bounded contexts', async () => {
-  const tenantA = { organizationId: 'org_austin_cap', countyId: 'county_travis_tx' };
-  const tenantB = { organizationId: 'org_dallas_inv', countyId: 'county_travis_tx' };
+const tenantA = { organizationId: 'org_austin_cap', countyId: 'county_travis_tx' };
+const tenantB = { organizationId: 'org_dallas_inv', countyId: 'county_travis_tx' };
 
-  // 1. Evidence (SourceDocument & Claim)
-  const docRepo = new InMemoryTenantScopedRepository();
-  const claimRepo = new InMemoryTenantScopedRepository();
-
-  const docA = await docRepo.create(tenantA, {
+function createDocPayload() {
+  return {
     countyId: 'county_travis_tx',
     filename: 'will_travis.pdf',
     mimeType: 'application/pdf',
@@ -19,15 +15,14 @@ test('Security Boundaries: Negative cross-tenant isolation across all bounded co
     artifactSha256: 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855',
     retrievalTimestamp: new Date().toISOString(),
     schemaVersion: 1,
-  });
+  };
+}
 
-  assert.equal(await docRepo.findById(tenantB, docA.id), null);
-  assert.equal((await docRepo.findMany(tenantB)).length, 0);
-
-  const claimA = await claimRepo.create(tenantA, {
+function createClaimPayload(docId) {
+  return {
     countyId: 'county_travis_tx',
     subjectType: 'AUTHORITY',
-    subjectId: docA.id,
+    subjectId: docId,
     fieldPath: 'authority.fiduciary',
     proposedValue: { fullName: 'Sarah Louise Jenkins' },
     claimType: 'EXTRACTED',
@@ -36,15 +31,11 @@ test('Security Boundaries: Negative cross-tenant isolation across all bounded co
     evidence: [],
     createdBy: 'agent',
     schemaVersion: 1,
-  });
+  };
+}
 
-  assert.equal(await claimRepo.findById(tenantB, claimA.id), null);
-
-  // 2. Authority & Cases
-  const caseRepo = new InMemoryTenantScopedRepository();
-  const authRepo = new InMemoryTenantScopedRepository();
-
-  const caseA = await caseRepo.create(tenantA, {
+function createCasePayload() {
+  return {
     countyId: 'county_travis_tx',
     caseNumber: 'C-1-PB-26-000412',
     decedentName: 'Arthur Jenkins',
@@ -53,15 +44,11 @@ test('Security Boundaries: Negative cross-tenant isolation across all bounded co
     courtName: 'Probate Court No 1',
     judgeName: 'Judge Herman',
     schemaVersion: 1,
-  });
+  };
+}
 
-  assert.equal(await caseRepo.findById(tenantB, caseA.id), null);
-
-  // 3. Property & Ownership
-  const parcelRepo = new InMemoryTenantScopedRepository();
-  const ownRepo = new InMemoryTenantScopedRepository();
-
-  const parcelA = await parcelRepo.create(tenantA, {
+function createParcelPayload() {
+  return {
     countyId: 'county_travis_tx',
     apn: '02-1408-0112',
     legalDescription: 'LOT 4 BLK B HIGHLAND PARK',
@@ -74,18 +61,14 @@ test('Security Boundaries: Negative cross-tenant isolation across all bounded co
     lastSalePrice: null,
     verifiedEvidenceIds: [],
     schemaVersion: 1,
-  });
+  };
+}
 
-  assert.equal(await parcelRepo.findById(tenantB, parcelA.id), null);
-
-  // 4. Scoring & Operational Opportunities
-  const scoreRepo = new InMemoryTenantScopedRepository();
-  const oppRepo = new InMemoryTenantScopedRepository();
-
-  const oppA = await oppRepo.create(tenantA, {
+function createOpportunityPayload(parcelId) {
+  return {
     countyId: 'county_travis_tx',
-    caseId: caseA.id,
-    parcelId: parcelA.id,
+    caseId: 'case_A',
+    parcelId,
     status: 'QC_APPROVED',
     currentSnapshot: {
       caseNumber: 'C-1-PB-26-000412',
@@ -104,31 +87,22 @@ test('Security Boundaries: Negative cross-tenant isolation across all bounded co
       lastProjectedAt: new Date().toISOString(),
     },
     schemaVersion: 1,
-  });
+  };
+}
 
-  assert.equal(await oppRepo.findById(tenantB, oppA.id), null);
-  assert.equal((await oppRepo.findMany(tenantB)).length, 0);
-
-  // 5. QC Reviews & Exceptions
-  const excRepo = new InMemoryTenantScopedRepository();
-  const qcRepo = new InMemoryTenantScopedRepository();
-
-  const excA = await excRepo.create(tenantA, {
+function createExceptionPayload() {
+  return {
     countyId: 'county_travis_tx',
-    opportunityId: oppA.id,
+    opportunityId: 'opp_A',
     type: 'TITLE_CONFLICT',
     status: 'PENDING_REVIEW',
     description: 'TCAD name mismatch',
     schemaVersion: 1,
-  });
+  };
+}
 
-  assert.equal(await excRepo.findById(tenantB, excA.id), null);
-
-  // 6. Deliveries & Client Feedback
-  const pofRepo = new InMemoryTenantScopedRepository();
-  const feedbackRepo = new InMemoryTenantScopedRepository();
-
-  const pofA = await pofRepo.create(tenantA, {
+function createPofPayload() {
+  return {
     countyId: 'county_travis_tx',
     caseNumber: 'C-1-PB-26-000412',
     decedentName: 'Arthur Jenkins',
@@ -142,8 +116,45 @@ test('Security Boundaries: Negative cross-tenant isolation across all bounded co
     disclaimer: 'research finding—not legal opinion or title guarantee',
     publishedAt: new Date().toISOString(),
     schemaVersion: 1,
-  });
+  };
+}
 
+test('Security Boundaries: Cross-tenant isolation in Evidence and Case domain', async () => {
+  const docRepo = new InMemoryTenantScopedRepository();
+  const claimRepo = new InMemoryTenantScopedRepository();
+  const caseRepo = new InMemoryTenantScopedRepository();
+
+  const docA = await docRepo.create(tenantA, createDocPayload());
+  assert.equal(await docRepo.findById(tenantB, docA.id), null);
+  assert.equal((await docRepo.findMany(tenantB)).length, 0);
+
+  const claimA = await claimRepo.create(tenantA, createClaimPayload(docA.id));
+  assert.equal(await claimRepo.findById(tenantB, claimA.id), null);
+
+  const caseA = await caseRepo.create(tenantA, createCasePayload());
+  assert.equal(await caseRepo.findById(tenantB, caseA.id), null);
+});
+
+test('Security Boundaries: Cross-tenant isolation in Property and Opportunity domain', async () => {
+  const parcelRepo = new InMemoryTenantScopedRepository();
+  const oppRepo = new InMemoryTenantScopedRepository();
+
+  const parcelA = await parcelRepo.create(tenantA, createParcelPayload());
+  assert.equal(await parcelRepo.findById(tenantB, parcelA.id), null);
+
+  const oppA = await oppRepo.create(tenantA, createOpportunityPayload(parcelA.id));
+  assert.equal(await oppRepo.findById(tenantB, oppA.id), null);
+  assert.equal((await oppRepo.findMany(tenantB)).length, 0);
+});
+
+test('Security Boundaries: Cross-tenant isolation in QC Exceptions and Deliveries', async () => {
+  const excRepo = new InMemoryTenantScopedRepository();
+  const pofRepo = new InMemoryTenantScopedRepository();
+
+  const excA = await excRepo.create(tenantA, createExceptionPayload());
+  assert.equal(await excRepo.findById(tenantB, excA.id), null);
+
+  const pofA = await pofRepo.create(tenantA, createPofPayload());
   assert.equal(await pofRepo.findById(tenantB, pofA.id), null);
   assert.equal((await pofRepo.findMany(tenantB)).length, 0);
 });

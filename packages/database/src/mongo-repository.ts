@@ -1,4 +1,4 @@
-import { Collection, Db, Filter, Document } from 'mongodb';
+import { Collection, Db, Filter, Document, FindCursor } from 'mongodb';
 import { BaseEntity, TenantScope } from './types.js';
 import { ITenantScopedRepository, RepositoryFindOptions, InMemoryTenantScopedRepository } from './repository.js';
 
@@ -67,14 +67,10 @@ export class MongoTenantScopedRepository<T extends BaseEntity>
     return this.mapDocToEntity(doc);
   }
 
-  async findMany(
+  private buildQueryFilter(
     scope: TenantScope,
-    filter?: Partial<Omit<T, keyof BaseEntity>>,
-    options?: RepositoryFindOptions
-  ): Promise<T[]> {
-    this.assertValidScope(scope);
-    await this.ensureIndexes();
-
+    filter?: Partial<Omit<T, keyof BaseEntity>>
+  ): Filter<Document> {
     const query: Filter<Document> = {
       organizationId: scope.organizationId,
       ...(filter || {}),
@@ -87,20 +83,42 @@ export class MongoTenantScopedRepository<T extends BaseEntity>
       query.countyId = scope.countyId;
     }
 
-    let cursor = this.collection.find(query);
+    return query;
+  }
+
+  private applyFindOptions(
+    cursor: FindCursor<Document>,
+    options?: RepositoryFindOptions
+  ): FindCursor<Document> {
+    let configuredCursor = cursor;
 
     if (options?.sortBy) {
-      cursor = cursor.sort({ [options.sortBy]: options.sortDirection === 'desc' ? -1 : 1 });
+      const sortDir = options.sortDirection === 'desc' ? -1 : 1;
+      configuredCursor = configuredCursor.sort({ [options.sortBy]: sortDir });
     } else {
-      cursor = cursor.sort({ createdAt: -1 });
+      configuredCursor = configuredCursor.sort({ createdAt: -1 });
     }
 
     if (options?.skip) {
-      cursor = cursor.skip(options.skip);
+      configuredCursor = configuredCursor.skip(options.skip);
     }
     if (options?.limit) {
-      cursor = cursor.limit(options.limit);
+      configuredCursor = configuredCursor.limit(options.limit);
     }
+
+    return configuredCursor;
+  }
+
+  async findMany(
+    scope: TenantScope,
+    filter?: Partial<Omit<T, keyof BaseEntity>>,
+    options?: RepositoryFindOptions
+  ): Promise<T[]> {
+    this.assertValidScope(scope);
+    await this.ensureIndexes();
+
+    const query = this.buildQueryFilter(scope, filter);
+    const cursor = this.applyFindOptions(this.collection.find(query), options);
 
     const docs = await cursor.toArray();
     return docs.map((doc) => this.mapDocToEntity(doc));
@@ -176,7 +194,8 @@ export class MongoTenantScopedRepository<T extends BaseEntity>
   }
 
   private assertValidScope(scope: TenantScope): void {
-    if (!scope || !scope.organizationId || scope.organizationId.trim() === '') {
+    const orgId = scope?.organizationId?.trim();
+    if (!orgId) {
       throw new Error(
         'Security Violation: Database queries must carry a valid non-empty organizationId'
       );
