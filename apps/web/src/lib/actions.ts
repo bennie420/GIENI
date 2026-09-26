@@ -33,7 +33,7 @@ async function resolveActionScope(options?: { isOperator?: boolean; requiredRole
       return {
         organizationId: 'org_gieni_internal',
         clientId: options?.isOperator ? undefined : 'client_austin_capital_partners',
-        countyId: 'county_travis_tx',
+        countyId: options?.isOperator ? undefined : 'county_travis_tx',
       };
     }
     throw err;
@@ -132,16 +132,22 @@ export async function triggerMunicipalScraperAction(
   lookbackDays = 14,
   limit = 100
 ): Promise<IngestionRunResult> {
-  const scope = await resolveActionScope({ isOperator: true });
+  const baseScope = await resolveActionScope({ isOperator: true });
+  const scope = { ...baseScope, countyId };
   const result = await MunicipalIngestionPipeline.execute({
     countyId,
     lookbackDays,
     limit,
   });
 
-  // Attempt database persistence if MongoDB is reachable
+  // Attempt database persistence (MongoDB Atlas or persistent local store)
   try {
-    const db = await getMongoDb();
+    let db: any = undefined;
+    try {
+      db = await getMongoDb();
+    } catch {
+      // Atlas unreachable in local/sandbox, will persist to local store
+    }
     const caseRepo = getTenantScopedRepository<ProbateCase>('probateCases', db);
     const docRepo = getTenantScopedRepository<SourceDocument & { countyId: string }>('sourceDocuments', db);
     const parcelRepo = getTenantScopedRepository<PropertyParcel>('properties', db);

@@ -24,7 +24,7 @@ async function resolveOperatorScope(scopeOverride?: TenantScope): Promise<Tenant
     return await getSessionTenantScope({ isOperator: true });
   } catch (authErr) {
     if (process.env.NODE_ENV === 'development') {
-      return { organizationId: 'org_gieni_internal', countyId: 'county_travis_tx' };
+      return { organizationId: 'org_gieni_internal' };
     }
     throw authErr;
   }
@@ -73,14 +73,22 @@ function emptyOperatorEntities() {
 }
 
 export async function getOperatorData(scopeOverride?: TenantScope) {
+  const scope = await resolveOperatorScope(scopeOverride);
   try {
-    const scope = await resolveOperatorScope(scopeOverride);
     const db = await getMongoDb();
     return await queryAllOperatorEntities(db, scope);
   } catch (err) {
-    if (process.env.NODE_ENV === 'production') throw err;
-    console.warn('[Operator Data] Could not read from live MongoDB Atlas:', err);
-    return emptyOperatorEntities();
+    try {
+      const localData = await queryAllOperatorEntities(undefined, scope);
+      return {
+        ...localData,
+        isConnectedToAtlas: false,
+      };
+    } catch (localErr) {
+      if (process.env.NODE_ENV === 'production') throw err;
+      console.warn('[Operator Data] Could not read from database:', localErr);
+      return emptyOperatorEntities();
+    }
   }
 }
 
