@@ -26,3 +26,33 @@ export interface OwnershipAssessment {
   updatedAt: string;
   schemaVersion: number;
 }
+
+export type OwnershipEventType =
+  | 'DEED_RECORDING'
+  | 'MORTGAGE_RECORDING'
+  | 'LIEN_RECORDING'
+  | 'PROBATE_ORDER'
+  | 'FORECLOSURE'
+  | 'RELEASE'
+  | 'AFFIDAVIT_OF_DEATH';
+
+export interface OwnershipEvent {
+  id: string;
+  organizationId: string;
+  clientId?: string | null;
+  countyId: string;
+  parcelId: string;
+  eventType: OwnershipEventType;
+  instrumentNumber: string;
+  recordingDate: string;
+  grantorName: string;
+  granteeName: string;
+  considerationAmount: number | null;
+  sourceDocumentId: string;
+  verifiedEvidenceId: string;
+  notes?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}
+

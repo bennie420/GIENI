@@ -28,3 +28,12 @@ export const AuthContextSchema = z.object({
   isOperator: z.boolean(),
   licensedCountyIds: z.array(z.string()).optional(),
 });
+
+export const AuthenticatedTenantContextSchema = z.object({
+  clerkUserId: z.string().min(1),
+  clerkOrgId: z.string().min(1),
+  role: ClerkRoleSchema,
+  licensedCountyIds: z.array(z.string()),
+  clientId: z.string().optional(),
+});
+

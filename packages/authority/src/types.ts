@@ -59,3 +59,76 @@ export interface AuthorityAssessment {
   updatedAt: string;
   schemaVersion: number;
 }
+
+export interface EstateRecord {
+  id: string;
+  organizationId: string;
+  clientId?: string | null;
+  countyId: string;
+  caseId: string;
+  estateName: string;
+  decedentPersonId?: string | null;
+  estimatedGrossValue?: number | null;
+  status: 'OPEN' | 'PROBATE_PENDING' | 'CLOSED';
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}
+
+export interface PersonRecord {
+  id: string;
+  organizationId: string;
+  clientId?: string | null;
+  countyId: string;
+  fullName: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  isDecedent: boolean;
+  isHeir: boolean;
+  isFiduciary: boolean;
+  isCounsel: boolean;
+  verifiedEvidenceIds: string[];
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}
+
+export interface OrganizationExternal {
+  id: string;
+  organizationId: string;
+  clientId?: string | null;
+  countyId: string;
+  name: string;
+  orgType: 'LAW_FIRM' | 'BANK' | 'CORPORATE_FIDUCIARY' | 'TITLE_COMPANY' | 'OTHER';
+  address?: string | null;
+  phone?: string | null;
+  contactPersonId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}
+
+export interface PersonRelationship {
+  id: string;
+  organizationId: string;
+  clientId?: string | null;
+  countyId: string;
+  subjectType: 'PERSON' | 'ORGANIZATION_EXTERNAL';
+  subjectId: string;
+  predicate:
+    | 'HEIR_OF'
+    | 'PETITIONER_FOR'
+    | 'ATTORNEY_FOR'
+    | 'FIDUCIARY_FOR'
+    | 'SPOUSE_OF'
+    | 'CHILD_OF'
+    | 'CREDITOR_OF';
+  targetType: 'PERSON' | 'ESTATE' | 'PROBATE_CASE';
+  targetId: string;
+  confidence: number;
+  verifiedClaimId?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  schemaVersion: number;
+}
+

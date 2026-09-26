@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
-    "test": "node --test tests/unit/*.test.js",
+    "test": "node --test tests/unit/*.test.js tests/integration/*.test.js",
     "type-check": "npm run type-check --workspaces --if-present",
     "seed": "npm run seed --workspace=@gieni/workers",
     "lint": "npm run lint --workspaces --if-present"

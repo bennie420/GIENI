@@ -84,3 +84,98 @@ export const AuthorityAssessmentSchema = z.object({
   updatedAt: z.string().datetime(),
   schemaVersion: z.number().int().min(1),
 });
+
+export const EstateRecordSchema = z.object({
+  id: z.string().min(1),
+  organizationId: z.string().min(1),
+  clientId: z.string().nullable().optional(),
+  countyId: z.string().min(1),
+  caseId: z.string().min(1),
+  estateName: z.string().min(1),
+  decedentPersonId: z.string().nullable().optional(),
+  estimatedGrossValue: z.number().nullable().optional(),
+  status: z.enum(['OPEN', 'PROBATE_PENDING', 'CLOSED']),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
+});
+
+export const PersonRecordSchema = z.object({
+  id: z.string().min(1),
+  organizationId: z.string().min(1),
+  clientId: z.string().nullable().optional(),
+  countyId: z.string().min(1),
+  fullName: z
+    .string()
+    .min(1)
+    .refine(
+      (val) => {
+        const normalized = val.trim().toLowerCase();
+        return !ProhibitedFiduciaryNames.some(
+          (prohibited) =>
+            normalized === prohibited || normalized.startsWith(prohibited + ' ')
+        );
+      },
+      {
+        message:
+          'Prohibited synthetic placeholder: Never ingest fictional Vance family names. Represent unlocated persons honestly as null.',
+      }
+    ),
+  firstName: z.string().nullable().optional(),
+  lastName: z.string().nullable().optional(),
+  isDecedent: z.boolean(),
+  isHeir: z.boolean(),
+  isFiduciary: z.boolean(),
+  isCounsel: z.boolean(),
+  verifiedEvidenceIds: z.array(z.string()),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
+});
+
+export const OrganizationExternalSchema = z.object({
+  id: z.string().min(1),
+  organizationId: z.string().min(1),
+  clientId: z.string().nullable().optional(),
+  countyId: z.string().min(1),
+  name: z.string().min(1),
+  orgType: z.enum([
+    'LAW_FIRM',
+    'BANK',
+    'CORPORATE_FIDUCIARY',
+    'TITLE_COMPANY',
+    'OTHER',
+  ]),
+  address: z.string().nullable().optional(),
+  phone: z.string().nullable().optional(),
+  contactPersonId: z.string().nullable().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
+});
+
+export const PersonRelationshipSchema = z.object({
+  id: z.string().min(1),
+  organizationId: z.string().min(1),
+  clientId: z.string().nullable().optional(),
+  countyId: z.string().min(1),
+  subjectType: z.enum(['PERSON', 'ORGANIZATION_EXTERNAL']),
+  subjectId: z.string().min(1),
+  predicate: z.enum([
+    'HEIR_OF',
+    'PETITIONER_FOR',
+    'ATTORNEY_FOR',
+    'FIDUCIARY_FOR',
+    'SPOUSE_OF',
+    'CHILD_OF',
+    'CREDITOR_OF',
+  ]),
+  targetType: z.enum(['PERSON', 'ESTATE', 'PROBATE_CASE']),
+  targetId: z.string().min(1),
+  confidence: z.number().min(0).max(1),
+  verifiedClaimId: z.string().nullable().optional(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+  schemaVersion: z.number().int().min(1),
+});
+

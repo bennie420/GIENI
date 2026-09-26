@@ -9,6 +9,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@gieni/database": "*",
     "@gieni/authority": "*",
     "@gieni/evidence": "*",
     "@gieni/ownership": "*",

@@ -35,3 +35,12 @@ export interface AuthContext {
   isOperator: boolean;
   licensedCountyIds?: string[];
 }
+
+export interface AuthenticatedTenantContext {
+  clerkUserId: string;
+  clerkOrgId: string;
+  role: ClerkRole;
+  licensedCountyIds: string[];
+  clientId?: string;
+}
+
