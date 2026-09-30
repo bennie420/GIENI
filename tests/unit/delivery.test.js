@@ -4,6 +4,9 @@ import {
   dispatchRealWebhook,
   LEGAL_DISCLAIMER,
   ProbateOpportunityFileSchema,
+  WebhookRetryQueue,
+  dispatchDeliveryNotifications,
+  analyzeClientFeedbackDispositions,
 } from '../../packages/delivery/dist/index.js';
 
 function createTestSamplePOF(overrides = {}) {
@@ -54,7 +57,6 @@ test('Delivery: requires mandatory legal disclaimer notice', () => {
 test('Delivery: authentic webhook dispatcher fails honestly on unreachable endpoint (Zero Fake Delivery)', async () => {
   const validPOF = createTestSamplePOF();
 
-  // Attempt dispatch to an un-bound local port
   const result = await dispatchRealWebhook({
     dispatchId: 'disp_test_fail',
     targetWebhookUrl: 'http://127.0.0.1:59199/unreachable-endpoint',
@@ -62,7 +64,6 @@ test('Delivery: authentic webhook dispatcher fails honestly on unreachable endpo
     timeoutMs: 1000,
   });
 
-  // MUST be FAILED, NEVER fake SUCCESS
   assert.equal(result.status, 'FAILED');
   assert.equal(result.acknowledgedAt, null);
   assert.ok(result.errorMessage?.includes('Real network transmission failed'));
@@ -86,15 +87,18 @@ function createTestFailedDispatch(overrides = {}) {
   };
 }
 
-test('Delivery: WebhookRetryQueue schedules backoff on initial delivery failure', async () => {
-  const { WebhookRetryQueue } = await import('../../packages/delivery/dist/index.js');
-  const queue = new WebhookRetryQueue({ maxAttempts: 3, initialDelayMs: 50, backoffMultiplier: 2, maxDelayMs: 200 });
-  const samplePOF = createTestSamplePOF({ id: 'pof_retry_test', evidence: [] });
-
+function setupTestRetryQueue(idSuffix = '001') {
+  const queue = new WebhookRetryQueue({ maxAttempts: 3, initialDelayMs: 10, backoffMultiplier: 2, maxDelayMs: 50 });
+  const samplePOF = createTestSamplePOF({ id: `pof_retry_${idSuffix}`, evidence: [] });
   const queued = queue.enqueueFailedDispatch(
-    { dispatchId: 'disp_fail_001', targetWebhookUrl: 'http://127.0.0.1:59199/unreachable', payload: samplePOF },
-    createTestFailedDispatch()
+    { dispatchId: `disp_fail_${idSuffix}`, targetWebhookUrl: 'http://127.0.0.1:59199/unreachable', payload: samplePOF },
+    createTestFailedDispatch({ id: `disp_fail_${idSuffix}`, opportunityId: `pof_retry_${idSuffix}` })
   );
+  return { queue, queued };
+}
+
+test('Delivery: WebhookRetryQueue schedules backoff on initial delivery failure', async () => {
+  const { queue, queued } = setupTestRetryQueue('backoff');
 
   assert.equal(queued.status, 'PENDING');
   assert.equal(queued.attempts, 1);
@@ -107,14 +111,7 @@ test('Delivery: WebhookRetryQueue schedules backoff on initial delivery failure'
 });
 
 test('Delivery: WebhookRetryQueue escalates to EXHAUSTED_DEAD_LETTER when maxAttempts reached', async () => {
-  const { WebhookRetryQueue } = await import('../../packages/delivery/dist/index.js');
-  const queue = new WebhookRetryQueue({ maxAttempts: 3, initialDelayMs: 10, backoffMultiplier: 2, maxDelayMs: 50 });
-  const samplePOF = createTestSamplePOF({ id: 'pof_retry_dlq', evidence: [] });
-
-  const queued = queue.enqueueFailedDispatch(
-    { dispatchId: 'disp_fail_dlq', targetWebhookUrl: 'http://127.0.0.1:59199/unreachable', payload: samplePOF },
-    createTestFailedDispatch({ id: 'disp_fail_dlq', opportunityId: 'pof_retry_dlq' })
-  );
+  const { queue, queued } = setupTestRetryQueue('dlq');
 
   await queue.processItem(queued.id, { timeoutMs: 500 });
   const exhausted = await queue.processItem(queued.id, { timeoutMs: 500 });
@@ -125,7 +122,6 @@ test('Delivery: WebhookRetryQueue escalates to EXHAUSTED_DEAD_LETTER when maxAtt
 });
 
 test('Delivery: dispatchDeliveryNotifications transmits email and in-app alerts', async () => {
-  const { dispatchDeliveryNotifications } = await import('../../packages/delivery/dist/index.js');
   const samplePOF = createTestSamplePOF({ id: 'pof_notif_001', evidence: [] });
 
   const events = await dispatchDeliveryNotifications({
@@ -161,7 +157,6 @@ function createTestFeedback(id, disposition, countyId = 'county_travis_tx') {
 }
 
 test('Delivery: analyzeClientFeedbackDispositions aggregates conversion metrics and expansion triggers', async () => {
-  const { analyzeClientFeedbackDispositions } = await import('../../packages/delivery/dist/index.js');
   const feedbackList = [
     createTestFeedback('fb_1', 'CONTACTED'),
     createTestFeedback('fb_2', 'DEAL_CLOSED'),
@@ -174,4 +169,3 @@ test('Delivery: analyzeClientFeedbackDispositions aggregates conversion metrics 
   assert.equal(report.countyBreakdown['county_travis_tx'].positiveConversions, 2);
   assert.equal(report.countyBreakdown['county_travis_tx'].expansionEligible, true);
 });
-
