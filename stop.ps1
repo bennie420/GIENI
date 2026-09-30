@@ -41,7 +41,7 @@ function Kill-ProcessById ([int]$ProcessId, [int]$Port, [string]$ServiceName) {
     }
     Write-Host " [*] Stopping $ServiceName ($procName on Port $Port, PID: $ProcessId)..." -ForegroundColor Cyan
     Stop-Process -Id $ProcessId -Force -ErrorAction SilentlyContinue
-    Write-Host " [✓] $ServiceName stopped." -ForegroundColor Green
+    Write-Host " [OK] $ServiceName stopped." -ForegroundColor Green
 }
 
 function Stop-ProcessOnPort ([int]$Port, [string]$ServiceName) {
@@ -63,5 +63,5 @@ Stop-ProcessOnPort -Port $WebPort -ServiceName "@gieni/web Next.js Portal"
 Stop-ProcessOnPort -Port $WorkerPort -ServiceName "@gieni/workers Cloud Run Service"
 
 Write-Host ""
-Write-Host " [✓] Cleanup completed." -ForegroundColor Green
+Write-Host " [OK] Cleanup completed." -ForegroundColor Green
 Write-Host ""
