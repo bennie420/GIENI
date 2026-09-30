@@ -6,8 +6,8 @@ import {
   ProbateOpportunityFileSchema,
 } from '../../packages/delivery/dist/index.js';
 
-test('Delivery: requires mandatory legal disclaimer notice', () => {
-  const validPOF = {
+function createTestSamplePOF(overrides = {}) {
+  return {
     id: 'pof_001',
     organizationId: 'org_gieni_ops',
     countyId: 'county_travis_tx',
@@ -53,60 +53,18 @@ test('Delivery: requires mandatory legal disclaimer notice', () => {
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     schemaVersion: 1,
+    ...overrides,
   };
+}
 
+test('Delivery: requires mandatory legal disclaimer notice', () => {
+  const validPOF = createTestSamplePOF();
   const parsed = ProbateOpportunityFileSchema.parse(validPOF);
   assert.equal(parsed.disclaimer, 'research finding—not legal opinion or title guarantee');
 });
 
 test('Delivery: authentic webhook dispatcher fails honestly on unreachable endpoint (Zero Fake Delivery)', async () => {
-  const validPOF = {
-    id: 'pof_001',
-    organizationId: 'org_gieni_ops',
-    countyId: 'county_travis_tx',
-    caseNumber: 'PR-2026-08912',
-    decedentName: 'Arthur Jenkins',
-    filingDate: '2026-03-01T00:00:00.000Z',
-    property: {
-      apn: '02-4412-009',
-      addressText: '742 Evergreen Terrace, Austin, TX 78701',
-      assessedValue: 620000,
-      estimatedEquity: 570000,
-      recordsLocated: true,
-    },
-    ownership: {
-      status: 'DECEDENT_SOLE_OWNER',
-      verifiedOwners: ['Arthur Jenkins'],
-    },
-    authority: {
-      status: 'CONFIRMED',
-      tier: 1,
-      fiduciaryName: 'Sarah Jenkins',
-      fiduciaryRole: 'EXECUTOR',
-      lettersIssued: true,
-    },
-    scoring: {
-      compositeScore: 95,
-      priorityBand: 'PRIORITY_A',
-      ruleVersion: 'v1.0.0-deterministic',
-    },
-    evidence: [
-      {
-        claimPath: 'authority.fiduciary',
-        factSummary: 'Letters Testamentary issued to Sarah Jenkins',
-        sourceDocumentName: 'Letters_Testamentary.pdf',
-        pageNumber: 1,
-        excerpt: 'Sarah Jenkins is hereby appointed Executor',
-        artifactSha256: 'a'.repeat(64),
-      },
-    ],
-    recommendedAction: 'Contact Executor to present acquisition terms',
-    disclaimer: LEGAL_DISCLAIMER,
-    publishedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    schemaVersion: 1,
-  };
+  const validPOF = createTestSamplePOF();
 
   // Attempt dispatch to an un-bound local port
   const result = await dispatchRealWebhook({
@@ -122,55 +80,8 @@ test('Delivery: authentic webhook dispatcher fails honestly on unreachable endpo
   assert.ok(result.errorMessage?.includes('Real network transmission failed'));
 });
 
-test('Delivery: WebhookRetryQueue handles retry enqueuing and backoff progression', async () => {
-  const { WebhookRetryQueue } = await import('../../packages/delivery/dist/index.js');
-  const queue = new WebhookRetryQueue({
-    maxAttempts: 3,
-    initialDelayMs: 50,
-    backoffMultiplier: 2,
-    maxDelayMs: 200,
-  });
-
-  const samplePOF = {
-    id: 'pof_retry_test',
-    organizationId: 'org_gieni_ops',
-    countyId: 'county_travis_tx',
-    caseNumber: 'PR-2026-08912',
-    decedentName: 'Arthur Jenkins',
-    filingDate: '2026-03-01T00:00:00.000Z',
-    property: {
-      apn: '02-4412-009',
-      addressText: '742 Evergreen Terrace, Austin, TX 78701',
-      assessedValue: 620000,
-      estimatedEquity: 570000,
-      recordsLocated: true,
-    },
-    ownership: {
-      status: 'DECEDENT_SOLE_OWNER',
-      verifiedOwners: ['Arthur Jenkins'],
-    },
-    authority: {
-      status: 'CONFIRMED',
-      tier: 1,
-      fiduciaryName: 'Sarah Jenkins',
-      fiduciaryRole: 'EXECUTOR',
-      lettersIssued: true,
-    },
-    scoring: {
-      compositeScore: 95,
-      priorityBand: 'PRIORITY_A',
-      ruleVersion: 'v1.0.0-deterministic',
-    },
-    evidence: [],
-    recommendedAction: 'Contact Executor',
-    disclaimer: LEGAL_DISCLAIMER,
-    publishedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    schemaVersion: 1,
-  };
-
-  const failedDispatch = {
+function createTestFailedDispatch(overrides = {}) {
+  return {
     id: 'disp_fail_001',
     organizationId: 'org_gieni_ops',
     clientId: 'client_austin_cap',
@@ -183,47 +94,57 @@ test('Delivery: WebhookRetryQueue handles retry enqueuing and backoff progressio
     attemptCount: 1,
     dispatchedAt: new Date().toISOString(),
     acknowledgedAt: null,
+    ...overrides,
   };
+}
+
+test('Delivery: WebhookRetryQueue schedules backoff on initial delivery failure', async () => {
+  const { WebhookRetryQueue } = await import('../../packages/delivery/dist/index.js');
+  const queue = new WebhookRetryQueue({ maxAttempts: 3, initialDelayMs: 50, backoffMultiplier: 2, maxDelayMs: 200 });
+  const samplePOF = createTestSamplePOF({ id: 'pof_retry_test', evidence: [] });
 
   const queued = queue.enqueueFailedDispatch(
-    {
-      dispatchId: 'disp_fail_001',
-      targetWebhookUrl: 'http://127.0.0.1:59199/unreachable',
-      payload: samplePOF,
-    },
-    failedDispatch
+    { dispatchId: 'disp_fail_001', targetWebhookUrl: 'http://127.0.0.1:59199/unreachable', payload: samplePOF },
+    createTestFailedDispatch()
   );
 
   assert.equal(queued.status, 'PENDING');
   assert.equal(queued.attempts, 1);
   assert.ok(queued.nextAttemptAt);
 
-  // Process attempt 2 (will fail again due to unreachable endpoint)
   const attempt2 = await queue.processItem(queued.id, { timeoutMs: 500 });
   assert.equal(attempt2.status, 'FAILED');
-  const afterAttempt2 = queue.getItem(queued.id);
-  assert.equal(afterAttempt2?.attempts, 2);
-  assert.equal(afterAttempt2?.status, 'PENDING');
+  assert.equal(queue.getItem(queued.id)?.attempts, 2);
+  assert.equal(queue.getItem(queued.id)?.status, 'PENDING');
+});
 
-  // Process attempt 3 (exhausts maxAttempts -> EXHAUSTED_DEAD_LETTER)
-  const attempt3 = await queue.processItem(queued.id, { timeoutMs: 500 });
-  assert.equal(attempt3.status, 'FAILED');
-  const exhausted = queue.getItem(queued.id);
-  assert.equal(exhausted?.attempts, 3);
-  assert.equal(exhausted?.status, 'EXHAUSTED_DEAD_LETTER');
+test('Delivery: WebhookRetryQueue escalates to EXHAUSTED_DEAD_LETTER when maxAttempts reached', async () => {
+  const { WebhookRetryQueue } = await import('../../packages/delivery/dist/index.js');
+  const queue = new WebhookRetryQueue({ maxAttempts: 3, initialDelayMs: 10, backoffMultiplier: 2, maxDelayMs: 50 });
+  const samplePOF = createTestSamplePOF({ id: 'pof_retry_dlq', evidence: [] });
+
+  const queued = queue.enqueueFailedDispatch(
+    { dispatchId: 'disp_fail_dlq', targetWebhookUrl: 'http://127.0.0.1:59199/unreachable', payload: samplePOF },
+    createTestFailedDispatch({ id: 'disp_fail_dlq', opportunityId: 'pof_retry_dlq' })
+  );
+
+  await queue.processItem(queued.id, { timeoutMs: 500 });
+  const exhausted = await queue.processItem(queued.id, { timeoutMs: 500 });
+
+  assert.equal(exhausted.status, 'FAILED');
+  assert.equal(queue.getItem(queued.id)?.attempts, 3);
+  assert.equal(queue.getItem(queued.id)?.status, 'EXHAUSTED_DEAD_LETTER');
 });
 
 test('Delivery: dispatchDeliveryNotifications transmits email and in-app alerts', async () => {
   const { dispatchDeliveryNotifications } = await import('../../packages/delivery/dist/index.js');
 
-  const samplePOF = {
+  const samplePOF = createTestSamplePOF({
     id: 'pof_notif_001',
     organizationId: 'org_test',
     clientId: 'client_acp',
-    countyId: 'county_travis_tx',
     caseNumber: 'PR-2026-09912',
-    decedentName: 'Eleanor Vance Sterling',
-    filingDate: '2026-03-01T00:00:00.000Z',
+    decedentName: 'Eleanor Sterling',
     property: {
       apn: '01-2894-0012',
       addressText: '3814 Westlake Hills Dr, Austin, TX',
@@ -233,7 +154,7 @@ test('Delivery: dispatchDeliveryNotifications transmits email and in-app alerts'
     },
     ownership: {
       status: 'DECEDENT_SOLE_OWNER',
-      verifiedOwners: ['Eleanor Vance Sterling'],
+      verifiedOwners: ['Eleanor Sterling'],
     },
     authority: {
       status: 'CONFIRMED',
@@ -249,12 +170,7 @@ test('Delivery: dispatchDeliveryNotifications transmits email and in-app alerts'
     },
     evidence: [],
     recommendedAction: 'Immediate high-equity outreach',
-    disclaimer: LEGAL_DISCLAIMER,
-    publishedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    schemaVersion: 1,
-  };
+  });
 
   const events = await dispatchDeliveryNotifications({
     pof: samplePOF,

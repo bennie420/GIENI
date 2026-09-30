@@ -535,7 +535,11 @@ export default function ScraperConsoleModal({
     setTelemetryLogs((prev) => [createLaunchTelemetryEvent(countyId, lookbackDays), ...prev]);
 
     try {
-      const res = await triggerMunicipalScraperAction(countyId, lookbackDays, harvestLimit);
+      const res = await triggerMunicipalScraperAction({
+        countyId,
+        lookbackDays,
+        limit: harvestLimit,
+      });
       setLastResult(res);
       setTelemetryLogs(res.telemetry);
       onIngestSuccess(res.data);

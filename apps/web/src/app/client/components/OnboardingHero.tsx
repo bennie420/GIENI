@@ -67,6 +67,148 @@ export const SAMPLE_OPPORTUNITY: ProbateOpportunityFile = {
   schemaVersion: 1,
 };
 
+interface CountyCoverageSelectorProps {
+  selectedCounties: string[];
+  isSaving: boolean;
+  successMessage: string | null;
+  onToggleCounty: (id: string) => void;
+  onSaveCounties: () => void;
+}
+
+function CountyCoverageSelector({
+  selectedCounties,
+  isSaving,
+  successMessage,
+  onToggleCounty,
+  onSaveCounties,
+}: CountyCoverageSelectorProps) {
+  const availableCounties = [
+    { id: 'county_travis_tx', label: 'Travis County, TX' },
+    { id: 'county_pierce_wa', label: 'Pierce County, WA' },
+    { id: 'county_king_wa', label: 'King County, WA' },
+    { id: 'county_thurston_wa', label: 'Thurston County, WA' },
+    { id: 'county_maricopa_az', label: 'Maricopa County, AZ' },
+  ];
+
+  return (
+    <div
+      style={{
+        marginTop: '20px',
+        padding: '14px 16px',
+        borderRadius: '8px',
+        background: '#f1f5f9',
+        border: '1px solid #e2e8f0',
+      }}
+    >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
+        <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>
+          SELECT TARGET COUNTY JURISDICTIONS:
+        </span>
+        <button
+          onClick={onSaveCounties}
+          disabled={isSaving}
+          style={{
+            padding: '5px 12px',
+            background: '#0f172a',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '4px',
+            fontSize: '0.8rem',
+            fontWeight: 600,
+            cursor: 'pointer',
+          }}
+        >
+          {isSaving ? 'Saving...' : 'Save Coverage Preferences'}
+        </button>
+      </div>
+
+      <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        {availableCounties.map((c) => {
+          const isSelected = selectedCounties.includes(c.id);
+          return (
+            <button
+              key={c.id}
+              type="button"
+              onClick={() => onToggleCounty(c.id)}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '20px',
+                border: isSelected ? '1px solid #2563eb' : '1px solid #cbd5e1',
+                background: isSelected ? '#eff6ff' : '#ffffff',
+                color: isSelected ? '#1d4ed8' : '#64748b',
+                fontSize: '0.8rem',
+                fontWeight: isSelected ? 600 : 500,
+                cursor: 'pointer',
+              }}
+            >
+              {isSelected ? '✓ ' : '+ '}
+              {c.label}
+            </button>
+          );
+        })}
+      </div>
+
+      {successMessage && (
+        <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#16a34a', fontWeight: 600 }}>
+          ✓ {successMessage}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function CoverageGuarantees() {
+  return (
+    <div
+      style={{
+        marginTop: '20px',
+        paddingTop: '16px',
+        borderTop: '1px solid #e8eaed',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gap: '16px',
+      }}
+    >
+      <div>
+        <div style={{ fontSize: '0.78rem', color: '#5f6368', textTransform: 'uppercase', fontWeight: 600 }}>Active Coverage</div>
+        <div style={{ fontWeight: 600, color: '#202124', marginTop: '2px' }}>Travis (TX) &bull; Pierce (WA) &bull; King (WA) &bull; Thurston (WA) &bull; Maricopa (AZ)</div>
+      </div>
+      <div>
+        <div style={{ fontSize: '0.78rem', color: '#5f6368', textTransform: 'uppercase', fontWeight: 600 }}>Delivery Standard</div>
+        <div style={{ fontWeight: 600, color: '#137333', marginTop: '2px' }}>100% Verified Primary Source Evidence</div>
+      </div>
+      <div>
+        <div style={{ fontSize: '0.78rem', color: '#5f6368', textTransform: 'uppercase', fontWeight: 600 }}>Zero Synthetic Policy</div>
+        <div style={{ fontWeight: 600, color: '#202124', marginTop: '2px' }}>Strict Nulling for Missing Fiduciaries</div>
+      </div>
+    </div>
+  );
+}
+
+interface SampleOpportunityPreviewProps {
+  onExploreSample: (sample: ProbateOpportunityFile) => void;
+}
+
+function SampleOpportunityPreview({ onExploreSample }: SampleOpportunityPreviewProps) {
+  return (
+    <div style={{ marginTop: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+        <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#1a73e8', textTransform: 'uppercase' }}>
+          Sample Verified Probate Opportunity File (POF)
+        </span>
+        <span style={{ fontSize: '0.75rem', background: '#fef7e0', color: '#b06000', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
+          Preview Mode
+        </span>
+      </div>
+      <PofCard
+        pof={SAMPLE_OPPORTUNITY}
+        onViewEvidence={onExploreSample}
+        onLogFeedback={() => {}}
+      />
+    </div>
+  );
+}
+
 export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: OnboardingHeroProps) {
   const [showSampleCard, setShowSampleCard] = useState(false);
   const [selectedCounties, setSelectedCounties] = useState<string[]>([
@@ -75,14 +217,6 @@ export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: Onboardi
   ]);
   const [isSavingCounties, setIsSavingCounties] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
-
-  const availableCounties = [
-    { id: 'county_travis_tx', label: 'Travis County, TX' },
-    { id: 'county_pierce_wa', label: 'Pierce County, WA' },
-    { id: 'county_king_wa', label: 'King County, WA' },
-    { id: 'county_thurston_wa', label: 'Thurston County, WA' },
-    { id: 'county_maricopa_az', label: 'Maricopa County, AZ' },
-  ];
 
   const toggleCounty = (id: string) => {
     setSelectedCounties((prev) =>
@@ -93,13 +227,21 @@ export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: Onboardi
   const handleSaveCounties = async () => {
     try {
       setIsSavingCounties(true);
-      await updateClientCountySubscriptionsAction(selectedCounties);
+      await updateClientCountySubscriptionsAction({ counties: selectedCounties });
       setSaveSuccessMsg('County coverage preferences saved to client account!');
       setTimeout(() => setSaveSuccessMsg(null), 4000);
     } catch (err: unknown) {
       alert(`Error saving preferences: ${err instanceof Error ? err.message : String(err)}`);
     } finally {
       setIsSavingCounties(false);
+    }
+  };
+
+  const handleToggleSample = () => {
+    const nextState = !showSampleCard;
+    setShowSampleCard(nextState);
+    if (nextState) {
+      onExploreSample(SAMPLE_OPPORTUNITY);
     }
   };
 
@@ -143,10 +285,7 @@ export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: Onboardi
 
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button
-            onClick={() => {
-              setShowSampleCard(!showSampleCard);
-              if (!showSampleCard) onExploreSample(SAMPLE_OPPORTUNITY);
-            }}
+            onClick={handleToggleSample}
             style={{
               padding: '10px 16px',
               background: '#1a73e8',
@@ -182,111 +321,18 @@ export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: Onboardi
         </div>
       </div>
 
-      {/* Target County Selection Selector (W01) */}
-      <div
-        style={{
-          marginTop: '20px',
-          padding: '14px 16px',
-          borderRadius: '8px',
-          background: '#f1f5f9',
-          border: '1px solid #e2e8f0',
-        }}
-      >
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
-          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>
-            SELECT TARGET COUNTY JURISDICTIONS:
-          </span>
-          <button
-            onClick={handleSaveCounties}
-            disabled={isSavingCounties}
-            style={{
-              padding: '5px 12px',
-              background: '#0f172a',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '4px',
-              fontSize: '0.8rem',
-              fontWeight: 600,
-              cursor: 'pointer',
-            }}
-          >
-            {isSavingCounties ? 'Saving...' : 'Save Coverage Preferences'}
-          </button>
-        </div>
+      <CountyCoverageSelector
+        selectedCounties={selectedCounties}
+        isSaving={isSavingCounties}
+        successMessage={saveSuccessMsg}
+        onToggleCounty={toggleCounty}
+        onSaveCounties={handleSaveCounties}
+      />
 
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          {availableCounties.map((c) => {
-            const isSelected = selectedCounties.includes(c.id);
-            return (
-              <button
-                key={c.id}
-                type="button"
-                onClick={() => toggleCounty(c.id)}
-                style={{
-                  padding: '6px 12px',
-                  borderRadius: '20px',
-                  border: isSelected ? '1px solid #2563eb' : '1px solid #cbd5e1',
-                  background: isSelected ? '#eff6ff' : '#ffffff',
-                  color: isSelected ? '#1d4ed8' : '#64748b',
-                  fontSize: '0.8rem',
-                  fontWeight: isSelected ? 600 : 500,
-                  cursor: 'pointer',
-                }}
-              >
-                {isSelected ? '✓ ' : '+ '}
-                {c.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {saveSuccessMsg && (
-          <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#16a34a', fontWeight: 600 }}>
-            ✓ {saveSuccessMsg}
-          </div>
-        )}
-      </div>
-
-      <div
-        style={{
-          marginTop: '20px',
-          paddingTop: '16px',
-          borderTop: '1px solid #e8eaed',
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-          gap: '16px',
-        }}
-      >
-        <div>
-          <div style={{ fontSize: '0.78rem', color: '#5f6368', textTransform: 'uppercase', fontWeight: 600 }}>Active Coverage</div>
-          <div style={{ fontWeight: 600, color: '#202124', marginTop: '2px' }}>Travis (TX) &bull; Pierce (WA) &bull; King (WA) &bull; Thurston (WA) &bull; Maricopa (AZ)</div>
-        </div>
-        <div>
-          <div style={{ fontSize: '0.78rem', color: '#5f6368', textTransform: 'uppercase', fontWeight: 600 }}>Delivery Standard</div>
-          <div style={{ fontWeight: 600, color: '#137333', marginTop: '2px' }}>100% Verified Primary Source Evidence</div>
-        </div>
-        <div>
-          <div style={{ fontSize: '0.78rem', color: '#5f6368', textTransform: 'uppercase', fontWeight: 600 }}>Zero Synthetic Policy</div>
-          <div style={{ fontWeight: 600, color: '#202124', marginTop: '2px' }}>Strict Nulling for Missing Fiduciaries</div>
-        </div>
-      </div>
+      <CoverageGuarantees />
 
       {showSampleCard && (
-        <div style={{ marginTop: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#1a73e8', textTransform: 'uppercase' }}>
-              Sample Verified Probate Opportunity File (POF)
-            </span>
-            <span style={{ fontSize: '0.75rem', background: '#fef7e0', color: '#b06000', padding: '2px 8px', borderRadius: '4px', fontWeight: 600 }}>
-              Preview Mode
-            </span>
-          </div>
-          <PofCard
-            pof={SAMPLE_OPPORTUNITY}
-            onViewEvidence={onExploreSample}
-            onLogFeedback={() => {}}
-          />
-        </div>
+        <SampleOpportunityPreview onExploreSample={onExploreSample} />
       )}
     </div>
   );

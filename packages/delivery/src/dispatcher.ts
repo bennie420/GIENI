@@ -10,6 +10,69 @@ export interface WebhookDispatchOptions {
   webhookSecret?: string;
 }
 
+function generateWebhookAuthHeaders(
+  secret: string | undefined,
+  payloadJson: string,
+  timestamp: string
+): Record<string, string> {
+  const headers: Record<string, string> = {
+    'X-Gieni-Timestamp': timestamp,
+  };
+  if (secret) {
+    const signature = crypto
+      .createHmac('sha256', secret)
+      .update(`${timestamp}.${payloadJson}`)
+      .digest('hex');
+    headers['X-Gieni-Signature'] = `sha256=${signature}`;
+  }
+  return headers;
+}
+
+function createDispatchSuccess(
+  options: WebhookDispatchOptions,
+  httpStatus: number,
+  responseBodyText: string | null,
+  dispatchedAt: string
+): DeliveryDispatch {
+  return {
+    id: options.dispatchId,
+    organizationId: options.payload.organizationId,
+    clientId: options.payload.clientId ?? 'unknown',
+    opportunityId: options.payload.id,
+    targetWebhookUrl: options.targetWebhookUrl,
+    status: 'SUCCESS',
+    httpStatus,
+    responseBody: responseBodyText ? responseBodyText.slice(0, 1000) : null,
+    errorMessage: null,
+    attemptCount: 1,
+    dispatchedAt,
+    acknowledgedAt: new Date().toISOString(),
+  };
+}
+
+function createDispatchFailure(
+  options: WebhookDispatchOptions,
+  errorMessage: string,
+  dispatchedAt: string,
+  httpStatus: number | null = null,
+  responseBodyText: string | null = null
+): DeliveryDispatch {
+  return {
+    id: options.dispatchId,
+    organizationId: options.payload.organizationId,
+    clientId: options.payload.clientId ?? 'unknown',
+    opportunityId: options.payload.id,
+    targetWebhookUrl: options.targetWebhookUrl,
+    status: 'FAILED',
+    httpStatus,
+    responseBody: responseBodyText ? responseBodyText.slice(0, 1000) : null,
+    errorMessage,
+    attemptCount: 1,
+    dispatchedAt,
+    acknowledgedAt: null,
+  };
+}
+
 /**
  * Transmits an authentic HTTP POST to a client's webhook endpoint.
  *
@@ -31,18 +94,7 @@ export async function dispatchRealWebhook(
 
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const payloadJson = JSON.stringify(options.payload);
-
-  const authHeaders: Record<string, string> = {
-    'X-Gieni-Timestamp': timestamp,
-  };
-
-  if (options.webhookSecret) {
-    const signature = crypto
-      .createHmac('sha256', options.webhookSecret)
-      .update(`${timestamp}.${payloadJson}`)
-      .digest('hex');
-    authHeaders['X-Gieni-Signature'] = `sha256=${signature}`;
-  }
+  const authHeaders = generateWebhookAuthHeaders(options.webhookSecret, payloadJson, timestamp);
 
   try {
     const response = await fetch(options.targetWebhookUrl, {
@@ -62,40 +114,27 @@ export async function dispatchRealWebhook(
     const httpStatus = response.status;
     const responseBodyText = await response.text().catch(() => null);
 
-    const isSuccess = response.ok; // 200 - 299
+    if (response.ok) {
+      return createDispatchSuccess(options, httpStatus, responseBodyText, dispatchedAt);
+    }
 
-    return {
-      id: options.dispatchId,
-      organizationId: options.payload.organizationId,
-      clientId: options.payload.clientId ?? 'unknown',
-      opportunityId: options.payload.id,
-      targetWebhookUrl: options.targetWebhookUrl,
-      status: isSuccess ? 'SUCCESS' : 'FAILED',
-      httpStatus,
-      responseBody: responseBodyText ? responseBodyText.slice(0, 1000) : null,
-      errorMessage: isSuccess ? null : `Webhook rejected with HTTP status ${httpStatus}`,
-      attemptCount: 1,
+    return createDispatchFailure(
+      options,
+      `Webhook rejected with HTTP status ${httpStatus}`,
       dispatchedAt,
-      acknowledgedAt: isSuccess ? new Date().toISOString() : null,
-    };
+      httpStatus,
+      responseBodyText
+    );
   } catch (err: unknown) {
     clearTimeout(timeoutId);
     const errorMessage = err instanceof Error ? err.message : String(err);
 
-    return {
-      id: options.dispatchId,
-      organizationId: options.payload.organizationId,
-      clientId: options.payload.clientId ?? 'unknown',
-      opportunityId: options.payload.id,
-      targetWebhookUrl: options.targetWebhookUrl,
-      status: 'FAILED',
-      httpStatus: null,
-      responseBody: null,
-      errorMessage: `Real network transmission failed: ${errorMessage}`,
-      attemptCount: 1,
+    return createDispatchFailure(
+      options,
+      `Real network transmission failed: ${errorMessage}`,
       dispatchedAt,
-      acknowledgedAt: null,
-    };
+      null
+    );
   }
 }
 

@@ -30,7 +30,7 @@ Write-Host "   GIENI OS MONOREPO - STOPPING SERVERS                             
 Write-Host " ====================================================================== " -ForegroundColor DarkYellow
 Write-Host ""
 
-function Kill-ProcessById ([int]$ProcessId, [int]$Port, [string]$ServiceName) {
+function Stop-ProcessById ([int]$ProcessId, [int]$Port, [string]$ServiceName) {
     if ($ProcessId -le 0) {
         return
     }
@@ -52,7 +52,7 @@ function Stop-ProcessOnPort ([int]$Port, [string]$ServiceName) {
             return
         }
         foreach ($conn in $connections) {
-            Kill-ProcessById -ProcessId $conn.OwningProcess -Port $Port -ServiceName $ServiceName
+            Stop-ProcessById -ProcessId $conn.OwningProcess -Port $Port -ServiceName $ServiceName
         }
     } catch {
         Write-Host " [!] Error stopping process on Port $Port : $_" -ForegroundColor Red

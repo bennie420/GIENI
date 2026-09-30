@@ -46,7 +46,7 @@ export default function ClientPortal({ initialData }: ClientPortalProps) {
   ) => {
     try {
       setSubmittingFeedback(true);
-      const newFeedback = await submitClientFeedback(pofId, disposition, notes);
+      const newFeedback = await submitClientFeedback({ opportunityId: pofId, disposition, notes });
       setFeedbackList((prev) => [newFeedback, ...prev]);
       setFeedbackSuccessMessage(`Disposition '${disposition}' logged successfully for case.`);
       setFeedbackPofId(null);

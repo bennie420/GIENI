@@ -37,7 +37,7 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
   const handleResolveException = async (exceptionId: string) => {
     if (!resolutionText.trim()) return;
     try {
-      await resolveException(exceptionId, resolutionText);
+      await resolveException({ exceptionId, resolutionNote: resolutionText });
       setData((prev) => ({
         ...prev,
         exceptions: prev.exceptions.map((exc) =>
@@ -57,7 +57,7 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
   const handleVerifyClaim = async (claimId: string) => {
     try {
       setVerifyingClaimId(claimId);
-      await verifyClaim(claimId, 'operator_user');
+      await verifyClaim({ claimId, verifierId: 'operator_user' });
       setData((prev) => ({
         ...prev,
         claims: prev.claims.map((c) =>

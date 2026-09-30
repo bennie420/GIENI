@@ -74,7 +74,7 @@ export default function QcTab({
     setPublishResult(null);
 
     try {
-      const result = await certifyAndPublishOpportunityAction(selectedOpp.id);
+      const result = await certifyAndPublishOpportunityAction({ opportunityId: selectedOpp.id });
       setPublishResult({
         pofId: result.pof.id,
         publishedAt: result.pof.publishedAt,
