@@ -244,7 +244,13 @@ export async function certifyAndPublishOpportunityAction(
   await pofRepo.create(scope, pof as any);
   await oppRepo.update(scope, opp.id, { status: 'PUBLISHED' });
 
-  const qcReview = buildQCReviewRecord(opp, scope, pof, unresolvedExceptions.length, now);
+  const qcReview = buildQCReviewRecord({
+    opp,
+    scope,
+    pof,
+    unresolvedCount: unresolvedExceptions.length,
+    now,
+  });
   await qcRepo.create(scope, qcReview as any);
 
   const dispatchResult = await dispatchDeliveryWebhook(pof, input);

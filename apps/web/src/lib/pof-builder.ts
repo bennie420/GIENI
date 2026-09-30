@@ -106,13 +106,16 @@ export function buildPOFFromOpportunity(
   };
 }
 
-export function buildQCReviewRecord(
-  opp: Opportunity,
-  scope: TenantScope,
-  pof: ProbateOpportunityFile,
-  unresolvedCount: number,
-  now: string
-): QCReview {
+export interface BuildQCReviewRecordParams {
+  opp: Opportunity;
+  scope: TenantScope;
+  pof: ProbateOpportunityFile;
+  unresolvedCount: number;
+  now?: string;
+}
+
+export function buildQCReviewRecord(params: BuildQCReviewRecordParams): QCReview {
+  const { opp, scope, pof, unresolvedCount, now = new Date().toISOString() } = params;
   return {
     id: `qcrev_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
     organizationId: scope.organizationId,
