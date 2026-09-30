@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { ProbateOpportunityFile, LEGAL_DISCLAIMER } from '@gieni/delivery';
 import { PofCard } from './PofCard';
+import { updateClientCountySubscriptionsAction } from '../../../lib/actions';
 
 interface OnboardingHeroProps {
   onExploreSample: (sample: ProbateOpportunityFile) => void;
@@ -68,6 +69,39 @@ export const SAMPLE_OPPORTUNITY: ProbateOpportunityFile = {
 
 export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: OnboardingHeroProps) {
   const [showSampleCard, setShowSampleCard] = useState(false);
+  const [selectedCounties, setSelectedCounties] = useState<string[]>([
+    'county_travis_tx',
+    'county_king_wa',
+  ]);
+  const [isSavingCounties, setIsSavingCounties] = useState(false);
+  const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
+
+  const availableCounties = [
+    { id: 'county_travis_tx', label: 'Travis County, TX' },
+    { id: 'county_pierce_wa', label: 'Pierce County, WA' },
+    { id: 'county_king_wa', label: 'King County, WA' },
+    { id: 'county_thurston_wa', label: 'Thurston County, WA' },
+    { id: 'county_maricopa_az', label: 'Maricopa County, AZ' },
+  ];
+
+  const toggleCounty = (id: string) => {
+    setSelectedCounties((prev) =>
+      prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
+    );
+  };
+
+  const handleSaveCounties = async () => {
+    try {
+      setIsSavingCounties(true);
+      await updateClientCountySubscriptionsAction(selectedCounties);
+      setSaveSuccessMsg('County coverage preferences saved to client account!');
+      setTimeout(() => setSaveSuccessMsg(null), 4000);
+    } catch (err: unknown) {
+      alert(`Error saving preferences: ${err instanceof Error ? err.message : String(err)}`);
+    } finally {
+      setIsSavingCounties(false);
+    }
+  };
 
   return (
     <div
@@ -146,6 +180,71 @@ export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: Onboardi
             Configure Webhook Endpoint
           </button>
         </div>
+      </div>
+
+      {/* Target County Selection Selector (W01) */}
+      <div
+        style={{
+          marginTop: '20px',
+          padding: '14px 16px',
+          borderRadius: '8px',
+          background: '#f1f5f9',
+          border: '1px solid #e2e8f0',
+        }}
+      >
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px', marginBottom: '10px' }}>
+          <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#334155' }}>
+            SELECT TARGET COUNTY JURISDICTIONS:
+          </span>
+          <button
+            onClick={handleSaveCounties}
+            disabled={isSavingCounties}
+            style={{
+              padding: '5px 12px',
+              background: '#0f172a',
+              color: '#ffffff',
+              border: 'none',
+              borderRadius: '4px',
+              fontSize: '0.8rem',
+              fontWeight: 600,
+              cursor: 'pointer',
+            }}
+          >
+            {isSavingCounties ? 'Saving...' : 'Save Coverage Preferences'}
+          </button>
+        </div>
+
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {availableCounties.map((c) => {
+            const isSelected = selectedCounties.includes(c.id);
+            return (
+              <button
+                key={c.id}
+                type="button"
+                onClick={() => toggleCounty(c.id)}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '20px',
+                  border: isSelected ? '1px solid #2563eb' : '1px solid #cbd5e1',
+                  background: isSelected ? '#eff6ff' : '#ffffff',
+                  color: isSelected ? '#1d4ed8' : '#64748b',
+                  fontSize: '0.8rem',
+                  fontWeight: isSelected ? 600 : 500,
+                  cursor: 'pointer',
+                }}
+              >
+                {isSelected ? '✓ ' : '+ '}
+                {c.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {saveSuccessMsg && (
+          <div style={{ marginTop: '8px', fontSize: '0.8rem', color: '#16a34a', fontWeight: 600 }}>
+            ✓ {saveSuccessMsg}
+          </div>
+        )}
       </div>
 
       <div

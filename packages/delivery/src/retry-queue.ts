@@ -132,6 +132,18 @@ export class WebhookRetryQueue {
 
     return dispatchResult;
   }
+
+  /**
+   * Processes all currently due pending retries with authentic network dispatches.
+   */
+  async processAllPending(now: Date = new Date()): Promise<DeliveryDispatch[]> {
+    const pending = this.getPendingItems(now);
+    const results: DeliveryDispatch[] = [];
+    for (const item of pending) {
+      results.push(await this.processItem(item.id));
+    }
+    return results;
+  }
 }
 
 export const defaultWebhookRetryQueue = new WebhookRetryQueue();

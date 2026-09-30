@@ -2,7 +2,12 @@
 
 import React, { useState } from 'react';
 import { submitClientFeedbackAction as submitClientFeedback } from '../../lib/actions';
-import { ClientDisposition, ProbateOpportunityFile, ClientFeedback } from '@gieni/delivery';
+import {
+  ClientDisposition,
+  ProbateOpportunityFile,
+  ClientFeedback,
+  analyzeClientFeedbackDispositions,
+} from '@gieni/delivery';
 import { PofCard } from './components/PofCard';
 import { EvidenceModal } from './components/EvidenceModal';
 import { DispositionModal } from './components/DispositionModal';
@@ -26,6 +31,13 @@ export default function ClientPortal({ initialData }: ClientPortalProps) {
   const [submittingFeedback, setSubmittingFeedback] = useState(false);
   const [feedbackSuccessMessage, setFeedbackSuccessMessage] = useState<string | null>(null);
   const [isWebhookModalOpen, setIsWebhookModalOpen] = useState(false);
+  const [expansionRequested, setExpansionRequested] = useState(false);
+
+  const analytics = analyzeClientFeedbackDispositions(feedbackList);
+  const isExpansionEligible =
+    analytics.globalMetrics.dealClosedCount >= 1 ||
+    analytics.globalMetrics.appointmentSetCount >= 2 ||
+    Object.values(analytics.countyBreakdown).some((b) => b.expansionEligible);
 
   const handleFeedbackSubmit = async (
     pofId: string,
@@ -118,6 +130,56 @@ export default function ClientPortal({ initialData }: ClientPortalProps) {
           onExploreSample={(sample) => setSelectedPofForEvidence(sample)}
           onOpenWebhookSetup={() => setIsWebhookModalOpen(true)}
         />
+      )}
+
+      {/* Customer Expansion Milestone Banner (W05) */}
+      {isExpansionEligible && (
+        <div
+          style={{
+            background: 'linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%)',
+            border: '1px solid #fde68a',
+            borderRadius: '10px',
+            padding: '16px 20px',
+            marginTop: '20px',
+            marginBottom: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '12px',
+          }}
+        >
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '1.2rem' }}>🏆</span>
+              <strong style={{ color: '#92400e', fontSize: '0.95rem' }}>
+                Acquisition Milestone Reached ({analytics.globalMetrics.dealClosedCount} Closed / {analytics.globalMetrics.appointmentSetCount} Appts)
+              </strong>
+            </div>
+            <p style={{ color: '#78350f', fontSize: '0.85rem', margin: '4px 0 0 0' }}>
+              Your organization has validated deal conversion in Travis County. You are eligible to activate adjacent county feeds (Williamson, Hays, King WA, Pierce WA) at preferred pilot terms.
+            </p>
+          </div>
+          <button
+            onClick={() => {
+              setExpansionRequested(true);
+              alert('Expansion request submitted! Our onboarding operations team will provision adjacent county feeds for your client organization.');
+            }}
+            disabled={expansionRequested}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '6px',
+              background: expansionRequested ? '#78350f' : '#b45309',
+              color: '#ffffff',
+              border: 'none',
+              fontWeight: 600,
+              fontSize: '0.85rem',
+              cursor: expansionRequested ? 'default' : 'pointer',
+            }}
+          >
+            {expansionRequested ? '✓ Expansion Requested' : 'Request Adjacent County Feeds &rarr;'}
+          </button>
+        </div>
       )}
 
       {/* Feed List */}

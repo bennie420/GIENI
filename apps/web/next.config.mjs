@@ -22,7 +22,7 @@ const nextConfig = {
     '@gieni/qc',
     '@gieni/delivery',
   ],
-  webpack: (config) => {
+  webpack: (config, { isServer, webpack: wp }) => {
     config.resolve.extensionAlias = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],
     };
@@ -30,6 +30,21 @@ const nextConfig = {
       ...config.resolve.alias,
       '@gieni/county-adapters': path.resolve(__dirname, '../../packages/county-adapters/src/index.ts'),
     };
+    if (!isServer) {
+      config.plugins.push(
+        new wp.NormalModuleReplacementPlugin(/^node:/, (resource) => {
+          resource.request = resource.request.replace(/^node:/, '');
+        })
+      );
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        crypto: false,
+        fs: false,
+        path: false,
+        net: false,
+        tls: false,
+      };
+    }
     return config;
   },
 };

@@ -65,6 +65,8 @@ export interface IngestionRunResult {
   exceptionsFlagged: number;
   layoutDriftDetected: boolean;
   driftConfidence: number;
+  persistenceStatus?: 'SUCCESS' | 'FAILED' | 'SKIPPED';
+  persistenceError?: string | null;
   telemetry: IngestionTelemetryEvent[];
   data: {
     cases: ProbateCase[];
@@ -1055,6 +1057,8 @@ export class MunicipalIngestionPipeline {
       exceptionsFlagged: params.exceptions.length,
       layoutDriftDetected: params.driftResult.hasDrift,
       driftConfidence: params.driftResult.driftConfidence,
+      persistenceStatus: 'SKIPPED',
+      persistenceError: null,
       telemetry: params.telemetry,
       data: {
         cases: params.cases,
