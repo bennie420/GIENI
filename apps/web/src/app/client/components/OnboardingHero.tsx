@@ -209,6 +209,84 @@ function SampleOpportunityPreview({ onExploreSample }: SampleOpportunityPreviewP
   );
 }
 
+interface OnboardingWelcomeHeaderProps {
+  showSampleCard: boolean;
+  onToggleSample: () => void;
+  onOpenWebhookSetup: () => void;
+}
+
+function OnboardingWelcomeHeader({
+  showSampleCard,
+  onToggleSample,
+  onOpenWebhookSetup,
+}: OnboardingWelcomeHeaderProps) {
+  return (
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
+      <div style={{ maxWidth: '650px' }}>
+        <span
+          style={{
+            display: 'inline-block',
+            background: '#e8f0fe',
+            color: '#1a73e8',
+            fontSize: '0.75rem',
+            fontWeight: 700,
+            padding: '4px 10px',
+            borderRadius: '999px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.04em',
+            marginBottom: '10px',
+          }}
+        >
+          Welcome to Gieni OS
+        </span>
+        <h2 style={{ fontSize: '1.45rem', fontWeight: 700, color: '#202124', marginBottom: '8px' }}>
+          Zero-Synthetic Probate Intelligence Feed
+        </h2>
+        <p style={{ color: '#5f6368', fontSize: '0.95rem', lineHeight: '1.5' }}>
+          Your organization is configured for live municipal publication. When Travis County, King County, or Pierce County records pass Quality Control and publication gates, verified files will stream here instantly.
+        </p>
+      </div>
+
+      <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+        <button
+          onClick={onToggleSample}
+          style={{
+            padding: '10px 16px',
+            background: '#1a73e8',
+            color: '#ffffff',
+            border: 'none',
+            borderRadius: '6px',
+            fontWeight: 600,
+            fontSize: '0.88rem',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '6px',
+          }}
+        >
+          {showSampleCard ? 'Hide Verified Sample' : 'Explore Verified Sample Dossier'}
+        </button>
+
+        <button
+          onClick={onOpenWebhookSetup}
+          style={{
+            padding: '10px 16px',
+            background: '#ffffff',
+            color: '#1a73e8',
+            border: '1px solid #dadce0',
+            borderRadius: '6px',
+            fontWeight: 600,
+            fontSize: '0.88rem',
+            cursor: 'pointer',
+          }}
+        >
+          Configure Webhook Endpoint
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: OnboardingHeroProps) {
   const [showSampleCard, setShowSampleCard] = useState(false);
   const [selectedCounties, setSelectedCounties] = useState<string[]>([
@@ -257,70 +335,11 @@ export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: Onboardi
         boxShadow: '0 2px 8px rgba(26, 115, 232, 0.06)',
       }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
-        <div style={{ maxWidth: '650px' }}>
-          <span
-            style={{
-              display: 'inline-block',
-              background: '#e8f0fe',
-              color: '#1a73e8',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              padding: '4px 10px',
-              borderRadius: '999px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.04em',
-              marginBottom: '10px',
-            }}
-          >
-            Welcome to Gieni OS
-          </span>
-          <h2 style={{ fontSize: '1.45rem', fontWeight: 700, color: '#202124', marginBottom: '8px' }}>
-            Zero-Synthetic Probate Intelligence Feed
-          </h2>
-          <p style={{ color: '#5f6368', fontSize: '0.95rem', lineHeight: '1.5' }}>
-            Your organization is configured for live municipal publication. When Travis County, King County, or Pierce County records pass Quality Control and publication gates, verified files will stream here instantly.
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-          <button
-            onClick={handleToggleSample}
-            style={{
-              padding: '10px 16px',
-              background: '#1a73e8',
-              color: '#ffffff',
-              border: 'none',
-              borderRadius: '6px',
-              fontWeight: 600,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            {showSampleCard ? 'Hide Verified Sample' : 'Explore Verified Sample Dossier'}
-          </button>
-
-          <button
-            onClick={onOpenWebhookSetup}
-            style={{
-              padding: '10px 16px',
-              background: '#ffffff',
-              color: '#1a73e8',
-              border: '1px solid #dadce0',
-              borderRadius: '6px',
-              fontWeight: 600,
-              fontSize: '0.88rem',
-              cursor: 'pointer',
-            }}
-          >
-            Configure Webhook Endpoint
-          </button>
-        </div>
-      </div>
-
+      <OnboardingWelcomeHeader
+        showSampleCard={showSampleCard}
+        onToggleSample={handleToggleSample}
+        onOpenWebhookSetup={onOpenWebhookSetup}
+      />
       <CountyCoverageSelector
         selectedCounties={selectedCounties}
         isSaving={isSavingCounties}
@@ -328,9 +347,7 @@ export function OnboardingHero({ onExploreSample, onOpenWebhookSetup }: Onboardi
         onToggleCounty={toggleCounty}
         onSaveCounties={handleSaveCounties}
       />
-
       <CoverageGuarantees />
-
       {showSampleCard && (
         <SampleOpportunityPreview onExploreSample={onExploreSample} />
       )}

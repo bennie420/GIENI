@@ -140,3 +140,23 @@ export async function dispatchNotifications(
   ];
   return dispatchDeliveryNotifications({ pof, channels });
 }
+
+export function filterOpportunityClaims(claims: Claim[], opp: Opportunity): {
+  oppClaims: Claim[];
+  unverifiedClaims: Claim[];
+} {
+  const oppClaims = claims.filter(
+    (c) => c.subjectId === opp.id || c.subjectId === opp.caseId || (opp.parcelId && c.subjectId === opp.parcelId)
+  );
+  const unverifiedClaims = oppClaims.filter((c) => c.verificationStatus !== 'VERIFIED');
+  return { oppClaims, unverifiedClaims };
+}
+
+export function filterUnresolvedExceptions(
+  exceptions: Array<{ id: string; status: string; opportunityId?: string; subjectId?: string }>,
+  oppId: string
+): Array<{ id: string; status: string }> {
+  return exceptions.filter(
+    (e) => (e.opportunityId === oppId || e.subjectId === oppId) && e.status !== 'RESOLVED'
+  );
+}

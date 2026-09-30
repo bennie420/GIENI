@@ -5,13 +5,7 @@ import {
   getTenantScopedRepository,
   TenantScope,
 } from '@gieni/database';
-import { 
-  Claim, 
-  ClaimAuditEvent, 
-  ClaimVerificationPolicy, 
-  computeAuditEventHash,
-  SourceDocument,
-} from '@gieni/evidence';
+import { Claim, ClaimAuditEvent, SourceDocument } from '@gieni/evidence';
 import { Opportunity } from '@gieni/scoring';
 import { InvestigationException, QCReview } from '@gieni/qc';
 import {
@@ -22,19 +16,22 @@ import {
   defaultWebhookRetryQueue,
   DeliveryNotificationChannel,
 } from '@gieni/delivery';
-import {
-  MunicipalIngestionPipeline,
-  defaultCountyAdapterRegistry,
-  IngestionRunResult,
-} from '@gieni/county-adapters';
+import { IngestionRunResult } from '@gieni/county-adapters';
 import { ClerkRole } from '@gieni/authz';
 import { getSessionTenantScope } from './tenant-context';
-import { persistIngestionRunData } from './ingestion-persistence';
+import { executeClaimVerification } from './claim-verifier';
+import {
+  executeMunicipalScraper,
+  queryCountyHealthTelemetry,
+  TriggerMunicipalScraperInput,
+} from './scraper-actions';
 import {
   buildPOFFromOpportunity,
   buildQCReviewRecord,
   dispatchDeliveryWebhook,
   dispatchNotifications,
+  filterOpportunityClaims,
+  filterUnresolvedExceptions,
 } from './pof-builder';
 
 export interface ActionScopeOptions {
@@ -113,56 +110,16 @@ export async function verifyClaimAction(
     excRepo.findMany(scope),
   ]);
 
-  const verifiedHashes = new Set<string>(docs.map((d: SourceDocument) => d.artifactSha256).filter(Boolean));
-
-  // Enforce ClaimVerificationPolicy (EI-002)
   const actorId = verifierId || scope.organizationId;
-  ClaimVerificationPolicy.assertCompliant(existingClaim, {
+  return executeClaimVerification({
+    claim: existingClaim,
     actorId,
-    actorRole: 'org:operator_admin',
-    verifiedArtifactHashes: verifiedHashes.size > 0 ? verifiedHashes : undefined,
-    knownExceptions: exceptions.map((e) => ({
-      id: e.id,
-      status: e.status,
-      subjectId: (e as any).subjectId ?? e.opportunityId,
-      type: e.type,
-    })),
+    scope,
+    docs,
+    exceptions,
+    claimRepo,
+    auditRepo,
   });
-
-  const previousStatus = existingClaim.verificationStatus;
-
-  const updatedClaim = await claimRepo.update(scope, claimId, {
-    verificationStatus: 'VERIFIED',
-    verifiedBy: actorId,
-    verifiedAt: new Date().toISOString(),
-  });
-
-  // Record immutable ClaimAuditEvent with tamper-evident auditHash (EI-001)
-  const now = new Date().toISOString();
-  const auditEventData = {
-    id: `audit_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-    organizationId: scope.organizationId,
-    countyId: scope.countyId || 'county_travis_tx',
-    claimId,
-    eventType: 'VERIFIED' as const,
-    previousStatus,
-    newStatus: 'VERIFIED' as const,
-    actorId,
-    rationale: 'Operator manual verification through Operator Console satisfying ClaimVerificationPolicy',
-    schemaVersion: 1,
-    previousAuditHash: null,
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  const auditHash = computeAuditEventHash(auditEventData, null);
-
-  await auditRepo.create(scope, {
-    ...auditEventData,
-    auditHash,
-  } as any);
-
-  return updatedClaim;
 }
 
 export interface SubmitClientFeedbackInput {
@@ -194,11 +151,7 @@ export async function submitClientFeedbackAction(
   });
 }
 
-export interface TriggerMunicipalScraperInput {
-  countyId: string;
-  lookbackDays?: number;
-  limit?: number;
-}
+export type { TriggerMunicipalScraperInput };
 
 /**
  * Triggers a live municipal scraper execution for a specified county jurisdiction.
@@ -209,73 +162,21 @@ export async function triggerMunicipalScraperAction(
   lookbackDaysArg = 14,
   limitArg = 100
 ): Promise<IngestionRunResult> {
-  const { countyId, lookbackDays, limit } =
+  const input =
     typeof countyIdOrInput === 'string'
       ? { countyId: countyIdOrInput, lookbackDays: lookbackDaysArg, limit: limitArg }
-      : {
-          countyId: countyIdOrInput.countyId,
-          lookbackDays: countyIdOrInput.lookbackDays ?? 14,
-          limit: countyIdOrInput.limit ?? 100,
-        };
+      : countyIdOrInput;
 
   const baseScope = await resolveActionScope({ isOperator: true });
-  const scope = { ...baseScope, countyId };
-  const result = await MunicipalIngestionPipeline.execute({
-    countyId,
-    lookbackDays,
-    limit,
-  });
-
-  let persistenceSucceeded = false;
-  let persistenceError: string | null = null;
-  try {
-    let db: any = undefined;
-    try {
-      db = await getMongoDb();
-    } catch {
-      // Atlas unreachable in local/sandbox, will persist to local store
-    }
-    await persistIngestionRunData(db, scope, countyId, result.data);
-    persistenceSucceeded = true;
-  } catch (dbErr: any) {
-    persistenceError = dbErr instanceof Error ? dbErr.message : String(dbErr);
-    console.warn('[Municipal Ingestion] DB persistence warning:', persistenceError);
-  }
-
-  result.persistenceStatus = persistenceSucceeded ? 'SUCCESS' : 'FAILED';
-  result.persistenceError = persistenceError;
-
-  result.telemetry.push({
-    timestamp: new Date().toISOString(),
-    stage: 'COMPLETE',
-    level: persistenceSucceeded ? 'SUCCESS' : 'WARN',
-    message: persistenceSucceeded
-      ? `Ingestion run persisted successfully to tenant storage (${scope.organizationId})`
-      : `Ingestion run memory-only: Storage persistence failed: ${persistenceError}`,
-    details: { persistenceSucceeded, persistenceError },
-  });
-
-  return result;
+  const scope = { ...baseScope, countyId: input.countyId };
+  return executeMunicipalScraper(scope, input);
 }
 
 /**
  * Queries real-time health, circuit breaker state, and layout drift for all registered county adapters.
  */
 export async function getCountyHealthTelemetryAction() {
-  const supported = defaultCountyAdapterRegistry.listSupportedCounties();
-  const records = [];
-
-  for (const c of supported) {
-    const adapter = defaultCountyAdapterRegistry.getAdapter(c.countyId);
-    if (!adapter) continue;
-    const health = await adapter.getHealthStatus();
-    records.push({
-      ...health,
-      state: adapter.stateCode,
-    });
-  }
-
-  return records;
+  return queryCountyHealthTelemetry();
 }
 
 export interface PublishOpportunityInput {
@@ -327,13 +228,8 @@ export async function certifyAndPublishOpportunityAction(
     excRepo.findMany(scope),
   ]);
 
-  const oppClaims = allClaims.filter(
-    (c) => c.subjectId === opp.id || c.subjectId === opp.caseId || (opp.parcelId && c.subjectId === opp.parcelId)
-  );
-  const unverifiedClaims = oppClaims.filter((c) => c.verificationStatus !== 'VERIFIED');
-  const unresolvedExceptions = allExceptions.filter(
-    (e) => (e.opportunityId === opp.id || (e as any).subjectId === opp.id) && e.status !== 'RESOLVED'
-  );
+  const { oppClaims, unverifiedClaims } = filterOpportunityClaims(allClaims, opp);
+  const unresolvedExceptions = filterUnresolvedExceptions(allExceptions, opp.id);
 
   const now = new Date().toISOString();
   const pof = buildPOFFromOpportunity(opp, scope, oppClaims, now);

@@ -27,6 +27,97 @@ export interface ClientAnalyticsReport {
   scoringCalibrationNotes: string[];
 }
 
+interface FeedbackTallies {
+  contacted: number;
+  invalid: number;
+  notInterested: number;
+  appointmentSet: number;
+  dealClosed: number;
+  countyMap: Record<string, { total: number; closed: number }>;
+}
+
+function tallyFeedbackStats(feedbackList: ClientFeedback[]): FeedbackTallies {
+  const tallies: FeedbackTallies = {
+    contacted: 0,
+    invalid: 0,
+    notInterested: 0,
+    appointmentSet: 0,
+    dealClosed: 0,
+    countyMap: {},
+  };
+
+  for (const item of feedbackList) {
+    const cId = item.countyId || 'unknown';
+    const entry = (tallies.countyMap[cId] ??= { total: 0, closed: 0 });
+    entry.total += 1;
+
+    if (item.disposition === 'DEAL_CLOSED') {
+      tallies.dealClosed += 1;
+      entry.closed += 1;
+    } else if (item.disposition === 'CONTACTED') {
+      tallies.contacted += 1;
+    } else if (item.disposition === 'INVALID') {
+      tallies.invalid += 1;
+    } else if (item.disposition === 'NOT_INTERESTED') {
+      tallies.notInterested += 1;
+    } else if (item.disposition === 'APPOINTMENT_SET') {
+      tallies.appointmentSet += 1;
+    }
+  }
+
+  return tallies;
+}
+
+function buildCountyBreakdown(
+  countyMap: Record<string, { total: number; closed: number }>
+): Record<string, CountyPerformanceSummary> {
+  const breakdown: Record<string, CountyPerformanceSummary> = {};
+  for (const [countyId, stats] of Object.entries(countyMap)) {
+    breakdown[countyId] = {
+      countyId,
+      totalFeedbackCount: stats.total,
+      positiveConversions: stats.closed,
+      expansionEligible: stats.closed >= 2,
+    };
+  }
+  return breakdown;
+}
+
+function generateCalibrationNotes(total: number, invalid: number, dealClosed: number): string[] {
+  const notes: string[] = [];
+  if (invalid > 0 && invalid / Math.max(1, total) > 0.15) {
+    notes.push(
+      `⚠️ Elevated invalid rate (${Math.round((invalid / total) * 100)}%): Increase equity and deed verification weight in scoring engine.`
+    );
+  }
+  if (dealClosed >= 3) {
+    notes.push(
+      `✓ High deal conversion velocity: Consider raising Authority Tier 1 coefficient weight.`
+    );
+  }
+  return notes;
+}
+
+function computeMetrics(tallies: FeedbackTallies, total: number): DispositionMetrics {
+  const { contacted, invalid, notInterested, appointmentSet, dealClosed } = tallies;
+  const contactedTotal = contacted + appointmentSet + dealClosed;
+  const contactToAppt = contactedTotal > 0 ? (appointmentSet + dealClosed) / contactedTotal : 0;
+  const apptToClose = appointmentSet + dealClosed > 0 ? dealClosed / (appointmentSet + dealClosed) : 0;
+  const convRate = total > 0 ? dealClosed / total : 0;
+
+  return {
+    totalDispositions: total,
+    contactedCount: contacted,
+    invalidCount: invalid,
+    notInterestedCount: notInterested,
+    appointmentSetCount: appointmentSet,
+    dealClosedCount: dealClosed,
+    contactToAppointmentRate: Math.round(contactToAppt * 100) / 100,
+    appointmentToCloseRate: Math.round(apptToClose * 100) / 100,
+    conversionRate: Math.round(convRate * 100) / 100,
+  };
+}
+
 /**
  * Aggregates client feedback dispositions into conversion performance analytics
  * to guide scoring calibration and county expansion opportunities (ISSUE-009 / W05).
@@ -34,84 +125,14 @@ export interface ClientAnalyticsReport {
 export function analyzeClientFeedbackDispositions(
   feedbackList: ClientFeedback[]
 ): ClientAnalyticsReport {
-  let contacted = 0;
-  let invalid = 0;
-  let notInterested = 0;
-  let appointmentSet = 0;
-  let dealClosed = 0;
-
-  const countyMap: Record<string, { total: number; closed: number }> = {};
-
-  for (const item of feedbackList) {
-    const cId = item.countyId || 'unknown';
-    if (!countyMap[cId]) {
-      countyMap[cId] = { total: 0, closed: 0 };
-    }
-    countyMap[cId].total += 1;
-
-    switch (item.disposition) {
-      case 'CONTACTED':
-        contacted++;
-        break;
-      case 'INVALID':
-        invalid++;
-        break;
-      case 'NOT_INTERESTED':
-        notInterested++;
-        break;
-      case 'APPOINTMENT_SET':
-        appointmentSet++;
-        break;
-      case 'DEAL_CLOSED':
-        dealClosed++;
-        countyMap[cId].closed += 1;
-        break;
-    }
-  }
-
+  const tallies = tallyFeedbackStats(feedbackList);
   const total = feedbackList.length;
-  const contactedTotal = contacted + appointmentSet + dealClosed;
-  const contactToAppointmentRate = contactedTotal > 0 ? (appointmentSet + dealClosed) / contactedTotal : 0;
-  const appointmentToCloseRate = appointmentSet + dealClosed > 0 ? dealClosed / (appointmentSet + dealClosed) : 0;
-  const conversionRate = total > 0 ? dealClosed / total : 0;
-
-  const countyBreakdown: Record<string, CountyPerformanceSummary> = {};
-  for (const [countyId, stats] of Object.entries(countyMap)) {
-    countyBreakdown[countyId] = {
-      countyId,
-      totalFeedbackCount: stats.total,
-      positiveConversions: stats.closed,
-      expansionEligible: stats.closed >= 2,
-    };
-  }
-
-  const scoringCalibrationNotes: string[] = [];
-  if (invalid > 0 && invalid / Math.max(1, total) > 0.15) {
-    scoringCalibrationNotes.push(
-      `⚠️ Elevated invalid rate (${Math.round((invalid / total) * 100)}%): Increase equity and deed verification weight in scoring engine.`
-    );
-  }
-  if (dealClosed >= 3) {
-    scoringCalibrationNotes.push(
-      `✓ High deal conversion velocity: Consider raising Authority Tier 1 coefficient weight.`
-    );
-  }
 
   return {
     generatedAt: new Date().toISOString(),
     totalClientsAnalyzed: new Set(feedbackList.map((f) => f.clientId ?? 'unknown')).size,
-    globalMetrics: {
-      totalDispositions: total,
-      contactedCount: contacted,
-      invalidCount: invalid,
-      notInterestedCount: notInterested,
-      appointmentSetCount: appointmentSet,
-      dealClosedCount: dealClosed,
-      contactToAppointmentRate: Math.round(contactToAppointmentRate * 100) / 100,
-      appointmentToCloseRate: Math.round(appointmentToCloseRate * 100) / 100,
-      conversionRate: Math.round(conversionRate * 100) / 100,
-    },
-    countyBreakdown,
-    scoringCalibrationNotes,
+    globalMetrics: computeMetrics(tallies, total),
+    countyBreakdown: buildCountyBreakdown(tallies.countyMap),
+    scoringCalibrationNotes: generateCalibrationNotes(total, tallies.invalid, tallies.dealClosed),
   };
 }

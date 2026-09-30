@@ -257,44 +257,30 @@ test('Workflow Tracing: CorrelationContext propagates IDs and formats Sentry sco
   assert.doesNotThrow(() => WorkflowRunSchema.parse(runPayload));
 });
 
-test('QC: scanStalledHighValueReviews detects aging senior review exceptions', async () => {
-  const { scanStalledHighValueReviews, generateOperatorMorningBriefing } = await import(
-    '../../packages/qc/dist/index.js'
-  );
+function createMockHighValueException(id, hoursAgo, estimatedValue) {
+  return {
+    id,
+    organizationId: 'org_test',
+    countyId: 'county_travis_tx',
+    opportunityId: `opp_${id}`,
+    type: 'HIGH_VALUE_AMBIGUITY',
+    status: 'PENDING_REVIEW',
+    priority: 'EXPEDITE_SENIOR_REVIEW',
+    isSoftGate: true,
+    estimatedValue,
+    description: 'Expedite Senior Review',
+    assignedTo: 'role:senior_qc_lead',
+    createdAt: new Date(Date.now() - hoursAgo * 3600 * 1000).toISOString(),
+    updatedAt: new Date().toISOString(),
+    schemaVersion: 1,
+  };
+}
 
+test('QC: scanStalledHighValueReviews detects aging senior review exceptions', async () => {
+  const { scanStalledHighValueReviews } = await import('../../packages/qc/dist/index.js');
   const mockExceptions = [
-    {
-      id: 'exc_stalled_1',
-      organizationId: 'org_test',
-      countyId: 'county_travis_tx',
-      opportunityId: 'opp_high_1',
-      type: 'HIGH_VALUE_AMBIGUITY',
-      status: 'PENDING_REVIEW',
-      priority: 'EXPEDITE_SENIOR_REVIEW',
-      isSoftGate: true,
-      estimatedValue: 750000,
-      description: 'Expedite Senior Review',
-      assignedTo: 'role:senior_qc_lead',
-      createdAt: new Date(Date.now() - 30 * 3600 * 1000).toISOString(), // 30h ago
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
-    {
-      id: 'exc_fresh_2',
-      organizationId: 'org_test',
-      countyId: 'county_travis_tx',
-      opportunityId: 'opp_high_2',
-      type: 'HIGH_VALUE_AMBIGUITY',
-      status: 'PENDING_REVIEW',
-      priority: 'EXPEDITE_SENIOR_REVIEW',
-      isSoftGate: true,
-      estimatedValue: 600000,
-      description: 'Expedite Senior Review',
-      assignedTo: 'role:senior_qc_lead',
-      createdAt: new Date(Date.now() - 2 * 3600 * 1000).toISOString(), // 2h ago
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
+    createMockHighValueException('exc_stalled_1', 30, 750000),
+    createMockHighValueException('exc_fresh_2', 2, 600000),
   ];
 
   const alerts = scanStalledHighValueReviews({
@@ -306,8 +292,11 @@ test('QC: scanStalledHighValueReviews detects aging senior review exceptions', a
   assert.equal(alerts[0].exceptionId, 'exc_stalled_1');
   assert.equal(alerts[0].urgency, 'WARNING_STALLED_REVIEW');
   assert.ok(alerts[0].escalationMessage.includes('$750,000'));
+});
 
-  // Test Morning Briefing generation
+test('QC: generateOperatorMorningBriefing synthesizes county health and senior alerts', async () => {
+  const { generateOperatorMorningBriefing } = await import('../../packages/qc/dist/index.js');
+
   const briefing = generateOperatorMorningBriefing({
     organizationId: 'org_test',
     countyHealthReports: [

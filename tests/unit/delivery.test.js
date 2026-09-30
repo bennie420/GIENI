@@ -7,6 +7,7 @@ import {
 } from '../../packages/delivery/dist/index.js';
 
 function createTestSamplePOF(overrides = {}) {
+  const now = new Date().toISOString();
   return {
     id: 'pof_001',
     organizationId: 'org_gieni_ops',
@@ -21,22 +22,9 @@ function createTestSamplePOF(overrides = {}) {
       estimatedEquity: 570000,
       recordsLocated: true,
     },
-    ownership: {
-      status: 'DECEDENT_SOLE_OWNER',
-      verifiedOwners: ['Arthur Jenkins'],
-    },
-    authority: {
-      status: 'CONFIRMED',
-      tier: 1,
-      fiduciaryName: 'Sarah Jenkins',
-      fiduciaryRole: 'EXECUTOR',
-      lettersIssued: true,
-    },
-    scoring: {
-      compositeScore: 95,
-      priorityBand: 'PRIORITY_A',
-      ruleVersion: 'v1.0.0-deterministic',
-    },
+    ownership: { status: 'DECEDENT_SOLE_OWNER', verifiedOwners: ['Arthur Jenkins'] },
+    authority: { status: 'CONFIRMED', tier: 1, fiduciaryName: 'Sarah Jenkins', fiduciaryRole: 'EXECUTOR', lettersIssued: true },
+    scoring: { compositeScore: 95, priorityBand: 'PRIORITY_A', ruleVersion: 'v1.0.0-deterministic' },
     evidence: [
       {
         claimPath: 'authority.fiduciary',
@@ -49,9 +37,9 @@ function createTestSamplePOF(overrides = {}) {
     ],
     recommendedAction: 'Contact Executor to present acquisition terms',
     disclaimer: LEGAL_DISCLAIMER,
-    publishedAt: new Date().toISOString(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
+    publishedAt: now,
+    createdAt: now,
+    updatedAt: now,
     schemaVersion: 1,
     ...overrides,
   };
@@ -138,39 +126,7 @@ test('Delivery: WebhookRetryQueue escalates to EXHAUSTED_DEAD_LETTER when maxAtt
 
 test('Delivery: dispatchDeliveryNotifications transmits email and in-app alerts', async () => {
   const { dispatchDeliveryNotifications } = await import('../../packages/delivery/dist/index.js');
-
-  const samplePOF = createTestSamplePOF({
-    id: 'pof_notif_001',
-    organizationId: 'org_test',
-    clientId: 'client_acp',
-    caseNumber: 'PR-2026-09912',
-    decedentName: 'Eleanor Sterling',
-    property: {
-      apn: '01-2894-0012',
-      addressText: '3814 Westlake Hills Dr, Austin, TX',
-      assessedValue: 1250000,
-      estimatedEquity: 980000,
-      recordsLocated: true,
-    },
-    ownership: {
-      status: 'DECEDENT_SOLE_OWNER',
-      verifiedOwners: ['Eleanor Sterling'],
-    },
-    authority: {
-      status: 'CONFIRMED',
-      tier: 1,
-      fiduciaryName: 'Marcus Sterling',
-      fiduciaryRole: 'EXECUTOR',
-      lettersIssued: true,
-    },
-    scoring: {
-      compositeScore: 96,
-      priorityBand: 'PRIORITY_A',
-      ruleVersion: 'v1.0.0-deterministic',
-    },
-    evidence: [],
-    recommendedAction: 'Immediate high-equity outreach',
-  });
+  const samplePOF = createTestSamplePOF({ id: 'pof_notif_001', evidence: [] });
 
   const events = await dispatchDeliveryNotifications({
     pof: samplePOF,
@@ -189,46 +145,27 @@ test('Delivery: dispatchDeliveryNotifications transmits email and in-app alerts'
   assert.equal(events[1].status, 'SENT');
 });
 
+function createTestFeedback(id, disposition, countyId = 'county_travis_tx') {
+  return {
+    id,
+    organizationId: 'org_test',
+    clientId: 'client_1',
+    countyId,
+    opportunityId: `opp_${id}`,
+    disposition,
+    submittedAt: new Date().toISOString(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    schemaVersion: 1,
+  };
+}
+
 test('Delivery: analyzeClientFeedbackDispositions aggregates conversion metrics and expansion triggers', async () => {
   const { analyzeClientFeedbackDispositions } = await import('../../packages/delivery/dist/index.js');
-
   const feedbackList = [
-    {
-      id: 'fb_1',
-      organizationId: 'org_test',
-      clientId: 'client_1',
-      countyId: 'county_travis_tx',
-      opportunityId: 'opp_1',
-      disposition: 'CONTACTED',
-      submittedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
-    {
-      id: 'fb_2',
-      organizationId: 'org_test',
-      clientId: 'client_1',
-      countyId: 'county_travis_tx',
-      opportunityId: 'opp_2',
-      disposition: 'DEAL_CLOSED',
-      submittedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
-    {
-      id: 'fb_3',
-      organizationId: 'org_test',
-      clientId: 'client_1',
-      countyId: 'county_travis_tx',
-      opportunityId: 'opp_3',
-      disposition: 'DEAL_CLOSED',
-      submittedAt: new Date().toISOString(),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      schemaVersion: 1,
-    },
+    createTestFeedback('fb_1', 'CONTACTED'),
+    createTestFeedback('fb_2', 'DEAL_CLOSED'),
+    createTestFeedback('fb_3', 'DEAL_CLOSED'),
   ];
 
   const report = analyzeClientFeedbackDispositions(feedbackList);

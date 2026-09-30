@@ -50,13 +50,16 @@ function createDispatchSuccess(
   };
 }
 
-function createDispatchFailure(
-  options: WebhookDispatchOptions,
-  errorMessage: string,
-  dispatchedAt: string,
-  httpStatus: number | null = null,
-  responseBodyText: string | null = null
-): DeliveryDispatch {
+interface DispatchFailureParams {
+  options: WebhookDispatchOptions;
+  errorMessage: string;
+  dispatchedAt: string;
+  httpStatus?: number | null;
+  responseBodyText?: string | null;
+}
+
+function createDispatchFailure(params: DispatchFailureParams): DeliveryDispatch {
+  const { options, errorMessage, dispatchedAt, httpStatus = null, responseBodyText = null } = params;
   return {
     id: options.dispatchId,
     organizationId: options.payload.organizationId,
@@ -118,23 +121,22 @@ export async function dispatchRealWebhook(
       return createDispatchSuccess(options, httpStatus, responseBodyText, dispatchedAt);
     }
 
-    return createDispatchFailure(
+    return createDispatchFailure({
       options,
-      `Webhook rejected with HTTP status ${httpStatus}`,
+      errorMessage: `Webhook rejected with HTTP status ${httpStatus}`,
       dispatchedAt,
       httpStatus,
-      responseBodyText
-    );
+      responseBodyText,
+    });
   } catch (err: unknown) {
     clearTimeout(timeoutId);
     const errorMessage = err instanceof Error ? err.message : String(err);
 
-    return createDispatchFailure(
+    return createDispatchFailure({
       options,
-      `Real network transmission failed: ${errorMessage}`,
+      errorMessage: `Real network transmission failed: ${errorMessage}`,
       dispatchedAt,
-      null
-    );
+    });
   }
 }
 
