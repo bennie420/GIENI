@@ -47,8 +47,23 @@ export default function TabNav({
       <button
         className={`tab-btn ${activeTab === 'exceptions' ? 'active' : ''}`}
         onClick={() => setActiveTab('exceptions')}
+        style={{ position: 'relative' }}
       >
-        5. Exceptions / Tasks {pendingExceptionsCount > 0 && `(${pendingExceptionsCount})`}
+        5. Exceptions / Tasks {pendingExceptionsCount > 0 && (
+          <span
+            style={{
+              marginLeft: '6px',
+              padding: '2px 6px',
+              borderRadius: '999px',
+              background: '#c5221f',
+              color: '#ffffff',
+              fontSize: '0.72rem',
+              fontWeight: 700,
+            }}
+          >
+            {pendingExceptionsCount}
+          </span>
+        )}
       </button>
       <button
         className={`tab-btn ${activeTab === 'qc' ? 'active' : ''}`}

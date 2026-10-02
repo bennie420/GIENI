@@ -16,7 +16,9 @@ import ExceptionsTab from './components/ExceptionsTab';
 import QcTab from './components/QcTab';
 import CountyHealthTab from './components/CountyHealthTab';
 import ScraperConsoleModal from './components/ScraperConsoleModal';
+import MorningBriefingModal from './components/MorningBriefingModal';
 import { IngestionRunResult } from '@gieni/county-adapters';
+import { scanStalledHighValueReviews } from '@gieni/qc';
 
 interface OperatorConsoleProps {
   initialData: OperatorData;
@@ -30,11 +32,12 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
   const [verifyingClaimId, setVerifyingClaimId] = useState<string | null>(null);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
   const [isScraperModalOpen, setIsScraperModalOpen] = useState(false);
+  const [isBriefingModalOpen, setIsBriefingModalOpen] = useState(false);
 
   const handleResolveException = async (exceptionId: string) => {
     if (!resolutionText.trim()) return;
     try {
-      await resolveException(exceptionId, resolutionText);
+      await resolveException({ exceptionId, resolutionNote: resolutionText });
       setData((prev) => ({
         ...prev,
         exceptions: prev.exceptions.map((exc) =>
@@ -54,7 +57,7 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
   const handleVerifyClaim = async (claimId: string) => {
     try {
       setVerifyingClaimId(claimId);
-      await verifyClaim(claimId, 'operator_user');
+      await verifyClaim({ claimId, verifierId: 'operator_user' });
       setData((prev) => ({
         ...prev,
         claims: prev.claims.map((c) =>
@@ -123,12 +126,15 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
   const currentAuthority = data.authorities[0] ?? null;
   const currentOwnership = data.ownerships[0] ?? null;
   const pendingExceptions = data.exceptions.filter((e) => e.status === 'PENDING_REVIEW');
+  const stalledAlerts = scanStalledHighValueReviews({ exceptions: data.exceptions });
 
   return (
     <div>
       <ConsoleHeader
         isConnectedToAtlas={data.isConnectedToAtlas}
         actionMessage={actionMessage}
+        onOpenBriefing={() => setIsBriefingModalOpen(true)}
+        stalledHighValueCount={stalledAlerts.length}
       />
 
       <TabNav
@@ -174,7 +180,26 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
           onResolveException={handleResolveException}
         />
       )}
-      {activeTab === 'qc' && <QcTab hasPendingExceptions={pendingExceptions.length > 0} />}
+      {activeTab === 'qc' && (
+        <QcTab
+          hasPendingExceptions={pendingExceptions.length > 0}
+          opportunities={data.opportunities}
+          claims={data.claims}
+          exceptions={data.exceptions}
+          onPublishSuccess={(publishedPof) => {
+            setData((prev) => ({
+              ...prev,
+              opportunities: prev.opportunities.map((opp) =>
+                `pof_${opp.id}` === publishedPof.id || opp.id === publishedPof.id.replace('pof_', '')
+                  ? { ...opp, status: 'PUBLISHED' }
+                  : opp
+              ),
+              deliveries: [publishedPof, ...prev.deliveries],
+            }));
+            setActionMessage(`Opportunity certified and published to client feed as ${publishedPof.id}`);
+          }}
+        />
+      )}
       {activeTab === 'counties' && (
         <CountyHealthTab onOpenScraperModal={() => setIsScraperModalOpen(true)} />
       )}
@@ -184,6 +209,12 @@ export default function OperatorConsole({ initialData }: OperatorConsoleProps) {
         isOpen={isScraperModalOpen}
         onClose={() => setIsScraperModalOpen(false)}
         onIngestSuccess={handleIngestSuccess}
+      />
+
+      {/* Operator Morning Health Briefing Modal (W07) */}
+      <MorningBriefingModal
+        isOpen={isBriefingModalOpen}
+        onClose={() => setIsBriefingModalOpen(false)}
       />
     </div>
   );

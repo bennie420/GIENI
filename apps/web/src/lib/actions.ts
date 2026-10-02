@@ -3,29 +3,43 @@
 import {
   getMongoDb,
   getTenantScopedRepository,
+  TenantScope,
 } from '@gieni/database';
-import { 
-  Claim, 
-  ClaimAuditEvent, 
-  ClaimVerificationPolicy, 
-  computeAuditEventHash,
-  SourceDocument,
-} from '@gieni/evidence';
-import { ProbateCase, AuthorityAssessment } from '@gieni/authority';
-import { PropertyParcel } from '@gieni/property';
-import { OwnershipAssessment } from '@gieni/ownership';
-import { Opportunity, OpportunityScore } from '@gieni/scoring';
-import { InvestigationException } from '@gieni/qc';
-import { ClientFeedback, ClientDisposition } from '@gieni/delivery';
+import { Claim, ClaimAuditEvent, SourceDocument } from '@gieni/evidence';
+import { Opportunity } from '@gieni/scoring';
+import { InvestigationException, QCReview } from '@gieni/qc';
 import {
-  MunicipalIngestionPipeline,
-  defaultCountyAdapterRegistry,
-  IngestionRunResult,
-} from '@gieni/county-adapters';
-import { TenantScope } from '@gieni/database';
+  ClientFeedback,
+  ClientDisposition,
+  ProbateOpportunityFile,
+  assertDeliveryEligibility,
+  defaultWebhookRetryQueue,
+  DeliveryNotificationChannel,
+} from '@gieni/delivery';
+import { IngestionRunResult } from '@gieni/county-adapters';
+import { ClerkRole } from '@gieni/authz';
 import { getSessionTenantScope } from './tenant-context';
+import { executeClaimVerification } from './claim-verifier';
+import {
+  executeMunicipalScraper,
+  queryCountyHealthTelemetry,
+  TriggerMunicipalScraperInput,
+} from './scraper-actions';
+import {
+  buildPOFFromOpportunity,
+  buildQCReviewRecord,
+  dispatchDeliveryWebhook,
+  dispatchNotifications,
+  filterOpportunityClaims,
+  filterUnresolvedExceptions,
+} from './pof-builder';
 
-async function resolveActionScope(options?: { isOperator?: boolean; requiredRole?: any }): Promise<TenantScope> {
+export interface ActionScopeOptions {
+  isOperator?: boolean;
+  requiredRole?: ClerkRole;
+}
+
+async function resolveActionScope(options?: ActionScopeOptions): Promise<TenantScope> {
   try {
     return await getSessionTenantScope(options);
   } catch (err) {
@@ -40,7 +54,20 @@ async function resolveActionScope(options?: { isOperator?: boolean; requiredRole
   }
 }
 
-export async function resolveExceptionAction(exceptionId: string, resolutionNote: string) {
+export interface ResolveExceptionInput {
+  exceptionId: string;
+  resolutionNote: string;
+}
+
+export async function resolveExceptionAction(
+  exceptionIdOrInput: string | ResolveExceptionInput,
+  resolutionNoteArg?: string
+) {
+  const { exceptionId, resolutionNote } =
+    typeof exceptionIdOrInput === 'string'
+      ? { exceptionId: exceptionIdOrInput, resolutionNote: resolutionNoteArg ?? '' }
+      : exceptionIdOrInput;
+
   const scope = await resolveActionScope({ isOperator: true });
   const db = await getMongoDb();
   const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
@@ -51,7 +78,20 @@ export async function resolveExceptionAction(exceptionId: string, resolutionNote
   });
 }
 
-export async function verifyClaimAction(claimId: string, verifierId?: string) {
+export interface VerifyClaimInput {
+  claimId: string;
+  verifierId?: string;
+}
+
+export async function verifyClaimAction(
+  claimIdOrInput: string | VerifyClaimInput,
+  verifierIdArg?: string
+) {
+  const { claimId, verifierId } =
+    typeof claimIdOrInput === 'string'
+      ? { claimId: claimIdOrInput, verifierId: verifierIdArg }
+      : claimIdOrInput;
+
   const scope = await resolveActionScope({ isOperator: true });
   const db = await getMongoDb();
   const claimRepo = getTenantScopedRepository<Claim>('claims', db);
@@ -70,176 +110,199 @@ export async function verifyClaimAction(claimId: string, verifierId?: string) {
     excRepo.findMany(scope),
   ]);
 
-  const verifiedHashes = new Set<string>(docs.map((d: SourceDocument) => d.artifactSha256).filter(Boolean));
-
-  // Enforce ClaimVerificationPolicy (EI-002)
   const actorId = verifierId || scope.organizationId;
-  ClaimVerificationPolicy.assertCompliant(existingClaim, {
+  return executeClaimVerification({
+    claim: existingClaim,
     actorId,
-    actorRole: 'org:operator_admin',
-    verifiedArtifactHashes: verifiedHashes.size > 0 ? verifiedHashes : undefined,
-    knownExceptions: exceptions.map((e) => ({
-      id: e.id,
-      status: e.status,
-      subjectId: (e as any).subjectId ?? e.opportunityId,
-      type: e.type,
-    })),
+    scope,
+    docs,
+    exceptions,
+    claimRepo,
+    auditRepo,
   });
+}
 
-  const previousStatus = existingClaim.verificationStatus;
-
-  const updatedClaim = await claimRepo.update(scope, claimId, {
-    verificationStatus: 'VERIFIED',
-    verifiedBy: actorId,
-    verifiedAt: new Date().toISOString(),
-  });
-
-  // Record immutable ClaimAuditEvent with tamper-evident auditHash (EI-001)
-  const now = new Date().toISOString();
-  const auditEventData = {
-    id: `audit_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
-    organizationId: scope.organizationId,
-    countyId: scope.countyId || 'county_travis_tx',
-    claimId,
-    eventType: 'VERIFIED' as const,
-    previousStatus,
-    newStatus: 'VERIFIED' as const,
-    actorId,
-    rationale: 'Operator manual verification through Operator Console satisfying ClaimVerificationPolicy',
-    schemaVersion: 1,
-    previousAuditHash: null,
-    createdAt: now,
-    updatedAt: now,
-  };
-
-  const auditHash = computeAuditEventHash(auditEventData, null);
-
-  await auditRepo.create(scope, {
-    ...auditEventData,
-    auditHash,
-  } as any);
-
-  return updatedClaim;
+export interface SubmitClientFeedbackInput {
+  opportunityId: string;
+  disposition: ClientDisposition;
+  notes?: string | null;
 }
 
 export async function submitClientFeedbackAction(
-  opportunityId: string,
-  disposition: ClientDisposition,
-  notes?: string
+  opportunityIdOrInput: string | SubmitClientFeedbackInput,
+  dispositionArg?: ClientDisposition,
+  notesArg?: string
 ) {
+  const input =
+    typeof opportunityIdOrInput === 'string'
+      ? { opportunityId: opportunityIdOrInput, disposition: dispositionArg!, notes: notesArg }
+      : opportunityIdOrInput;
+
   const scope = await resolveActionScope({ requiredRole: 'org:client_user' });
   const db = await getMongoDb();
   const feedbackRepo = getTenantScopedRepository<ClientFeedback>('clientFeedback', db);
   return feedbackRepo.create(scope, {
     countyId: scope.countyId ?? 'county_travis_tx',
-    opportunityId,
-    disposition,
-    notes: notes ?? null,
+    opportunityId: input.opportunityId,
+    disposition: input.disposition,
+    notes: input.notes ?? null,
     submittedAt: new Date().toISOString(),
     schemaVersion: 1,
   });
 }
 
-/**
- * Triggers an authentic municipal docket scraper run via the County Adapter subsystem.
-async function persistBatchIfMissing<T extends { id: string }>(
-  repo: any,
-  scope: TenantScope,
-  countyId: string,
-  items: T[],
-  keySelector: (item: T) => string
-): Promise<void> {
-  const existing = await repo.findMany(scope);
-  const existingKeys = new Set(existing.map(keySelector));
-
-  for (const item of items) {
-    if (!existingKeys.has(keySelector(item))) {
-      const { id, createdAt, updatedAt, organizationId, ...payload } = item as any;
-      await repo.create(scope, {
-        ...payload,
-        countyId,
-      });
-    }
-  }
-}
-
-async function persistIngestionRunData(
-  db: any,
-  scope: TenantScope,
-  countyId: string,
-  data: IngestionRunResult['data']
-): Promise<void> {
-  const caseRepo = getTenantScopedRepository<ProbateCase>('probateCases', db);
-  const docRepo = getTenantScopedRepository<SourceDocument & { countyId: string }>('sourceDocuments', db);
-  const parcelRepo = getTenantScopedRepository<PropertyParcel>('properties', db);
-  const claimRepo = getTenantScopedRepository<Claim>('claims', db);
-  const authRepo = getTenantScopedRepository<AuthorityAssessment>('authorityAssessments', db);
-  const ownRepo = getTenantScopedRepository<OwnershipAssessment>('ownershipAssessments', db);
-  const scoreRepo = getTenantScopedRepository<OpportunityScore>('opportunityScores', db);
-  const oppRepo = getTenantScopedRepository<Opportunity>('opportunities', db);
-  const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
-
-  await persistBatchIfMissing(caseRepo, scope, countyId, data.cases, (c) => c.caseNumber);
-  await persistBatchIfMissing(docRepo, scope, countyId, data.documents, (d) => d.artifactSha256);
-  await persistBatchIfMissing(parcelRepo, scope, countyId, data.parcels, (p) => p.apn);
-  await persistBatchIfMissing(claimRepo, scope, countyId, data.claims, (cl) => cl.id);
-  await persistBatchIfMissing(authRepo, scope, countyId, data.authorities, (a) => a.id);
-  await persistBatchIfMissing(ownRepo, scope, countyId, data.ownerships, (o) => o.id);
-  await persistBatchIfMissing(scoreRepo, scope, countyId, data.scores, (s) => s.id);
-  await persistBatchIfMissing(oppRepo, scope, countyId, data.opportunities, (op) => op.id);
-  await persistBatchIfMissing(excRepo, scope, countyId, data.exceptions, (e) => e.id);
-}
+export type { TriggerMunicipalScraperInput };
 
 /**
  * Triggers a live municipal scraper execution for a specified county jurisdiction.
  * Emits live timestamped telemetry, persists records to the tenant store, and returns results.
  */
 export async function triggerMunicipalScraperAction(
-  countyId: string,
-  lookbackDays = 14,
-  limit = 100
+  countyIdOrInput: string | TriggerMunicipalScraperInput,
+  lookbackDaysArg = 14,
+  limitArg = 100
 ): Promise<IngestionRunResult> {
+  const input =
+    typeof countyIdOrInput === 'string'
+      ? { countyId: countyIdOrInput, lookbackDays: lookbackDaysArg, limit: limitArg }
+      : countyIdOrInput;
+
   const baseScope = await resolveActionScope({ isOperator: true });
-  const scope = { ...baseScope, countyId };
-  const result = await MunicipalIngestionPipeline.execute({
-    countyId,
-    lookbackDays,
-    limit,
-  });
-
-  // Attempt database persistence (MongoDB Atlas or persistent local store)
-  try {
-    let db: any = undefined;
-    try {
-      db = await getMongoDb();
-    } catch {
-      // Atlas unreachable in local/sandbox, will persist to local store
-    }
-    await persistIngestionRunData(db, scope, countyId, result.data);
-  } catch (dbErr: any) {
-    console.warn('[Municipal Ingestion] DB persistence warning (offline/sandbox):', dbErr.message);
-  }
-
-  return result;
+  const scope = { ...baseScope, countyId: input.countyId };
+  return executeMunicipalScraper(scope, input);
 }
-
 
 /**
  * Queries real-time health, circuit breaker state, and layout drift for all registered county adapters.
  */
 export async function getCountyHealthTelemetryAction() {
-  const supported = defaultCountyAdapterRegistry.listSupportedCounties();
-  const records = [];
+  return queryCountyHealthTelemetry();
+}
 
-  for (const c of supported) {
-    const adapter = defaultCountyAdapterRegistry.getAdapter(c.countyId);
-    if (!adapter) continue;
-    const health = await adapter.getHealthStatus();
-    records.push({
-      ...health,
-      state: adapter.stateCode,
-    });
+export interface PublishOpportunityInput {
+  opportunityId: string;
+  webhookUrl?: string;
+  webhookSecret?: string;
+  notificationChannels?: DeliveryNotificationChannel[];
+}
+
+/**
+ * Certifies and publishes an opportunity as a commercial Probate Opportunity File (POF).
+ * Enforces:
+ * 1. Delivery Eligibility (0 unverified claims, 0 unresolved exceptions, Tier < 4, legal disclaimer)
+ * 2. Immutable persistence to 'deliveries' collection
+ * 3. QC Review certification record
+ * 4. Authentic webhook dispatch with HMAC signature
+ * 5. Automatic failure enqueuing to WebhookRetryQueue
+ * 6. Multi-channel delivery notifications
+ */
+export async function certifyAndPublishOpportunityAction(
+  opportunityIdOrInput: string | PublishOpportunityInput,
+  legacyOptions?: {
+    webhookUrl?: string;
+    webhookSecret?: string;
+    notificationChannels?: DeliveryNotificationChannel[];
+  }
+) {
+  const input: PublishOpportunityInput =
+    typeof opportunityIdOrInput === 'string'
+      ? { opportunityId: opportunityIdOrInput, ...legacyOptions }
+      : opportunityIdOrInput;
+
+  const scope = await resolveActionScope({ isOperator: true, requiredRole: 'org:operator_admin' });
+  const db = await getMongoDb();
+
+  const oppRepo = getTenantScopedRepository<Opportunity>('opportunities', db);
+  const claimRepo = getTenantScopedRepository<Claim>('claims', db);
+  const excRepo = getTenantScopedRepository<InvestigationException>('exceptions', db);
+  const pofRepo = getTenantScopedRepository<ProbateOpportunityFile>('deliveries', db);
+  const qcRepo = getTenantScopedRepository<QCReview>('qcReviews', db);
+
+  const opp = await oppRepo.findById(scope, input.opportunityId);
+  if (!opp) {
+    throw new Error(`Opportunity '${input.opportunityId}' not found for tenant.`);
   }
 
-  return records;
+  const [allClaims, allExceptions] = await Promise.all([
+    claimRepo.findMany(scope),
+    excRepo.findMany(scope),
+  ]);
+
+  const { oppClaims, unverifiedClaims } = filterOpportunityClaims(allClaims, opp);
+  const unresolvedExceptions = filterUnresolvedExceptions(allExceptions, opp.id);
+
+  const now = new Date().toISOString();
+  const pof = buildPOFFromOpportunity(opp, scope, oppClaims, now);
+
+  assertDeliveryEligibility({
+    pof,
+    unresolvedExceptionsCount: unresolvedExceptions.length,
+    qcCertified: true,
+    unverifiedClaimsCount: unverifiedClaims.length,
+  });
+
+  await pofRepo.create(scope, pof as any);
+  await oppRepo.update(scope, opp.id, { status: 'PUBLISHED' });
+
+  const qcReview = buildQCReviewRecord({
+    opp,
+    scope,
+    pof,
+    unresolvedCount: unresolvedExceptions.length,
+    now,
+  });
+  await qcRepo.create(scope, qcReview as any);
+
+  const dispatchResult = await dispatchDeliveryWebhook(pof, input);
+  const notifications = await dispatchNotifications(pof, scope, input.notificationChannels);
+
+  return {
+    success: true,
+    pof,
+    qcReview,
+    dispatchResult,
+    notifications,
+  };
+}
+
+/**
+ * Triggers batch processing of all due webhook retry attempts (W03).
+ */
+export async function processWebhookRetriesAction() {
+  const scope = await resolveActionScope({ isOperator: true });
+  const results = await defaultWebhookRetryQueue.processAllPending();
+  return {
+    organizationId: scope.organizationId,
+    processedCount: results.length,
+    results,
+  };
+}
+
+export interface CountySubscriptionsInput {
+  counties: string[];
+}
+
+/**
+ * Persists client county subscription preferences (W01).
+ */
+export async function updateClientCountySubscriptionsAction(
+  countiesOrInput: string[] | CountySubscriptionsInput
+) {
+  const counties = Array.isArray(countiesOrInput) ? countiesOrInput : countiesOrInput.counties;
+  const scope = await resolveActionScope({ requiredRole: 'org:client_user' });
+  const db = await getMongoDb();
+  const clientRepo = getTenantScopedRepository<any>('clientOrganizations', db);
+
+  const existing = await clientRepo.findById(scope, scope.clientId ?? 'client_default');
+  if (existing) {
+    await clientRepo.update(scope, existing.id, {
+      subscribedCounties: counties,
+      updatedAt: new Date().toISOString(),
+    });
+  }
+  return {
+    success: true,
+    clientId: scope.clientId,
+    subscribedCounties: counties,
+  };
 }

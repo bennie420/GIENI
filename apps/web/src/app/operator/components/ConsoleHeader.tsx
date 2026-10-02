@@ -5,9 +5,16 @@ import React from 'react';
 interface ConsoleHeaderProps {
   isConnectedToAtlas: boolean;
   actionMessage: string | null;
+  onOpenBriefing?: () => void;
+  stalledHighValueCount?: number;
 }
 
-export default function ConsoleHeader({ isConnectedToAtlas, actionMessage }: ConsoleHeaderProps) {
+export default function ConsoleHeader({
+  isConnectedToAtlas,
+  actionMessage,
+  onOpenBriefing,
+  stalledHighValueCount = 0,
+}: ConsoleHeaderProps) {
   return (
     <>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -20,6 +27,41 @@ export default function ConsoleHeader({ isConnectedToAtlas, actionMessage }: Con
           </p>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          {stalledHighValueCount > 0 && (
+            <span
+              style={{
+                padding: '6px 12px',
+                borderRadius: '999px',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                background: '#450a0a',
+                color: '#f87171',
+                border: '1px solid #7f1d1d',
+              }}
+            >
+              ⚠️ {stalledHighValueCount} SLA Escalation(s)
+            </span>
+          )}
+
+          {onOpenBriefing && (
+            <button
+              type="button"
+              onClick={onOpenBriefing}
+              style={{
+                padding: '6px 12px',
+                borderRadius: '6px',
+                background: 'var(--bg-elevated)',
+                border: '1px solid var(--border)',
+                color: 'var(--text)',
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              📋 Morning Briefing
+            </button>
+          )}
+
           <span
             style={{
               padding: '6px 12px',

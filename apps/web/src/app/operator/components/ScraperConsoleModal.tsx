@@ -360,6 +360,25 @@ function TelemetryMetricsStrip({ result }: TelemetryMetricsStripProps) {
         <span style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase' }}>Duration</span>
         <div style={{ fontSize: '1.05rem', fontWeight: 700, color: '#f8fafc' }}>{result.durationMs}ms</div>
       </div>
+      <div>
+        <span style={{ fontSize: '0.65rem', color: '#94a3b8', textTransform: 'uppercase' }}>Storage Status</span>
+        <div
+          style={{
+            fontSize: '0.85rem',
+            fontWeight: 700,
+            padding: '2px 8px',
+            borderRadius: '4px',
+            background: result.persistenceStatus === 'SUCCESS' ? '#064e3b' : result.persistenceStatus === 'FAILED' ? '#7f1d1d' : '#1e293b',
+            color: result.persistenceStatus === 'SUCCESS' ? '#34d399' : result.persistenceStatus === 'FAILED' ? '#f87171' : '#94a3b8',
+          }}
+        >
+          {result.persistenceStatus === 'SUCCESS'
+            ? '● PERSISTED'
+            : result.persistenceStatus === 'FAILED'
+            ? '▲ FAILED (MEMORY ONLY)'
+            : '○ MEMORY ONLY'}
+        </div>
+      </div>
     </div>
   );
 }
@@ -516,7 +535,11 @@ export default function ScraperConsoleModal({
     setTelemetryLogs((prev) => [createLaunchTelemetryEvent(countyId, lookbackDays), ...prev]);
 
     try {
-      const res = await triggerMunicipalScraperAction(countyId, lookbackDays, harvestLimit);
+      const res = await triggerMunicipalScraperAction({
+        countyId,
+        lookbackDays,
+        limit: harvestLimit,
+      });
       setLastResult(res);
       setTelemetryLogs(res.telemetry);
       onIngestSuccess(res.data);
@@ -566,6 +589,25 @@ export default function ScraperConsoleModal({
           isRunning={isRunning}
           onSubmit={handleLaunchScraper}
         />
+        {lastResult?.persistenceStatus === 'FAILED' && (
+          <div
+            style={{
+              padding: '10px 24px',
+              background: '#450a0a',
+              borderBottom: '1px solid #7f1d1d',
+              color: '#fca5a5',
+              fontSize: '0.85rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px',
+            }}
+          >
+            <span style={{ fontSize: '1.1rem' }}>⚠️</span>
+            <div>
+              <strong>Database Persistence Warning:</strong> Harvested records were loaded into session memory, but database persistence failed ({lastResult.persistenceError || 'Database unreachable'}). Records will not persist after browser refresh.
+            </div>
+          </div>
+        )}
         {lastResult && <TelemetryMetricsStrip result={lastResult} />}
         <TelemetryConsoleLog logs={telemetryLogs} onClear={() => setTelemetryLogs([])} />
         <ScraperFooter onClose={onClose} />
