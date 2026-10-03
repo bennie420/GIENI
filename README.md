@@ -1,5 +1,7 @@
 # GIENI (Gieni OS)
 
+[![Sponsorship Badge](http://localhost:8080/badge/bennie420/GIENI.svg)](http://localhost:8080/click/active/17)
+
 Gieni OS is an evidence-first probate intelligence and investigation platform.
 It is a TypeScript monorepo with a web app, background workers, and domain packages for probate research workflows.
 
