@@ -1,6 +1,8 @@
 # GIENI (Gieni OS)
 
 [![Sponsorship Badge](https://readmepay.com/badge/bennie420/GIENI.svg)](https://readmepay.com/click/active/49)
+
+
 Gieni OS is an evidence-first probate intelligence and investigation platform.
 It is a TypeScript monorepo with a web app, background workers, and domain packages for probate research workflows.
 
